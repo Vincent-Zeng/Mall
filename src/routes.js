@@ -4,14 +4,17 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 import Home from './pages/home'
-import Search from './pages/customer/search'
+import Products from './pages/customer/products'
 
 const routes = [{
   path: '/',
-  component: Home
-}, {
-  path: '/search',
-  component: Search
+  component: Home,
+  children: [
+    {
+      path: '/products',
+      component: Products
+    }
+  ]
 }]
 
 export default new VueRouter({

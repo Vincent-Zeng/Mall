@@ -1,15 +1,16 @@
 <template>
   <div>
+    <img src="../../assets/logo.png" alt="">
     <h1>{{ msg }}</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'search',
+  name: 'products',
   data () {
     return {
-      msg: 'Search Items'
+      msg: 'Products'
     }
   }
 }

@@ -1,18 +1,13 @@
 <template>
-  <div>
-    <img src="../assets/logo.png" alt="">
-    <h1>{{ msg }}</h1>
+  <div id="home">
+    // place navigation here
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'home',
-  data () {
-    return {
-      msg: 'Home page'
-    }
-  }
+  name: 'home'
 }
 </script>
 
