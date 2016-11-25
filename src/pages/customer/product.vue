@@ -1,0 +1,127 @@
+<template>
+  <div>
+    <h1>{{ msg }}</h1>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-img">
+          <img src="./images/product.png" alt="">
+        </div>
+        <div class="product-detail">
+          <div class="product-summary">
+            <img src="./images/rating.png" alt="">
+            <p>21 reviews</p>
+          </div>
+
+          <p class="product-name">iPhone 7 Jet Black</p>
+          <p class="product-price">$649.00</p>
+
+          <div class="product-add-to-cart">
+            Add to cart
+          </div>
+
+          <p class="product-description">A portable cooling eye stick that instantly relieves puffy, tired eyes by hydrating the delicate skin and minimizing fine lines around the eye for a refreshed and revitalized look.</p>
+        </div>
+      </div>
+
+      <div class="product-comments">
+
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import pic from './images/product.png'
+
+export default {
+  name: 'product',
+  data () {
+    return {
+      msg: 'Product',
+      products: {
+        name: 'iPhone 7 128G Jet Black',
+        price: '649.00',
+        url: pic
+      }
+    }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss" scoped>
+h1 {
+  font-weight: normal;
+}
+
+.product {
+  margin: 70px 290px;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.product-img {
+  width: 50%;
+
+  img {
+    display: block;
+    margin: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.product-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50%;
+
+  .product-summary p {
+    text-align: left;
+    font-size: 14px;
+    color: #ACACAC;
+  }
+
+  .product-name {
+    font-size: 28px;
+    color: #2B2B2B;
+    margin-top: 7px;
+    margin-bottom: 7px;
+  }
+
+  .product-price {
+    font-size: 23px;
+    color: #FF3F13;
+    margin-top: 7px;
+    margin-bottom: 7px;
+  }
+
+  .product-add-to-cart {
+    width: 100%;
+    background-color: #0077D8;
+    font-size: 20px;
+    color: white;
+    height: 56px;
+    line-height: 56px;
+    border-radius: 28px;
+    font-weight: bolder;
+    margin-top: 21px;
+    margin-bottom: 21px;
+  }
+
+  .product-description {
+    text-align: left;
+    font-size: 16px;
+    color: #2B2B2B;
+    font-weight: lighter;
+    margin-top: 7px;
+    margin-bottom: 7px;
+  }
+}
+</style>

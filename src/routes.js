@@ -5,6 +5,7 @@ Vue.use(VueRouter)
 
 import Home from './pages/home'
 import Products from './pages/customer/products'
+import Product from './pages/customer/product'
 
 const routes = [{
   path: '/',
@@ -13,6 +14,10 @@ const routes = [{
     {
       path: '/products',
       component: Products
+    },
+    {
+      path: '/products/:id',
+      component: Product
     }
   ]
 }]
