@@ -4,7 +4,7 @@
     <div class="product">
       <div class="product-info">
         <div class="product-img">
-          <img src="./images/product.png" alt="">
+          <img class="product-image" src="./images/product.png" alt="">
         </div>
         <div class="product-detail">
           <div class="product-summary">
@@ -21,6 +21,12 @@
 
           <p class="product-description">A portable cooling eye stick that instantly relieves puffy, tired eyes by hydrating the delicate skin and minimizing fine lines around the eye for a refreshed and revitalized look.</p>
         </div>
+      </div>
+
+      <div class="product-shop">
+        <img class="product-shop-icon" src="./images/shop-name.png" alt="">
+        <div class="product-shop-name">BestBuy Digital Shop</div>
+        <div class="product-shop-favourite">Add to Favourite</div>
       </div>
 
       <div class="product-comments">
@@ -67,12 +73,50 @@ h1 {
 .product-img {
   width: 50%;
 
-  img {
+  .product-image {
     display: block;
     margin: auto;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+  }
+}
+
+.product-shop {
+  margin-left: 28px;
+  height: 70px;
+  background-color: #F5F5F5;
+  position: relative;
+
+  .product-shop-icon {
+    float: left;
+    display: block;
+    margin: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    padding-left: 28px;
+  }
+
+  .product-shop-name {
+    display: inline-block;
+    color: black;
+    font-size: 16px;
+    padding-left: 14px;
+    height: 70px;
+    line-height: 70px;
+    padding-top: 2px;
+    float: left;
+  }
+
+  .product-shop-favourite {
+    display: inline-block;
+    height: 70px;
+    line-height: 70px;
+    font-size: 16px;
+    color: #0077D8;
+    padding-right: 20px;
+    float: right;
   }
 }
 
