@@ -41,8 +41,6 @@ h1 {
   font-weight: normal;
 }
 
-$product-width: 267px;
-
 @media (min-width: 1500px) {
   .product-list {
     padding-left: 200px;
@@ -64,13 +62,14 @@ $product-width: 267px;
   }
 }
 
+$product-width: 267px;
+
 .product {
   display: inline-block;
   width: $product-width;
   height: 368px;
   border: 1px solid #E4E4E4;
-  margin-left: 14px;
-  margin-right: 14px;
+  margin: 14px;
 
   .product-img {
     width: $product-width;
