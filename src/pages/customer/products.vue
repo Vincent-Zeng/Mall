@@ -1,8 +1,7 @@
 <template>
   <div>
-    <h1>{{ msg }}</h1>
     <div class="product-list" >
-      <div class="product" v-for="product in products">
+      <div class="product" v-for="product in products" @click="handleDetailClicked(product.id)">
         <div class="product-img">
           <img :src="product.url" alt="">
         </div>
@@ -14,7 +13,8 @@
 </template>
 
 <script>
-import pic from './product.png'
+import pic from './images/product.png'
+import router from '../../routes'
 
 export default {
   name: 'products',
@@ -22,14 +22,19 @@ export default {
     let products = []
     for (var i = 0; i < 20; i++) {
       products.push({
+        id: 1,
         name: 'iPhone 7 128G Jet Black',
         price: '649.00',
         url: pic
       })
     }
     return {
-      msg: 'Products',
       products: products
+    }
+  },
+  methods: {
+    handleDetailClicked (productId) {
+      router.push('/products/' + productId)
     }
   }
 }
@@ -87,12 +92,14 @@ $product-width: 267px;
   .product-name {
     margin-top: 17px;
     font-size: 18px;
+    text-align: center;
   }
 
   .product-price {
     margin-top: 7px;
     font-size: 18px;
     color: #FF3F13;
+    text-align: center;
   }
 }
 </style>
