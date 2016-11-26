@@ -2,9 +2,10 @@
   <div id="home">
     <div class="nav-header">
       <header>
-        <div class="nav-topbar">
-          <div class="user-action">
-            <a>SIGN UP</a>
+        <div id="topBar">
+          <div id="dollars">DOLLARS <span class="invertedTriangle">v</span></div>
+          <div id="userAction">
+            <a v-on:click="showRegisterForm()">SIGN UP</a>
             <a>SIGN IN</a>
           </div>
         </div>
@@ -27,6 +28,47 @@
           </div>
         </div>
       </header>
+      <div class="registerBox" v-show="showRegister">
+        <section>
+          <p class="close"><span v-on:click="showRegisterForm()">×</span></p>
+          <div class="registerBox_left">
+              <div class="registerBox_title">
+                <h1>Sign Up</h1>
+                <p>Create your account by filling the form bellow.</p>
+              </div>
+              <form class="register_form">
+                <p>
+                  <label for="username">Username</label>
+                  <br />
+                  <input type="text" id="username" />
+                </p>
+                <p>
+                  <label for="password">Password</label>
+                  <br />
+                  <input type="text" id="password" />
+                </p>
+                <p>
+                  <input type="checkbox" id="expire" />
+                  <label for="expire">Remember Me</label>
+                </p>
+                <input type="button" value="Let me in!" />
+              </form>
+          </div><div class="registerBox_right">
+            <div>
+              <p>Do you already</p>
+              <p>have</p>
+              <p>an account?</p>
+            </div>
+            <div>
+              <p>That's awesome!You can login by</p>
+              <p>clicking on</p>
+              <p>the button below.</p>
+            </div>
+            <button>Login</button>
+          </div>
+        </section>
+      </div>
+      <div class="shade" v-show="showRegister"></div>
     </div>
     <router-view></router-view>
   </div>
@@ -34,20 +76,41 @@
 
 <script>
 export default {
-  name: 'home'
+  name: 'home',
+  data () {
+    var showRegister = true
+    return {
+      showRegister: showRegister
+    }
+  },
+  methods: {
+    showRegisterForm () {
+      if (this.showRegister) {
+        this.showRegister = false
+      } else {
+        this.showRegister = true
+      }
+      console.log(this.showRegister)
+    }
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 
-$color1: gray;
-$color2: #f5f5f5;
-$color3: #0077d8;
-$color4: #258bde;
+$color1:gray;
+$color2:#f5f5f5;
+$color3:#0077d8;
+$color4:#258bde;
 
-#home {
-  width: 100%;
+*{
+  margin:0;
+  padding:0;
+}
+#home{
+  width:100%;
+  font-family: Calibri;
 }
 .nav-header {
   width: 90%;
@@ -146,5 +209,135 @@ $color4: #258bde;
     margin-left: 30px;
     font-size: 15px;
   }
+}
+.registerBox{
+  z-index:100;
+  position:fixed;
+  border:1px solid $color2;
+  width:600px;
+  margin:0 auto;
+  left:0;
+  right:0;
+  top:120px;
+  padding:6px 12px 30px 12px;
+  border-radius:5px;
+  box-shadow:4px 4px 20px $color1;
+  background:white;
+}
+.close{
+  text-align:right;
+  font-size:30px;
+  margin:0;
+  
+  color:lightgray;
+  line-height:30px;
+}
+
+.close span{
+  cursor:pointer;
+}
+.registerBox_left{
+  display:inline-block;
+  box-sizing:border-box;
+  width:350px;
+  padding:10px 20px;
+  border-right:1px solid lightgray;
+  vertical-align:middle;
+}
+.registerBox_right{
+  display:inline-block;
+  width:250px;
+  vertical-align:middle;
+  box-sizing:border-box;
+  padding:10px 40px;
+}
+.registerBox_title h1{
+  font-size:36px;
+}
+.registerBox_title p{
+  font-size:12px;
+  color:$color1;
+  margin:10px 0;
+}
+
+.register_form{
+  margin:30px 0 0 0;
+}
+
+.register_form label{
+  font-weight:bold;
+}
+
+%form_input{
+  width:270px;
+  height:30px;
+  border-radius:4px;
+  border:1px solid lightgray;
+  padding-left:10px;
+}
+#username,#password{
+    @extend %form_input;
+    margin-bottom:10px;
+}
+
+.register_form label{
+  line-height:30px;
+}
+
+#expire{
+  height:16px;
+  width:16px;
+  appearance:radio;
+  vertical-align:middle;
+  margin-right:10px;
+}
+
+#expire~label{
+  color:$color1;
+  font-size:14px;
+}
+
+.register_form input[type="button"]{
+  width:270px;
+  height:40px;
+  background:$color3;
+  border:none;
+  border-radius:24px;
+  margin-top:30px;
+  color:white;
+  cursor:pointer;
+}
+
+.registerBox_right div:first-child{
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:20px;
+}
+
+.registerBox_right div:nth-of-type(2){
+  font-size:10px;
+  line-height:20px;
+  color:$color1;
+  margin-bottom:20px;
+}
+
+.registerBox_right button{
+  border:1px solid $color3;
+  color:$color3;
+  border-radius:4px;
+  height:26px;
+  width:80px;
+  cursor:pointer;
+  background-color:white;
+}
+.shade{
+  z-index:99;
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  opacity:0.4;
+  background-color:black;
 }
 </style>
