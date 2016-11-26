@@ -2,7 +2,8 @@
   <div id="home">
     <div class="nav-header">
       <header>
-        <div class="topbar">
+        <div class="nav-topbar">
+          <div id="dollars">DOLLARS <span class="invertedTriangle">v</span></div>
           <div class="user-action">
             <a v-on:click="showRegisterForm()">SIGN UP</a>
             <a>SIGN IN</a>
@@ -101,18 +102,24 @@ $color2:#f5f5f5;
 $color3:#0077d8;
 $color4:#258bde;
 
-* {
+
+*{
   margin:0;
   padding:0;
 }
-#home {
+#home{
   width:100%;
+  font-family: Calibri;
 }
 .nav-header {
   width: 90%;
   min-width: 1000px;
   margin: 0 auto;
   margin: 40px auto 0px auto;
+}
+
+#dollars{
+  float:left;
 }
 
 .user-action {
@@ -130,7 +137,6 @@ $color4:#258bde;
 }
 
 .nav-topbar {
-  margin-bottom: 10px;
   height: 20px;
 }
 
@@ -228,7 +234,6 @@ $color4:#258bde;
   text-align:right;
   font-size:30px;
   margin:0;
-
   color:lightgray;
   line-height:30px;
 }
@@ -339,5 +344,11 @@ $color4:#258bde;
   left:0;
   opacity:0.4;
   background-color:black;
+}
+
+.invertedTriangle{
+  display:inline-block;
+  color:black;
+  transform:scale(1.5,0.5);
 }
 </style>
