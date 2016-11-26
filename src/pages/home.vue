@@ -21,10 +21,8 @@
               </nav>
           </div>
           <div class="search-box">
-            <div>
-              <input type="text" placeholder="Search here" />
-              <button>2</button>
-            </div>
+            <input type="text" placeholder="Search here" />
+            <button>2</button>
           </div>
         </div>
       </header>
@@ -104,6 +102,7 @@ $color2:#f5f5f5;
 $color3:#0077d8;
 $color4:#258bde;
 
+
 *{
   margin:0;
   padding:0;
@@ -117,6 +116,10 @@ $color4:#258bde;
   min-width: 1000px;
   margin: 0 auto;
   margin: 40px auto 0px auto;
+}
+
+#dollars{
+  float:left;
 }
 
 .user-action {
@@ -134,13 +137,13 @@ $color4:#258bde;
 }
 
 .nav-topbar {
-  margin-bottom: 10px;
   height: 20px;
 }
 
 .navbar {
   margin-bottom: 5px;
   font-size: 20px;
+  position: relative;
 }
 
 #logo {
@@ -185,6 +188,9 @@ $color4:#258bde;
   display: inline-block;
   width: 50%;
   text-align: right;
+  position: absolute;
+  right: 0px;
+  bottom: 15px;
 
   input {
       background-image: url(./search_icon.png);
@@ -228,7 +234,6 @@ $color4:#258bde;
   text-align:right;
   font-size:30px;
   margin:0;
-  
   color:lightgray;
   line-height:30px;
 }
