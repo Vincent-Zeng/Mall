@@ -2,9 +2,9 @@
   <div id="home">
     <div class="nav-header">
       <header>
-        <div id="topBar">
+        <div class="nav-topbar">
           <div id="dollars">DOLLARS <span class="invertedTriangle">v</span></div>
-          <div id="userAction">
+          <div class="user-action">
             <a v-on:click="showRegisterForm()">SIGN UP</a>
             <a>SIGN IN</a>
           </div>
@@ -183,7 +183,7 @@ $color4:#258bde;
 
 .search-box {
   display: inline-block;
-  width: 59%;
+  width: 50%;
   text-align: right;
 
   input {
