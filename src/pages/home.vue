@@ -345,4 +345,10 @@ $color4:#258bde;
   opacity:0.4;
   background-color:black;
 }
+
+.invertedTriangle{
+  display:inline-block;
+  color:black;
+  transform:scale(1.5,0.5);
+}
 </style>
