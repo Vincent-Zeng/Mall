@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <div id="header">
+    <div class="nav-header">
       <header>
         <div id="topBar">
           <div id="dollars">DOLLARS <span class="invertedTriangle">v</span></div>
@@ -9,22 +9,22 @@
             <a>SIGN IN</a>
           </div>
         </div>
-        <div id="navBar">
+        <div class="navbar">
           <div id="logo">
             <img src="./logo.png" />
           </div>
-          <div id="topNav">
+          <div class="top-nav">
               <nav>
-                <span id="nav_home">HOME</span>
-                <span id="nav_catalog">CATALOG</span>
-                <span id="nav_sale">SALE</span>
+                <span id="nav-home">HOME</span>
+                <span id="nav-catalog">CATALOG</span>
+                <span id="nav-sale">SALE</span>
               </nav>
           </div>
-          <div class="searchBox">
+          <div class="search-box">
             <div>
-              <input type="text" placeholder="search here" />
+              <input type="text" placeholder="Search here" />
               <button>2</button>
-            </div>          
+            </div>
           </div>
         </div>
       </header>
@@ -98,6 +98,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+
 $color1:gray;
 $color2:#f5f5f5;
 $color3:#0077d8;
@@ -111,100 +112,103 @@ $color4:#258bde;
   width:100%;
   font-family: Calibri;
 }
-#header{
-  width:90%;
+.nav-header {
+  width: 90%;
   min-width: 1000px;
-  margin:0 auto;
-}
-#dollars{
-  float:left;
-  color:$color1;
-}
-#userAction a:first-child{
-  color:red;
-  margin-right:10px;
+  margin: 0 auto;
+  margin: 40px auto 0px auto;
 }
 
-#userAction a:last-child{
-  color:$color1;
-}
-#userAction{
-  float:right;
-}
-#topBar{
-  margin-bottom:10px;
-  height:20px;
-}
+.user-action {
+  float: right;
 
-#navBar{
-  margin-bottom:5px;
-  font-size:20px;
+  a:first-child {
+    color: red;
+    margin-right: 10px;
+  }
+
+  a:last-child {
+    color: $color1;
+  }
 
 }
 
-#logo{
-  display:inline-block;
-  width:10%;
+.nav-topbar {
+  margin-bottom: 10px;
+  height: 20px;
+}
+
+.navbar {
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+#logo {
+  display: inline-block;
+  width: 10%;
   vertical-align: middle;
 }
-#topNav{
-  display:inline-block;
-  width:30%;
+
+.top-nav {
+  display: inline-block;
+  width: 30%;
+
+  nav {
+    min-width: 300px;
+
+    span {
+      margin: 0 20px;
+      padding: 5px 0;
+      font-weight: bold;
+    }
+
+    #nav-home {
+      color: $color1;
+    }
+
+    #nav-catalog {
+      border-bottom: 3px solid $color3;
+    }
+
+    #nav-sale {
+      color: red;
+    }
+
+  }
 }
 
-#topNav nav{
-  min-width: 300px;
-}
 :focus{
   outline: none;
 }
-#topNav nav span{
-  margin: 0 20px;
-  padding:5px 0;
-  font-weight:bold;
-}
 
-.searchBox{
-  display:inline-block;
-  width:59%;
+.search-box {
+  display: inline-block;
+  width: 59%;
   text-align: right;
-}
 
-.searchBox input{
-    background-image:url(./search_icon.png);
-    background-repeat:no-repeat;
-    background-position:20px center;
-    background-size:36px 36px;
-    width:50%;
-    height:50px;
-    border-radius:100px;
-    background-color:$color2;
-    border:none;
-    padding-left:70px;
-    font-size: 20px;
+  input {
+      background-image: url(./search_icon.png);
+      background-repeat: no-repeat;
+      background-position: 20px center;
+      background-size: 36px 36px;
+      width: 50%;
+      height: 50px;
+      border-radius: 100px;
+      background-color: $color2;
+      border: none;
+      padding-left: 70px;
+      font-size: 20px;
+  }
 
-}
-.searchBox button{
-  border-radius: 100%;
-  border:2px solid $color4;
-  height:50px;
-  width:50px;
-  background:white;
-  margin-left: 30px;
-}
-.invertedTriangle{
-  display:inline-block;
-  color:black;
-  transform:scale(1.5,0.5);
-}
-#nav_home{
-  color:$color1;
-}
-#nav_catalog{
-  border-bottom:3px solid $color3;
-}
-#nav_sale{
-  color:red;
+  button {
+    border-radius: 100%;
+    border: 2px solid $color4;
+    height: 50px;
+    width: 50px;
+    background: white;
+    margin-left: 30px;
+    font-size: 15px;
+  }
 }
 .registerBox{
   z-index:100;
