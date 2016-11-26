@@ -76,18 +76,14 @@
 export default {
   name: 'home',
   data () {
-    var showRegister = true
+    var showRegister = false
     return {
       showRegister: showRegister
     }
   },
   methods: {
     showRegisterForm () {
-      if (this.showRegister) {
-        this.showRegister = false
-      } else {
-        this.showRegister = true
-      }
+      this.showRegister = !this.showRegister
       console.log(this.showRegister)
     }
   }
@@ -107,9 +103,8 @@ $color4:#258bde;
   margin:0;
   padding:0;
 }
-#home{
+#home {
   width:100%;
-  font-family: Calibri;
 }
 .nav-header {
   width: 90%;
