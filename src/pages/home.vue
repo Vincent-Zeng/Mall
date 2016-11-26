@@ -2,9 +2,8 @@
   <div id="home">
     <div class="nav-header">
       <header>
-        <div id="topBar">
-          <div id="dollars">DOLLARS <span class="invertedTriangle">v</span></div>
-          <div id="userAction">
+        <div class="topbar">
+          <div class="user-action">
             <a v-on:click="showRegisterForm()">SIGN UP</a>
             <a>SIGN IN</a>
           </div>
@@ -21,10 +20,8 @@
               </nav>
           </div>
           <div class="search-box">
-            <div>
-              <input type="text" placeholder="Search here" />
-              <button>2</button>
-            </div>
+            <input type="text" placeholder="Search here" />
+            <button>2</button>
           </div>
         </div>
       </header>
@@ -104,13 +101,12 @@ $color2:#f5f5f5;
 $color3:#0077d8;
 $color4:#258bde;
 
-*{
+* {
   margin:0;
   padding:0;
 }
-#home{
+#home {
   width:100%;
-  font-family: Calibri;
 }
 .nav-header {
   width: 90%;
@@ -141,6 +137,7 @@ $color4:#258bde;
 .navbar {
   margin-bottom: 5px;
   font-size: 20px;
+  position: relative;
 }
 
 #logo {
@@ -183,8 +180,11 @@ $color4:#258bde;
 
 .search-box {
   display: inline-block;
-  width: 59%;
+  width: 50%;
   text-align: right;
+  position: absolute;
+  right: 0px;
+  bottom: 15px;
 
   input {
       background-image: url(./search_icon.png);
@@ -228,7 +228,7 @@ $color4:#258bde;
   text-align:right;
   font-size:30px;
   margin:0;
-  
+
   color:lightgray;
   line-height:30px;
 }
