@@ -6,7 +6,7 @@
       <span @click="handleSpanClicked('shop')" class="shop-span" v-bind:class="{ 'highlight-span': !isOwner, 'normal-span': isOwner }">Shop</span>
 
       <div class="search-box">
-        <input type="text" placeholder="Search Owner" />
+        <input type="text" placeholder="Search" @keyup.enter="searchItems"/>
       </div>
     </div>
 
@@ -48,6 +48,8 @@ export default {
   methods: {
     handleSpanClicked (type) {
       this.isOwner = type === 'owner'
+    },
+    searchItems () {
     }
   }
 }
