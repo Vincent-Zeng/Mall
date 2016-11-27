@@ -13,6 +13,7 @@ import AdminLogin from './pages/admin/login'
 import AdminNavigation from './pages/admin/navigation'
 import AdminDashboard from './pages/admin/dashboard'
 import AdminApprove from './pages/admin/approve'
+import AdminOwner from './pages/admin/owner'
 
 const routes = [{
   path: '/',
@@ -55,6 +56,10 @@ const routes = [{
     {
       path: '/admin/navigation/approve',
       component: AdminApprove
+    },
+    {
+      path: '/admin/navigation/owner',
+      component: AdminOwner
     }
   ]
 }]

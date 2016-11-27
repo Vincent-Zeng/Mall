@@ -1,20 +1,22 @@
 <template>
-  <div class="admin-approve">
-    <div class="approve-header">
-      <img src="./images/ring.png" alt="">
-      <span>New shop Owner Request</span>
+  <div class="admin-owner">
+    <div class="owner-header">
+      <img src="./images/owner.png" alt="">
+      <span>Owner</span>
+
+      <div class="search-box">
+        <input type="text" placeholder="Search Owner" />
+      </div>
     </div>
 
-    <div class="approve-list">
-      <div class="approve-shop" v-for="shop in shops">
-        <img class="approve-shop-avatar" :src="shop.avatar" alt="">
-        <span class="approve-word approve-shop-owner">{{ shop.owner }}</span>
-        <span class="approve-word approve-shop-created">Created Shop</span>
-        <span class="approve-word approve-shop-name">{{ shop.name }}</span>
+    <div class="owner-list">
+      <div class="owner-item" v-for="shop in shops">
+        <img class="owner-item-avatar" :src="shop.avatar" alt="">
+        <span class="owner-item-owner">{{ shop.owner }}</span>
 
         <div class="function-button">
-          <div class="approve-button">Approve</div>
-          <div class="reject-button">Reject</div>
+          <div class="suspend-button">Suspend</div>
+          <div class="delete-button">Delete</div>
         </div>
       </div>
     </div>
@@ -25,7 +27,7 @@
 import pic from './images/avatar.png'
 
 export default {
-  name: 'admin-approve',
+  name: 'admin-owner',
   data () {
     let shops = []
     for (var i = 0; i < 20; i++) {
@@ -45,7 +47,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.admin-approve {
+.admin-owner {
   position: absolute;
   margin: 56px 0px;
   left: 172px;
@@ -53,7 +55,7 @@ export default {
   border: 1px solid #E4E4E4;
 }
 
-.approve-header {
+.owner-header {
   position: relative;
 
   img {
@@ -71,18 +73,43 @@ export default {
     height: 80px;
     line-height: 80px;
   }
+
+  .search-box {
+    display: inline-block;
+    width: 500px;
+    text-align: right;
+    position: absolute;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    input {
+        background-image: url(../search_icon.png);
+        background-repeat: no-repeat;
+        background-position: 20px center;
+        background-size: 36px 36px;
+        width: 50%;
+        height: 50px;
+        border-radius: 100px;
+        background-color: #f5f5f5;
+        border: none;
+        padding-left: 70px;
+        font-size: 18px;
+        outline: none;
+    }
+  }
 }
 
-.approve-list {
+.owner-list {
   margin-left: 28px;
   margin-right: 28px;
 
-  .approve-shop {
+  .owner-item {
     height: 88px;
     position: relative;
     border-top: 1px solid #EEEEEE;
 
-    .approve-shop-avatar {
+    .owner-item-avatar {
       width: 30px;
       height: 30px;
       border-radius: 15px;
@@ -91,27 +118,13 @@ export default {
       transform: translateY(-50%);
     }
 
-    .approve-word {
+    .owner-item-owner {
+      color: #0077D8;
+      margin-left: 50px;
       font-size: 18px;
       font-weight: normal;
       line-height: 88px;
       height: 88px;
-    }
-
-    .approve-shop-owner {
-      color: #0077D8;
-      margin-left: 50px;
-    }
-
-    .approve-shop-created {
-      color: #ACACAC;
-      margin-left: 10px;
-    }
-
-    .approve-shop-name {
-      color: #2B2B2B;
-      font-weight: bold;
-      margin-left: 10px;
     }
 
     .function-button {
@@ -131,16 +144,16 @@ export default {
         box-sizing: border-box;
       }
 
-      .approve-button {
-        background-color: #0077D8;
-        color: white;
-        margin-right: 16px;
-      }
-
-      .reject-button {
+      .suspend-button {
         background-color: white;
         border: 1px solid #0077D8;
         color: #0077D8;
+        margin-right: 16px;
+      }
+
+      .delete-button {
+        background-color: white;
+        color: #ACACAC;
       }
     }
   }
