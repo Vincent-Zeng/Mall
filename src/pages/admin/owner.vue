@@ -2,7 +2,8 @@
   <div class="admin-owner">
     <div class="owner-header">
       <img src="./images/owner.png" alt="">
-      <span>Owner</span>
+      <span @click="handleSpanClicked('owner')" class="owner-span" v-bind:class="{ 'highlight-span': isOwner, 'normal-span': !isOwner }">Owner</span>
+      <span @click="handleSpanClicked('shop')" class="shop-span" v-bind:class="{ 'highlight-span': !isOwner, 'normal-span': isOwner }">Shop</span>
 
       <div class="search-box">
         <input type="text" placeholder="Search Owner" />
@@ -38,8 +39,15 @@ export default {
       })
     }
 
+    let isOwner = true
     return {
-      shops: shops
+      shops: shops,
+      isOwner: isOwner
+    }
+  },
+  methods: {
+    handleSpanClicked (type) {
+      this.isOwner = type === 'owner'
     }
   }
 }
@@ -66,12 +74,26 @@ export default {
   }
 
   span {
-    color: #2B2B2B;
     font-size: 20px;
     font-weight: bold;
-    margin-left: 65px;
     height: 80px;
     line-height: 80px;
+  }
+
+  .owner-span {
+    margin-left: 65px;
+  }
+
+  .shop-span {
+    margin-left: 8px;
+  }
+
+  .highlight-span {
+    color: #2B2B2B;
+  }
+
+  .normal-span {
+    color: #ACACAC;
   }
 
   .search-box {
