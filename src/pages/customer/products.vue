@@ -75,7 +75,7 @@ $product-width: 267px;
   height: 368px;
   border: 1px solid #E4E4E4;
   margin: 14px;
-
+  cursor:pointer;
   .product-img {
     width: $product-width;
     height: $product-width;

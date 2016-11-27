@@ -15,9 +15,9 @@
           </div>
           <div class="top-nav">
               <nav>
-                <span id="nav-home">HOME</span>
-                <span id="nav-catalog">CATALOG</span>
-                <span id="nav-sale">SALE</span>
+                <span id="nav-home" ><router-link :to="{path:'/'}">HOME</router-link></span>
+                <span id="nav-catalog"><router-link :to="{path:'/products'}">CATALOG</router-link></span>
+                <span id="nav-sale"><router-link :to="{path:'/'}">SALE</router-link></span>
               </nav>
           </div>
           <div class="search-box">
@@ -43,7 +43,7 @@
                 <p>
                   <label for="password">Password</label>
                   <br />
-                  <input type="text" id="password" />
+                  <input type="password" id="password" />
                 </p>
                 <p>
                   <input type="checkbox" id="expire" />
@@ -128,10 +128,12 @@ $color4:#258bde;
   a:first-child {
     color: red;
     margin-right: 10px;
+    cursor:pointer;
   }
 
   a:last-child {
     color: $color1;
+    cursor:pointer;
   }
 
 }
@@ -152,6 +154,7 @@ $color4:#258bde;
   vertical-align: middle;
 }
 
+
 .top-nav {
   display: inline-block;
   width: 30%;
@@ -165,7 +168,12 @@ $color4:#258bde;
       font-weight: bold;
     }
 
-    #nav-home {
+    a{
+      color:black;
+      text-decoration:none;
+    }
+
+    #nav-home a{
       color: $color1;
     }
 
@@ -173,7 +181,7 @@ $color4:#258bde;
       border-bottom: 3px solid $color3;
     }
 
-    #nav-sale {
+    #nav-sale a{
       color: red;
     }
 
