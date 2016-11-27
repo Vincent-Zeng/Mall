@@ -13,7 +13,7 @@
     </div>
     <div class="product-detail" v-show="showDetail">
       <div class="box-top-bar" >
-        <span>LESS DETAILS</span>
+        <!-- <span>LESS DETAILS</span> -->
         <span @click="showDetailBox()"><router-link :to="{path:'/products'}" >×</router-link></span>
       </div>
       <router-view></router-view>
@@ -146,10 +146,7 @@ $product-width: 267px;
   color:gray;
   height:30px;
   line-height:30px;
-  span:first-child {
-    float:left;
-  }
-  span:last-child {
+  span {
     font-size:30px;
     float:right;
   }
@@ -169,7 +166,7 @@ $product-width: 267px;
   background-color:black;
 }
 
-a{
+a {
   text-decoration:none;
 }
 </style>
