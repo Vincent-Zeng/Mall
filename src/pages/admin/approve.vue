@@ -135,12 +135,14 @@ export default {
         background-color: #0077D8;
         color: white;
         margin-right: 16px;
+        cursor: pointer;
       }
 
       .reject-button {
         background-color: white;
         border: 1px solid #0077D8;
         color: #0077D8;
+        cursor: pointer;
       }
     }
   }

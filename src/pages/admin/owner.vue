@@ -16,7 +16,7 @@
         <span class="owner-item-owner">{{ shop.owner }}</span>
 
         <div class="function-button">
-          <div class="suspend-button">Suspend</div>
+          <div @click="suspend(shop.id)" class="suspend-button">Suspend</div>
           <div class="delete-button">Delete</div>
         </div>
       </div>
@@ -33,6 +33,7 @@ export default {
     let shops = []
     for (var i = 0; i < 20; i++) {
       shops.push({
+        id: 1,
         avatar: pic,
         owner: 'MARY V. ROBINSON',
         name: 'Gucci Official'
@@ -50,6 +51,9 @@ export default {
       this.isOwner = type === 'owner'
     },
     searchItems () {
+    },
+    suspend (id) {
+      console.log(id)
     }
   }
 }
@@ -169,6 +173,7 @@ export default {
       }
 
       .suspend-button {
+        cursor: pointer;
         background-color: white;
         border: 1px solid #0077D8;
         color: #0077D8;
@@ -176,6 +181,7 @@ export default {
       }
 
       .delete-button {
+        cursor: pointer;
         background-color: white;
         color: #ACACAC;
       }
