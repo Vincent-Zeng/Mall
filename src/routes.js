@@ -6,6 +6,12 @@ Vue.use(VueRouter)
 import Home from './pages/home'
 import Products from './pages/customer/products'
 import Product from './pages/customer/product'
+import OwnerLogin from './pages/owner/login'
+import OwnerNavigation from './pages/owner/navigation'
+import OwnerDashboard from './pages/owner/dashboard'
+import AdminLogin from './pages/admin/login'
+import AdminNavigation from './pages/admin/navigation'
+import AdminDashboard from './pages/admin/dashboard'
 
 const routes = [{
   path: '/',
@@ -20,6 +26,30 @@ const routes = [{
           component: Product
         }
       ]
+    }
+  ]
+}, {
+  path: '/owner',
+  component: OwnerLogin
+}, {
+  path: '/owner/navigation',
+  component: OwnerNavigation,
+  children: [
+    {
+      path: '/owner/navigation/dashboard',
+      component: OwnerDashboard
+    }
+  ]
+}, {
+  path: '/admin',
+  component: AdminLogin
+}, {
+  path: '/admin/navigation',
+  component: AdminNavigation,
+  children: [
+    {
+      path: '/admin/navigation/dashboard',
+      component: AdminDashboard
     }
   ]
 }]
