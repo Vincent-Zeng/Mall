@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="product-list" >
-      <div class="product" v-for="product in products" @click="showDetailBox()">
+      <div class="product" v-for="product in products" @click="showDetailBox(true)">
         <router-link :to="{path:'/products/' + product.id}">
           <div class="product-img">
             <img :src="product.url" alt="">
@@ -11,10 +11,11 @@
         </router-link>
       </div>
     </div>
+    <div>
     <div class="product-detail" v-show="showDetail">
       <div class="box-top-bar" >
         <span>LESS DETAILS</span>
-        <span @click="showDetailBox()"><router-link :to="{path:'/products'}" >×</router-link></span>
+        <span @click="showDetailBox(false)"><router-link :to="{path:'/products'}" >×</router-link></span>
       </div>
       <router-view></router-view>
     </div>
@@ -38,18 +39,38 @@ export default {
         url: pic
       })
     }
-    var showDetail = false
+    var showDetail
+    var oldScrollTop
+    if (this.$route.params.id === undefined) {
+      showDetail = false
+    } else {
+      showDetail = true
+    }
     return {
       products: products,
-      showDetail: showDetail
+      showDetail: showDetail,
+      oldScrollTop: oldScrollTop
     }
   },
   methods: {
     handleDetailClicked (productId) {
       router.push('/products/' + productId)
     },
-    showDetailBox () {
-      this.showDetail = !this.showDetail
+    showDetailBox (show) {
+      this.showDetail = show
+      if (show) {
+        this.oldScrollTop = document.body.scrollTop
+        document.body.scrollTop = 0
+      } else {
+        document.body.scrollTop = this.oldScrollTop
+      }
+    }
+  },
+  beforeUpdate: function () {
+    if (this.$route.params.id === undefined) {
+      this.showDetail = false
+    } else {
+      this.showDetail = true
     }
   }
 }
