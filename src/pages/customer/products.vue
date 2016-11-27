@@ -1,14 +1,24 @@
 <template>
   <div>
     <div class="product-list" >
-      <div class="product" v-for="product in products" @click="handleDetailClicked(product.id)">
-        <div class="product-img">
-          <img :src="product.url" alt="">
-        </div>
-        <div class="product-name">{{ product.name }}</div>
-        <div class="product-price">${{ product.price }}</div>
+      <div class="product" v-for="product in products" @click="showDetailBox()">
+        <router-link :to="{path:'/products/' + product.id}">
+          <div class="product-img">
+            <img :src="product.url" alt="">
+          </div>
+          <div class="product-name">{{ product.name }}</div>
+          <div class="product-price">${{ product.price }}</div>
+        </router-link>
       </div>
     </div>
+    <div class="product-detail" v-show="showDetail">
+      <div class="box-top-bar" >
+        <span>LESS DETAILS</span>
+        <span @click="showDetailBox()"><router-link :to="{path:'/products'}" >×</router-link></span>
+      </div>
+      <router-view></router-view>
+    </div>
+    <div class="shade" v-show="showDetail"></div>
   </div>
 </template>
 
@@ -28,13 +38,18 @@ export default {
         url: pic
       })
     }
+    var showDetail = false
     return {
-      products: products
+      products: products,
+      showDetail: showDetail
     }
   },
   methods: {
     handleDetailClicked (productId) {
       router.push('/products/' + productId)
+    },
+    showDetailBox () {
+      this.showDetail = !this.showDetail
     }
   }
 }
@@ -42,6 +57,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+
+$color1:gray;
+$color2:#f5f5f5;
+$color3:#0077d8;
+$color4:#258bde;
+
 h1 {
   font-weight: normal;
 }
@@ -75,7 +96,10 @@ $product-width: 267px;
   height: 368px;
   border: 1px solid #E4E4E4;
   margin: 14px;
-
+  cursor:pointer;
+  a{
+    color:black;
+  }
   .product-img {
     width: $product-width;
     height: $product-width;
@@ -101,5 +125,49 @@ $product-width: 267px;
     color: #FF3F13;
     text-align: center;
   }
+}
+.product-detail{
+  position:absolute;
+  top:100px;
+  left:0;
+  right:0;
+  margin:0 auto;
+  width:600px;
+  border:1px solid $color2;
+  border-radius:4px;
+  padding:20px 30px;
+  z-index:90;
+  background:white;
+  box-shadow:4px 4px 20px $color1;
+}
+
+.box-top-bar{
+  color:gray;
+  height:30px;
+  line-height:30px;
+  span:first-child{
+    float:left;
+  }
+  span:last-child{
+    font-size:30px;
+    float:right;
+  }
+  a{
+    color:gray;
+  }
+}
+.shade{
+  z-index:89;
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  opacity:0.4;
+  background-color:black;
+}
+
+a{
+  text-decoration:none;
 }
 </style>
