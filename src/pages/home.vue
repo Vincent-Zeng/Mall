@@ -76,18 +76,14 @@
 export default {
   name: 'home',
   data () {
-    var showRegister = true
+    var showRegister = false
     return {
       showRegister: showRegister
     }
   },
   methods: {
     showRegisterForm () {
-      if (this.showRegister) {
-        this.showRegister = false
-      } else {
-        this.showRegister = true
-      }
+      this.showRegister = !this.showRegister
       console.log(this.showRegister)
     }
   }

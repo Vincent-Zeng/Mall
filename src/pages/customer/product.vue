@@ -59,25 +59,25 @@ h1 {
   font-weight: normal;
 }
 
-.product {
-  margin: 70px 400px;
-}
+
 
 .product-info {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  position:relative;
 }
 
 .product-img {
   width: 50%;
-
+  position:relative;
   .product-image {
     display: block;
     margin: auto;
-    position: relative;
+    position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    left:50%;
+    transform: translate(-50%,-50%);
   }
 }
 
@@ -168,4 +168,6 @@ h1 {
     margin-bottom: 7px;
   }
 }
+
+
 </style>
