@@ -118,8 +118,8 @@ h1 {
       border-radius: 28px;
       color: white;
       font-size: 20px;
-      cursor:pointer;
-      outline:none;
+      cursor: pointer;
+      outline: none;
     }
 
     #expire {
