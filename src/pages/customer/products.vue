@@ -12,9 +12,9 @@
       </div>
     </div>
     <div class="product-detail" v-show="showDetail">
-      <div class="box-top-bar" @click="showDetailBox()">
+      <div class="box-top-bar" >
         <span>LESS DETAILS</span>
-        <span><router-link :to="{path:'/products'}">×</router-link></span>
+        <span @click="showDetailBox()"><router-link :to="{path:'/products'}" >×</router-link></span>
       </div>
       <router-view></router-view>
     </div>
