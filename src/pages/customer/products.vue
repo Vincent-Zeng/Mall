@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="product-list" >
+<<<<<<< HEAD
       <div class="product" v-for="product in products" @click="showDetailBox(true)">
         <router-link :to="{path:'/products/' + product.id}">
           <div class="product-img">
