@@ -6,6 +6,7 @@ Vue.use(VueRouter)
 import Home from './pages/home'
 import Products from './pages/customer/products'
 import Product from './pages/customer/product'
+import OwnerLogin from './pages/owner/login'
 
 const routes = [{
   path: '/',
@@ -22,6 +23,9 @@ const routes = [{
       ]
     }
   ]
+}, {
+  path: '/owner',
+  component: OwnerLogin
 }]
 
 export default new VueRouter({
