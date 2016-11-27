@@ -7,6 +7,8 @@ import Home from './pages/home'
 import Products from './pages/customer/products'
 import Product from './pages/customer/product'
 import OwnerLogin from './pages/owner/login'
+import OwnerNavigation from './pages/owner/navigation'
+import OwnerDashboard from './pages/owner/dashboard'
 
 const routes = [{
   path: '/',
@@ -26,6 +28,15 @@ const routes = [{
 }, {
   path: '/owner',
   component: OwnerLogin
+}, {
+  path: '/owner/navigation',
+  component: OwnerNavigation,
+  children: [
+    {
+      path: '/owner/navigation/dashboard',
+      component: OwnerDashboard
+    }
+  ]
 }]
 
 export default new VueRouter({

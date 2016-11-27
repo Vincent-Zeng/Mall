@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     handleSubmitLoginForm () {
-      router.push('/owner/dashboard')
+      router.push('/owner/navigation/dashboard')
     }
   }
 }
