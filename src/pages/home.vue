@@ -3,7 +3,6 @@
     <div class="nav-header">
       <header>
         <div class="nav-topbar">
-          <div id="dollars">DOLLARS <span class="invertedTriangle">v</span></div>
           <div class="user-action">
             <a v-on:click="showRegisterForm()">SIGN UP</a>
             <a>SIGN IN</a>
@@ -105,7 +104,6 @@ $color4:#258bde;
 }
 #home{
   width:100%;
-  font-family: Calibri;
 }
 .nav-header {
   width: 90%;
@@ -350,9 +348,4 @@ $color4:#258bde;
   background-color:black;
 }
 
-.invertedTriangle{
-  display:inline-block;
-  color:black;
-  transform:scale(1.5,0.5);
-}
 </style>

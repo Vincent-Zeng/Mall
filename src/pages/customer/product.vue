@@ -59,8 +59,6 @@ h1 {
   font-weight: normal;
 }
 
-
-
 .product-info {
   display: flex;
   flex-direction: row;
@@ -71,6 +69,7 @@ h1 {
 .product-img {
   width: 50%;
   position:relative;
+
   .product-image {
     display: block;
     margin: auto;
@@ -82,7 +81,8 @@ h1 {
 }
 
 .product-shop {
-  margin-left: 28px;
+  margin-left: -30px;
+  margin-right: -30px;
   height: 70px;
   background-color: #F5F5F5;
   position: relative;
