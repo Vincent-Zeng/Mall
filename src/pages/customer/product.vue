@@ -81,7 +81,8 @@ h1 {
 }
 
 .product-shop {
-  margin-left: 28px;
+  margin-left: -30px;
+  margin-right: -30px;
   height: 70px;
   background-color: #F5F5F5;
   position: relative;
