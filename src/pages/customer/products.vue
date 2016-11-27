@@ -38,7 +38,12 @@ export default {
         url: pic
       })
     }
-    var showDetail = false
+    var showDetail
+    if (this.$route.params.id === undefined) {
+      showDetail = false
+    } else {
+      showDetail = true
+    }
     return {
       products: products,
       showDetail: showDetail
@@ -50,6 +55,13 @@ export default {
     },
     showDetailBox () {
       this.showDetail = !this.showDetail
+    }
+  },
+  beforeUpdate: function () {
+    if (this.$route.params.id === undefined) {
+      this.showDetail = false
+    } else {
+      this.showDetail = true
     }
   }
 }
