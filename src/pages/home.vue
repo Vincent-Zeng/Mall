@@ -105,7 +105,6 @@ $color4:#258bde;
 }
 #home{
   width:100%;
-  font-family: Calibri;
 }
 .nav-header {
   width: 90%;

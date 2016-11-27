@@ -58,10 +58,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 
-$color1:gray;
-$color2:#f5f5f5;
-$color3:#0077d8;
-$color4:#258bde;
+$color1: gray;
+$color2: #f5f5f5;
+$color3: #0077d8;
+$color4: #258bde;
 
 h1 {
   font-weight: normal;
@@ -96,8 +96,8 @@ $product-width: 267px;
   height: 368px;
   border: 1px solid #E4E4E4;
   margin: 14px;
-  cursor:pointer;
-  a{
+  cursor: pointer;
+  a {
     color:black;
   }
   .product-img {
@@ -126,7 +126,8 @@ $product-width: 267px;
     text-align: center;
   }
 }
-.product-detail{
+
+.product-detail {
   position:absolute;
   top:100px;
   left:0;
@@ -141,22 +142,23 @@ $product-width: 267px;
   box-shadow:4px 4px 20px $color1;
 }
 
-.box-top-bar{
+.box-top-bar {
   color:gray;
   height:30px;
   line-height:30px;
-  span:first-child{
+  span:first-child {
     float:left;
   }
-  span:last-child{
+  span:last-child {
     font-size:30px;
     float:right;
   }
-  a{
+  a {
     color:gray;
   }
 }
-.shade{
+
+.shade {
   z-index:89;
   position:fixed;
   width:100%;
