@@ -37,23 +37,23 @@
                 <p>
                   <label for="telephone">Telephone</label>
                   <br />
-                  <input type="text" id="telephone" />
+                  <input type="text" id="telephone" v-model="telephone" />
                 </p>
                 <p>
                   <label for="name">Name</label>
                   <br />
-                  <input type="text" id="name" />
+                  <input type="text" id="name" v-model="name" />
                 </p>
                 <p>
                   <label for="password">Password</label>
                   <br />
-                  <input type="password" id="password" />
+                  <input type="password" id="password" v-model="password" />
                 </p>
                 <p>
                   <input type="checkbox" id="expire" />
                   <label for="expire">Remember Me</label>
                 </p>
-                <input type="button" value="Let me in!" />
+                <input type="button" value="Let me in!" @click="handleSignUpClick()"/>
               </form>
           </div><div class="registerBox_right">
             <div>
@@ -77,6 +77,8 @@
 </template>
 
 <script>
+import { signup } from '../services/customer/signup'
+
 export default {
   name: 'home',
   data () {
@@ -89,6 +91,14 @@ export default {
     showRegisterForm () {
       this.showRegister = !this.showRegister
       console.log(this.showRegister)
+    },
+    handleSignUpClick () {
+      // let body = JSON.stringify({ 'telephone': this.telephone, 'password': this.password, 'name': this.name })
+      signup(this.telephone, this.name, this.password).then((response) => {
+        console.log(response)
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 }
