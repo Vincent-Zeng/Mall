@@ -23,32 +23,15 @@
 </template>
 
 <script>
-import pic from './images/product.png'
 import router from '../../routes'
 
 export default {
   name: 'products',
+  props: ['products'],
   data () {
-    let products = []
-    for (var i = 0; i < 20; i++) {
-      products.push({
-        id: 1,
-        name: 'iPhone 7 128G Jet Black',
-        price: '649.00',
-        url: pic
-      })
-    }
-    var showDetail
-    var oldScrollTop
-    if (this.$route.params.id === undefined) {
-      showDetail = false
-    } else {
-      showDetail = true
-    }
     return {
-      products: products,
-      showDetail: showDetail,
-      oldScrollTop: oldScrollTop
+      showDetail: this.$route.params.id !== undefined,
+      oldScrollTop: false
     }
   },
   methods: {
@@ -66,11 +49,7 @@ export default {
     }
   },
   beforeUpdate: function () {
-    if (this.$route.params.id === undefined) {
-      this.showDetail = false
-    } else {
-      this.showDetail = true
-    }
+    this.showDetail = this.$route.params.id !== undefined
   }
 }
 </script>

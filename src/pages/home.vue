@@ -20,7 +20,7 @@
               </nav>
           </div>
           <div class="search-box">
-            <input type="text" placeholder="Search here" />
+            <input type="text" placeholder="Search here" v-model="keyword" @keyup.enter="searchProducts()"/>
             <button>2</button>
           </div>
         </div>
@@ -72,12 +72,15 @@
       </div>
       <div class="shade" v-show="showRegister"></div>
     </div>
-    <router-view></router-view>
+    <router-view :products="products"></router-view>
   </div>
 </template>
 
 <script>
 import { signup } from '../services/customer/signup'
+import { search } from '../services/customer/search'
+import router from '../routes'
+import pic from './customer/images/product.png'
 
 export default {
   name: 'home',
@@ -93,8 +96,26 @@ export default {
       console.log(this.showRegister)
     },
     handleSignUpClick () {
-      // let body = JSON.stringify({ 'telephone': this.telephone, 'password': this.password, 'name': this.name })
       signup(this.telephone, this.name, this.password).then((response) => {
+        console.log(response)
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    searchProducts () {
+      let products = []
+      for (var i = 0; i < 20; i++) {
+        products.push({
+          id: 1,
+          name: 'iPhone 7 128G Jet Black',
+          price: '649.00',
+          url: pic
+        })
+      }
+      this.products = products
+
+      router.push('/products')
+      search(0, this.keyword).then((response) => {
         console.log(response)
       }).catch((err) => {
         console.log(err)
