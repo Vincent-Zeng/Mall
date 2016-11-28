@@ -112,7 +112,7 @@ export default {
     transform: translateY(-50%);
 
     input {
-        background-image: url(../search_icon.png);
+        background-image: url(./images/search_icon.png);
         background-repeat: no-repeat;
         background-position: 20px center;
         background-size: 36px 36px;

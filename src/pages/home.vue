@@ -15,12 +15,10 @@
           <div class="top-nav">
               <nav>
                 <span id="nav-home" ><router-link :to="{path:'/'}">HOME</router-link></span>
-                <span id="nav-catalog"><router-link :to="{path:'/products'}">CATALOG</router-link></span>
-                <span id="nav-sale"><router-link :to="{path:'/'}">SALE</router-link></span>
+                <span id="nav-products"><router-link :to="{path:'/products'}">PRODUCTS</router-link></span>
               </nav>
           </div>
           <div class="search-box">
-            <input type="text" placeholder="Search here" />
             <button>2</button>
           </div>
         </div>
@@ -35,20 +33,25 @@
               </div>
               <form class="register_form">
                 <p>
-                  <label for="username">Username</label>
+                  <label for="telephone">Telephone</label>
                   <br />
-                  <input type="text" id="username" />
+                  <input type="text" id="telephone" v-model="telephone" />
+                </p>
+                <p>
+                  <label for="name">Name</label>
+                  <br />
+                  <input type="text" id="name" v-model="name" />
                 </p>
                 <p>
                   <label for="password">Password</label>
                   <br />
-                  <input type="password" id="password" />
+                  <input type="password" id="password" v-model="password" />
                 </p>
                 <p>
                   <input type="checkbox" id="expire" />
                   <label for="expire">Remember Me</label>
                 </p>
-                <input type="button" value="Let me in!" />
+                <input type="button" value="Let me in!" @click="handleSignUpClick()"/>
               </form>
           </div><div class="registerBox_right">
             <div>
@@ -72,18 +75,26 @@
 </template>
 
 <script>
+import { signup } from '../services/customer/signup'
+
 export default {
   name: 'home',
   data () {
-    var showRegister = false
     return {
-      showRegister: showRegister
+      showRegister: false
     }
   },
   methods: {
     showRegisterForm () {
       this.showRegister = !this.showRegister
       console.log(this.showRegister)
+    },
+    handleSignUpClick () {
+      signup(this.telephone, this.name, this.password).then((response) => {
+        console.log(response)
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 }
@@ -171,7 +182,7 @@ $color4:#258bde;
       color: $color1;
     }
 
-    #nav-catalog {
+    #nav-products {
       border-bottom: 3px solid $color3;
     }
 
@@ -193,20 +204,6 @@ $color4:#258bde;
   position: absolute;
   right: 0px;
   bottom: 15px;
-
-  input {
-      background-image: url(./search_icon.png);
-      background-repeat: no-repeat;
-      background-position: 20px center;
-      background-size: 36px 36px;
-      width: 50%;
-      height: 50px;
-      border-radius: 100px;
-      background-color: $color2;
-      border: none;
-      padding-left: 70px;
-      font-size: 20px;
-  }
 
   button {
     border-radius: 100%;
@@ -282,7 +279,7 @@ $color4:#258bde;
   border:1px solid lightgray;
   padding-left:10px;
 }
-#username,#password{
+#telephone,#password,#name{
     @extend %form_input;
     margin-bottom:10px;
 }
