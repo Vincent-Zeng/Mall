@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div class="search-box">
+      <input type="text" placeholder="Search here" v-model="keyword" @keyup.enter="searchProducts()"/>
+    </div>
+
     <div class="product-list" >
       <div class="product" v-for="product in products" @click="showDetailBox(true)">
         <router-link :to="{path:'/products/' + product.id}">
@@ -24,12 +28,24 @@
 
 <script>
 import router from '../../routes'
+import pic from './images/product.png'
+import { search } from '../../services/customer/search'
 
 export default {
   name: 'products',
-  props: ['products'],
   data () {
+    let products = []
+    for (var i = 0; i < 20; i++) {
+      products.push({
+        id: 1,
+        name: 'iPhone 7 128G Jet Black',
+        price: '649.00',
+        url: pic
+      })
+    }
+
     return {
+      products: products,
       showDetail: this.$route.params.id !== undefined,
       oldScrollTop: false
     }
@@ -46,6 +62,13 @@ export default {
       } else {
         document.body.scrollTop = this.oldScrollTop
       }
+    },
+    searchProducts () {
+      search(0, this.keyword).then((response) => {
+        console.log(response)
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   },
   beforeUpdate: function () {
@@ -71,6 +94,10 @@ h1 {
     padding-left: 200px;
     padding-right: 200px;
   }
+  .search-box {
+    padding-left: 200px;
+    padding-right: 200px;
+  }
 }
 
 @media (max-width: 1500px) and (min-width: 1200px) {
@@ -78,10 +105,18 @@ h1 {
     padding-left: 100px;
     padding-right: 100px;
   }
+  .search-box {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
 }
 
 @media (max-width: 1200px) {
   .product-list {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .search-box {
     padding-left: 5px;
     padding-right: 5px;
   }
@@ -168,4 +203,27 @@ $product-width: 267px;
 a {
   text-decoration:none;
 }
+
+.search-box {
+  text-align: right;
+  margin-top: 40px;
+  margin-bottom: 25px;
+  margin-right: 70px;
+
+  input {
+    width: 100%;
+    background-image: url(./images/search_icon.png);
+    background-repeat: no-repeat;
+    background-position: 20px center;
+    background-size: 36px 36px;
+    height: 50px;
+    border-radius: 100px;
+    background-color: $color2;
+    border: none;
+    padding-left: 70px;
+    font-size: 20px;
+    outline: none;
+  }
+}
+
 </style>

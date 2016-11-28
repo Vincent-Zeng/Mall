@@ -15,12 +15,10 @@
           <div class="top-nav">
               <nav>
                 <span id="nav-home" ><router-link :to="{path:'/'}">HOME</router-link></span>
-                <span id="nav-catalog"><router-link :to="{path:'/products'}">CATALOG</router-link></span>
-                <span id="nav-sale"><router-link :to="{path:'/'}">SALE</router-link></span>
+                <span id="nav-catalog"><router-link :to="{path:'/products'}">PRODUCTS</router-link></span>
               </nav>
           </div>
           <div class="search-box">
-            <input type="text" placeholder="Search here" v-model="keyword" @keyup.enter="searchProducts()"/>
             <button>2</button>
           </div>
         </div>
@@ -72,22 +70,18 @@
       </div>
       <div class="shade" v-show="showRegister"></div>
     </div>
-    <router-view :products="products"></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import { signup } from '../services/customer/signup'
-import { search } from '../services/customer/search'
-import router from '../routes'
-import pic from './customer/images/product.png'
 
 export default {
   name: 'home',
   data () {
-    var showRegister = false
     return {
-      showRegister: showRegister
+      showRegister: false
     }
   },
   methods: {
@@ -97,25 +91,6 @@ export default {
     },
     handleSignUpClick () {
       signup(this.telephone, this.name, this.password).then((response) => {
-        console.log(response)
-      }).catch((err) => {
-        console.log(err)
-      })
-    },
-    searchProducts () {
-      let products = []
-      for (var i = 0; i < 20; i++) {
-        products.push({
-          id: 1,
-          name: 'iPhone 7 128G Jet Black',
-          price: '649.00',
-          url: pic
-        })
-      }
-      this.products = products
-
-      router.push('/products')
-      search(0, this.keyword).then((response) => {
         console.log(response)
       }).catch((err) => {
         console.log(err)
@@ -229,20 +204,6 @@ $color4:#258bde;
   position: absolute;
   right: 0px;
   bottom: 15px;
-
-  input {
-      background-image: url(./search_icon.png);
-      background-repeat: no-repeat;
-      background-position: 20px center;
-      background-size: 36px 36px;
-      width: 50%;
-      height: 50px;
-      border-radius: 100px;
-      background-color: $color2;
-      border: none;
-      padding-left: 70px;
-      font-size: 20px;
-  }
 
   button {
     border-radius: 100%;
