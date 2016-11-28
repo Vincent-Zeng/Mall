@@ -15,7 +15,7 @@
           <div class="top-nav">
               <nav>
                 <span id="nav-home" ><router-link :to="{path:'/'}">HOME</router-link></span>
-                <span id="nav-catalog"><router-link :to="{path:'/products'}">PRODUCTS</router-link></span>
+                <span id="nav-products"><router-link :to="{path:'/products'}">PRODUCTS</router-link></span>
               </nav>
           </div>
           <div class="search-box">
@@ -182,7 +182,7 @@ $color4:#258bde;
       color: $color1;
     }
 
-    #nav-catalog {
+    #nav-products {
       border-bottom: 3px solid $color3;
     }
 
