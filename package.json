@@ -10,11 +10,13 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "fetch-intercept": "^2.2.1",
     "node-sass": "^3.13.0",
     "sass-loader": "^4.0.2",
     "vue": "^2.0.1",
     "vue-resource": "^1.0.3",
-    "vue-router": "^2.0.3"
+    "vue-router": "^2.0.3",
+    "whatwg-fetch": "^2.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",

@@ -35,9 +35,14 @@
               </div>
               <form class="register_form">
                 <p>
-                  <label for="username">Username</label>
+                  <label for="telephone">Telephone</label>
                   <br />
-                  <input type="text" id="username" />
+                  <input type="text" id="telephone" />
+                </p>
+                <p>
+                  <label for="name">Name</label>
+                  <br />
+                  <input type="text" id="name" />
                 </p>
                 <p>
                   <label for="password">Password</label>
@@ -282,7 +287,7 @@ $color4:#258bde;
   border:1px solid lightgray;
   padding-left:10px;
 }
-#username,#password{
+#telephone,#password,#name{
     @extend %form_input;
     margin-bottom:10px;
 }
