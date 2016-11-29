@@ -1,11 +1,23 @@
 <template>
   <div>
-    <div class="search-box">
-      <input type="text" placeholder="Search here" v-model="keyword" @keyup.enter="searchProducts()"/>
-    </div>
-
-    <div class="product-list" >
-      <div class="product" v-for="product in products" @click="showDetailBox(true)">
+  <img src="/" class="banner">
+    <div class="wrapper">
+      <div class="catalog">
+        <ul>
+          <li>
+            <foldinglist v-for="items in catalog">
+              <p slot="summary" class="first-level-item">{{ items.name }}</p>
+              <ul slot="detail">
+                <li v-for="item in items.secondLevel" class="second-level-item">{{ item }}</li>
+              </ul>
+            </foldinglist>
+          </li>
+        </ul>
+      </div><div class="product-list" >
+        <div class="search-box">
+          <input type="text" placeholder="Search here" v-model="keyword" @keyup.enter="searchProducts()"/>
+        </div>
+        <div class="product" v-for="product in products" @click="showDetailBox(true)">
         <router-link :to="{path:'/products/' + product.id}">
           <div class="product-img">
             <img :src="product.url" alt="">
@@ -15,6 +27,9 @@
         </router-link>
       </div>
     </div>
+    </div>
+    
+    
     <div>
     <div class="product-detail" v-show="showDetail">
       <div class="box-top-bar" >
@@ -30,10 +45,21 @@
 import router from '../../routes'
 import pic from './images/product.png'
 import { search } from '../../services/customer/search'
-
+import foldingList from './folding_list'
 export default {
   name: 'products',
   data () {
+    let catalog = []
+    let secondLevel = []
+    for (let i = 0; i < 10; i++) {
+      secondLevel.push('iphone')
+    }
+    for (let i = 0; i < 10; i++) {
+      catalog.push({
+        name: 'phone',
+        secondLevel: secondLevel
+      })
+    }
     let products = []
     for (var i = 0; i < 20; i++) {
       products.push({
@@ -47,8 +73,12 @@ export default {
     return {
       products: products,
       showDetail: this.$route.params.id !== undefined,
-      oldScrollTop: false
+      oldScrollTop: false,
+      catalog: catalog
     }
+  },
+  components: {
+    foldinglist: foldingList
   },
   methods: {
     handleDetailClicked (productId) {
@@ -85,6 +115,11 @@ $color2: #f5f5f5;
 $color3: #0077d8;
 $color4: #258bde;
 
+*{
+  margin:0;
+  padding:0;
+}
+
 h1 {
   font-weight: normal;
 }
@@ -101,10 +136,6 @@ h1 {
 }
 
 @media (max-width: 1500px) and (min-width: 1200px) {
-  .product-list {
-    padding-left: 100px;
-    padding-right: 100px;
-  }
   .search-box {
     padding-left: 100px;
     padding-right: 100px;
@@ -226,4 +257,49 @@ a {
   }
 }
 
+.wrapper{
+  width:90%;
+  min-width:1000px;
+  margin:0 auto;
+}
+.product-list{
+  width:75%;
+  box-sizing:border-box;
+  display:inline-block;
+  vertical-align:top;
+}
+
+.catalog{
+  width:25%;
+  min-height:60px;
+  background:white;
+  box-sizing:border-box;
+  border:1px solid $color2;
+  border-radius:4px;
+  display:inline-block;
+  vertical-align:top;
+  position:relative;
+  top:-100px;
+  box-shadow:4px 4px 20px $color1;
+}
+
+.banner{
+  width:100%;
+  height:200px;
+  background:green;
+}
+li{
+  list-style:none;
+}
+.first-level-item{
+  font-weight:bold;
+  font-size:24px;
+  padding-left:40px;
+}
+.second-level-item{
+  line-height:40px;
+  font-size:20px;
+  color:$color1;
+  padding-left:40px;
+}
 </style>
