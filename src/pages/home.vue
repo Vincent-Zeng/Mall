@@ -5,7 +5,7 @@
         <div class="nav-topbar">
           <div class="user-action">
             <a v-on:click="showRegisterForm()">SIGN UP</a>
-            <a>SIGN IN</a>
+            <a @click="showLoginForm()">SIGN IN</a>
           </div>
         </div>
         <div class="navbar">
@@ -23,6 +23,7 @@
           </div>
         </div>
       </header>
+
       <div class="registerBox" v-show="showRegister">
         <section>
           <p class="close"><span v-on:click="showRegisterForm()">×</span></p>
@@ -48,7 +49,7 @@
                   <input type="password" id="password" v-model="password" />
                 </p>
                 <p>
-                  <input type="checkbox" id="expire" />
+                  <input type="checkbox" id="expire" :checked="expire" />
                   <label for="expire">Remember Me</label>
                 </p>
                 <input type="button" value="Let me in!" @click="handleSignUpClick()"/>
@@ -64,35 +65,78 @@
               <p>clicking on</p>
               <p>the button below.</p>
             </div>
-            <button>Login</button>
+            <button @click="showLoginForm(),showRegisterForm()">Login</button>
           </div>
         </section>
       </div>
-      <div class="shade" v-show="showRegister"></div>
+
+
+    <div class="shade" v-show="showRegister || showLogin"></div>
+
+    <div class="login-box" v-show="showLogin">
+        <section>
+          <p class="close"><span v-on:click="showLoginForm()">×</span></p>
+          <div class="login-main">
+              <div class="registerBox_title">
+                <h1>Sign in</h1>
+              </div>
+              <form class="register_form">
+                <p>
+                  <label for="login-telephone">Telephone</label>
+                  <br />
+                  <input type="text" id="login-telephone" v-model="telephone" />
+                </p>
+                <p>
+                  <label for="login-password">Password</label>
+                  <br />
+                  <input type="password" id="login-password" v-model="password" />
+                </p>
+                <p>
+                  <input type="checkbox" id="login-expire" :checked="expire"  />
+                  <label for="login-expire">Remember Me</label>
+                </p>
+                <input type="button" value="Let me in!" @click="handleSignInClick()"/>
+              </form>
+          </div>
+        </section>
     </div>
-    <router-view></router-view>
   </div>
+  <router-view></router-view>
 </template>
 
 <script>
 import { signup } from '../services/customer/signup'
-
+import { login } from '../services/customer/login'
+import { setCookie } from './customer/util/cookie'
 export default {
   name: 'home',
   data () {
     return {
-      showRegister: false
+      showRegister: false,
+      showLogin: false
     }
   },
   methods: {
     showRegisterForm () {
       this.showRegister = !this.showRegister
-      console.log(this.showRegister)
+    },
+    showLoginForm () {
+      this.showLogin = !this.showLogin
     },
     handleSignUpClick () {
       signup(this.telephone, this.name, this.password).then((response) => {
         console.log(response)
       }).catch((err) => {
+        console.log(err)
+      })
+    },
+    handleSignInClick () {
+      login(this.telephone, this.password).then(function (response) {
+        if (this.expire === 'checked') {
+          setCookie('username', 'password', 7)
+        }
+        console.log(response)
+      }).catch(function (err) {
         console.log(err)
       })
     }
@@ -215,15 +259,36 @@ $color4:#258bde;
     font-size: 15px;
   }
 }
-.registerBox{
+
+.login-box{
   z-index:100;
   position:fixed;
   border:1px solid $color2;
-  width:600px;
+  width:500px;
   margin:0 auto;
   left:0;
   right:0;
   top:120px;
+  padding:6px 12px 30px 12px;
+  border-radius:5px;
+  box-shadow:4px 4px 20px $color1;
+  background:white;
+}
+
+.login-main{
+  width:300px;
+  margin:0 auto;
+}
+
+.registerBox{
+  z-index:100;
+  position:fixed;
+  border:1px solid $color2;
+  width:700px;
+  margin:0 auto;
+  left:0;
+  right:0;
+  top:60px;
   padding:6px 12px 30px 12px;
   border-radius:5px;
   box-shadow:4px 4px 20px $color1;
@@ -243,6 +308,7 @@ $color4:#258bde;
 .registerBox_left{
   display:inline-block;
   box-sizing:border-box;
+  margin-left:50px;
   width:350px;
   padding:10px 20px;
   border-right:1px solid lightgray;
@@ -279,7 +345,7 @@ $color4:#258bde;
   border:1px solid lightgray;
   padding-left:10px;
 }
-#telephone,#password,#name{
+#telephone,#password,#name,#login-telephone,#login-password{
     @extend %form_input;
     margin-bottom:10px;
 }
@@ -288,7 +354,7 @@ $color4:#258bde;
   line-height:30px;
 }
 
-#expire{
+#expire,#login-expire{
   height:16px;
   width:16px;
   appearance:radio;
