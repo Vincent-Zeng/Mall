@@ -1,18 +1,11 @@
 <template>
   <div>
-  <img src="/" class="banner">
     <div class="wrapper">
       <div class="catalog">
-        <ul>
-          <li>
-            <foldinglist v-for="items in catalog">
-              <p slot="summary" class="first-level-item">{{ items.name }}</p>
-              <ul slot="detail">
-                <li v-for="item in items.secondLevel" class="second-level-item">{{ item }}</li>
-              </ul>
-            </foldinglist>
-          </li>
-        </ul>
+          <p>ALL CATAGORIES</p>
+          <ul>
+                <li v-for="item in catalog" class="catalog-item">{{ item }}</li>
+          </ul>
       </div><div class="product-list" >
         <div class="search-box">
           <input type="text" placeholder="Search here" v-model="keyword" @keyup.enter="searchProducts()"/>
@@ -45,20 +38,13 @@
 import router from '../../routes'
 import pic from './images/product.png'
 import { search } from '../../services/customer/search'
-import foldingList from './folding_list'
+/* import foldingList from './components/folding_list' */
 export default {
   name: 'products',
   data () {
     let catalog = []
-    let secondLevel = []
     for (let i = 0; i < 10; i++) {
-      secondLevel.push('iphone')
-    }
-    for (let i = 0; i < 10; i++) {
-      catalog.push({
-        name: 'phone',
-        secondLevel: secondLevel
-      })
+      catalog.push('Mobile Device')
     }
     let products = []
     for (var i = 0; i < 20; i++) {
@@ -77,9 +63,9 @@ export default {
       catalog: catalog
     }
   },
-  components: {
+  /* components: {
     foldinglist: foldingList
-  },
+  }, */
   methods: {
     handleDetailClicked (productId) {
       router.push('/products/' + productId)
@@ -124,57 +110,26 @@ h1 {
   font-weight: normal;
 }
 
-@media (min-width: 1500px) {
-  .product-list {
-    padding-left: 200px;
-    padding-right: 200px;
-  }
-  .search-box {
-    padding-left: 200px;
-    padding-right: 200px;
-  }
-}
 
-@media (max-width: 1500px) and (min-width: 1200px) {
-  .search-box {
-    padding-left: 100px;
-    padding-right: 100px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .product-list {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-  .search-box {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-}
 
 $product-width: 267px;
 
 .product {
   display: inline-block;
-  width: $product-width;
-  height: 368px;
+  width: 29%;
   border: 1px solid #E4E4E4;
   margin: 14px;
+  padding:20px 0;
   cursor: pointer;
   a {
     color:black;
   }
   .product-img {
-    width: $product-width;
-    height: $product-width;
-
+    width: 100%;
     img {
       display: block;
       margin: auto;
-      position: relative;
-      top: 50%;
-      transform: translateY(-50%);
+
     }
   }
 
@@ -270,7 +225,8 @@ a {
 }
 
 .catalog{
-  width:25%;
+  width:22%;
+  margin-right:3%;
   min-height:60px;
   background:white;
   box-sizing:border-box;
@@ -279,27 +235,27 @@ a {
   display:inline-block;
   vertical-align:top;
   position:relative;
-  top:-100px;
+  top:30px;
   box-shadow:4px 4px 20px $color1;
+  padding:30px 0;
+
+  p:first-child{
+    color:$color1;
+    padding-left:40px;
+    margin-bottom:20px;
+  }
 }
 
-.banner{
-  width:100%;
-  height:200px;
-  background:green;
-}
 li{
   list-style:none;
 }
-.first-level-item{
+
+.catalog-item{
   font-weight:bold;
   font-size:24px;
-  padding-left:40px;
-}
-.second-level-item{
   line-height:40px;
-  font-size:20px;
-  color:$color1;
   padding-left:40px;
+  cursor:pointer;
 }
+
 </style>
