@@ -21,8 +21,8 @@
       </div>
     </div>
     </div>
-    
-    
+
+
     <div>
     <div class="product-detail" v-show="showDetail">
       <div class="box-top-bar" >
