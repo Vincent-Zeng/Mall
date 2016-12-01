@@ -36,23 +36,48 @@
                 <p>
                   <label for="telephone">Telephone</label>
                   <br />
-                  <input type="text" id="telephone" v-model="telephone" />
+                  <input type="text" id="telephone" v-model="telephone" v-validate data-vv-rules="required|numeric" name="telephone" />
+                  <span class="error" v-show="errors.has('telephone')">
+                    {{ errors.first('telephone') }}
+                  </span>
+                </p>
+                <p>
+                  <label for="email">Email</label>
+                  <br />
+                  <input type="text" id="email" v-model="email" v-validate data-vv-rules="required|email" name="email" />
+                  <span class="error" v-show="errors.has('email')">
+                    {{ errors.first('email') }}
+                  </span>
                 </p>
                 <p>
                   <label for="name">Name</label>
                   <br />
-                  <input type="text" id="name" v-model="name" />
+                  <input type="text" id="name" v-model="name" v-validate data-vv-rules="required|verify_password" name="username" />
+                  <span class="error" v-show="errors.has('username')">
+                    {{ errors.first('username') }}
+                  </span>
                 </p>
                 <p>
                   <label for="password">Password</label>
                   <br />
-                  <input type="password" id="password" v-model="password" />
+                  <input type="password" id="password" v-model="password" v-validate data-vv-rules="required|verify_password" name="password"/>
+                  <span class="error" v-show="errors.has('password')">
+                    {{ errors.first('password') }}
+                  </span>
+                </p>
+                <p>
+                  <label for="password">Password Confirm</label>
+                  <br />
+                  <input type="password" id="password-confirm" v-validate data-vv-rules="required|confirmed:password" name="password again"/>
+                  <span class="error" v-show="errors.has('password again')">
+                    {{ errors.first('password again') }}
+                  </span>
                 </p>
                 <p>
                   <input type="checkbox" id="expire" :checked="expire" />
                   <label for="expire">Remember Me</label>
                 </p>
-                <input type="button" value="Let me in!" @click="handleSignUpClick()"/>
+                <input type="button" value="Let me in!" @click="handleSignUpClick()" :disabled="fields.clean()" />
               </form>
           </div><div class="registerBox_right">
             <div>
@@ -82,14 +107,20 @@
               </div>
               <form class="register_form">
                 <p>
-                  <label for="login-telephone">Telephone</label>
+                  <label for="login-email">Email</label>
                   <br />
-                  <input type="text" id="login-telephone" v-model="telephone" />
+                  <input type="text" id="login-email" v-model="loginemail" v-validate data-vv-rules="required|email" name="email" />
+                  <span class="error" v-show="errors.has('email')">
+                    {{ errors.first('email') }}
+                  </span>
                 </p>
                 <p>
                   <label for="login-password">Password</label>
                   <br />
-                  <input type="password" id="login-password" v-model="password" />
+                  <input type="password" id="login-password" v-model="password" v-validate data-vv-rules="required|verify_password" name="password"/>
+                  <span class="error" v-show="errors.has('password')">
+                    {{ errors.first('password') }}
+                  </span>
                 </p>
                 <p>
                   <input type="checkbox" id="login-expire" :checked="expire"  />
@@ -108,6 +139,7 @@
 import { signup } from '../services/customer/signup'
 import { login } from '../services/customer/login'
 import { setCookie } from './customer/util/cookie'
+
 export default {
   name: 'home',
   data () {
@@ -282,13 +314,13 @@ $color4:#258bde;
 
 .registerBox{
   z-index:100;
-  position:fixed;
+  position:absolute;
   border:1px solid $color2;
   width:700px;
   margin:0 auto;
   left:0;
   right:0;
-  top:60px;
+  top:20px;
   padding:6px 12px 30px 12px;
   border-radius:5px;
   box-shadow:4px 4px 20px $color1;
@@ -345,7 +377,7 @@ $color4:#258bde;
   border:1px solid lightgray;
   padding-left:10px;
 }
-#telephone,#password,#name,#login-telephone,#login-password{
+#telephone,#password,#name,#login-email,#login-password,#email,#password-confirm{
     @extend %form_input;
     margin-bottom:10px;
 }
@@ -409,6 +441,19 @@ $color4:#258bde;
   left:0;
   opacity:0.4;
   background-color:black;
+}
+
+.register_form p{
+  position:relative;
+}
+.error{
+  position:absolute;
+  left:290px;
+  color:red;
+  padding:6px 20px;
+  border-radius:4px;
+  background:rgb(181, 246, 217);
+  white-space: nowrap;
 }
 
 </style>
