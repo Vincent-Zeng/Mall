@@ -36,19 +36,27 @@
 </template>
 
 <script>
-import pic from './images/product.png'
+import { fetchProduct } from '../../services/customer/product'
 
 export default {
   name: 'product',
   data () {
+    fetchProduct(this.$route.params.id)
+      .then(res => res.json())
+      .then(data => {
+        this.product = {
+          id: data.id,
+          name: data.name,
+          price: data.price,
+          url: data.photoURL,
+          description: data.detail
+        }
+      })
     return {
-      product: {
-        name: 'iPhone 7 128G Jet Black',
-        price: '649.00',
-        url: pic,
-        description: 'A portable cooling eye stick that instantly relieves puffy, tired eyes by hydrating the delicate skin and minimizing fine lines around the eye for a refreshed and revitalized look.'
-      }
+      product: null
     }
+  },
+  created () {
   }
 }
 </script>
