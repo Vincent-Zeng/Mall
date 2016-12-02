@@ -6,31 +6,33 @@
           <ul>
                 <li v-for="catalog in catalogs" class="catalog-item">{{ catalog.name }}</li>
           </ul>
-      </div><div class="product-list" >
+      </div>
+      <div class="product-list" >
         <div class="search-box">
           <input type="text" placeholder="Search here" v-model="keyword" @keyup.enter="searchProducts()"/>
         </div>
         <div class="product" v-for="product in products" @click="showDetailBox(true)">
-        <router-link :to="{path:'/products/' + product.id}">
-          <div class="product-img">
-            <img :src="product.url" alt="">
-          </div>
-          <div class="product-name">{{ product.name }}</div>
-          <div class="product-price">${{ product.price }}</div>
-        </router-link>
+          <router-link :to="{path:'/products/' + product.id}">
+            <div class="product-img">
+              <img :src="product.url" alt="">
+            </div>
+            <div class="product-name">{{ product.name }}</div>
+            <div class="product-price">${{ product.price }}</div>
+          </router-link>
+        </div>
       </div>
-    </div>
     </div>
 
 
     <div>
-    <div class="product-detail" v-show="showDetail">
-      <div class="box-top-bar" >
-        <span @click="showDetailBox(false)"><router-link :to="{path:'/products'}" >×</router-link></span>
+      <div class="product-detail" v-show="showDetail">
+        <div class="box-top-bar">
+          <span @click="showDetailBox(false)"><router-link :to="{path:'/products'}">×</router-link></span>
+        </div>
+        <router-view></router-view>
       </div>
-      <router-view></router-view>
+      <div class="shade" v-show="showDetail"></div>
     </div>
-    <div class="shade" v-show="showDetail"></div>
   </div>
 </template>
 
@@ -54,6 +56,7 @@ export default {
       'Health, Fitness & Sports',
       'Home & Office'
     ]
+    console.log(this.$route.query)
     for (let i = 0; i < 10; i++) {
       catalogs.push({
         id: i + 1,
@@ -105,126 +108,131 @@ export default {
     this.showDetail = this.$route.params.id !== undefined
   }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 
-$color1: gray;
-$color2: #f5f5f5;
-$color3: #0077d8;
-$color4: #258bde;
+  $color1: gray;
+  $color2: #f5f5f5;
+  $color3: #0077d8;
+  $color4: #258bde;
 
-*{
-  margin:0;
-  padding:0;
-}
-
-h1 {
-  font-weight: normal;
-}
-
-
-
-$product-width: 267px;
-
-.product {
-  display: inline-block;
-  width: 29%;
-  border: 1px solid #E4E4E4;
-  margin: 14px;
-  padding:20px 0;
-  cursor: pointer;
-  a {
-    color:black;
+  * {
+    margin: 0;
+    padding: 0;
   }
-  .product-img {
-    width: 100%;
-    img {
-      display: block;
-      margin: auto;
 
+  h1 {
+    font-weight: normal;
+  }
+
+  $product-width: 267px;
+
+  .product {
+    display: inline-block;
+    width: 29%;
+    border: 1px solid #E4E4E4;
+    margin: 14px;
+    padding: 20px 0;
+    cursor: pointer;
+    a {
+      color: black;
+    }
+    .product-img {
+      width: 100%;
+      img {
+        display: block;
+        margin: auto;
+
+      }
+    }
+
+    .product-name {
+      margin-top: 17px;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .product-price {
+      margin-top: 7px;
+      font-size: 18px;
+      color: #FF3F13;
+      text-align: center;
     }
   }
 
-  .product-name {
-    margin-top: 17px;
-    font-size: 18px;
-    text-align: center;
+  .product-detail {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 600px;
+    border: 1px solid $color2;
+    border-radius: 4px;
+    padding: 20px 30px;
+    z-index: 90;
+    background: white;
+    box-shadow: 4px 4px 20px $color1;
   }
 
-  .product-price {
-    margin-top: 7px;
-    font-size: 18px;
-    color: #FF3F13;
-    text-align: center;
+  .box-top-bar {
+    color: gray;
+    height: 30px;
+    line-height: 30px;
+    span {
+      font-size: 30px;
+      float: right;
+    }
+    a {
+      color: gray;
+    }
   }
-}
 
-.product-detail {
-  position:absolute;
-  top:100px;
-  left:0;
-  right:0;
-  margin:0 auto;
-  width:600px;
-  border:1px solid $color2;
-  border-radius:4px;
-  padding:20px 30px;
-  z-index:90;
-  background:white;
-  box-shadow:4px 4px 20px $color1;
-}
-
-.box-top-bar {
-  color:gray;
-  height:30px;
-  line-height:30px;
-  span {
-    font-size:30px;
-    float:right;
-  }
-  a {
-    color:gray;
-  }
-}
-
-.shade {
-  z-index:89;
-  position:fixed;
-  width:100%;
-  height:100%;
-  top:0;
-  left:0;
-  opacity:0.4;
-  background-color:black;
-}
-
-a {
-  text-decoration:none;
-}
-
-.search-box {
-  text-align: right;
-  margin-top: 40px;
-  margin-bottom: 25px;
-  margin-right: 70px;
-
-  input {
+  .shade {
+    z-index: 89;
+    position: fixed;
     width: 100%;
-    background-image: url(./images/search_icon.png);
-    background-repeat: no-repeat;
-    background-position: 20px center;
-    background-size: 36px 36px;
-    height: 50px;
-    border-radius: 100px;
-    background-color: $color2;
-    border: none;
-    padding-left: 70px;
-    font-size: 20px;
-    outline: none;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.4;
+    background-color: black;
   }
-}
+
+  a {
+    text-decoration: none;
+  }
+
+  .search-box {
+    text-align: right;
+    margin-top: 40px;
+    margin-bottom: 25px;
+    margin-right: 70px;
+
+    input {
+      width: 100%;
+      background-image: url(./images/search_icon.png);
+      background-repeat: no-repeat;
+      background-position: 20px center;
+      background-size: 36px 36px;
+      height: 50px;
+      border-radius: 100px;
+      background-color: $color2;
+      border: none;
+      padding-left: 70px;
+      font-size: 20px;
+      outline: none;
+    }
+  }
+
+  .wrapper {
+    width: 90%;
+    min-width: 1000px;
+    margin: 0 auto;
+  }
 
 .wrapper{
   width:90%;
@@ -239,7 +247,7 @@ a {
 }
 
 .catalog{
-  width:25%;
+  width:24%;
   margin-right:3%;
   min-height:60px;
   background:white;
@@ -259,10 +267,10 @@ a {
     margin-bottom:5px;
     font-size: 14px;
   }
-}
 
-li{
-  list-style:none;
+  li {
+    list-style: none;
+  }
 }
 
 .catalog-item{
