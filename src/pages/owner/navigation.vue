@@ -3,12 +3,11 @@
     <header>
       <nav>
         <ul class="navigation">
-          <li class="selected-item">DASHBOARD</li>
-          <li>OWNER & SHOP</li>
-          <li>CUSTOMER</li>
+          <li class="selected-item"><router-link :to="{path:'/owner/navigation/dashboard'}">DASHBOARD</router-link></li>
+          <li><router-link :to="{path:'/owner/navigation/products'}">PRODUCTS</router-link></li>
+          <li>ORDER</li>
           <li>AD</li>
           <li>COMMISSION</li>
-          <li>ORDER</li>
         </ul>
       </nav>
     </header>
@@ -44,6 +43,11 @@ h1 {
   border-bottom: 1px solid #EEEEEE;
   height: 101px;
   line-height: 101px;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 
   li {
     margin-left: 28px;
