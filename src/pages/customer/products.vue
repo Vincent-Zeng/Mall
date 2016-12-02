@@ -2,11 +2,12 @@
   <div>
     <div class="wrapper">
       <div class="catalog">
-        <p>ALL CATAGORIES</p>
-        <ul>
-          <li v-for="item in catalog" class="catalog-item">{{ item }}</li>
-        </ul>
-      </div><div class="product-list">
+          <p>ALL CATAGORIES</p>
+          <ul>
+                <li v-for="catalog in catalogs" class="catalog-item">{{ catalog.name }}</li>
+          </ul>
+      </div>
+      <div class="product-list" >
         <div class="search-box">
           <input type="text" placeholder="Search here" v-model="keyword" @keyup.enter="searchProducts()"/>
         </div>
@@ -43,10 +44,24 @@ import { search } from '../../services/customer/search'
 export default {
   name: 'products',
   data () {
+    let catalogs = []
+    let catelogNames = [
+      'TV& Home Theater',
+      'Computers & Tablets',
+      'Cell Phones',
+      'Cameras & Camcorders',
+      'Audio',
+      'Car Electronics & GPS',
+      'Video, Games, Movies & Music',
+      'Health, Fitness & Sports',
+      'Home & Office'
+    ]
     console.log(this.$route.query)
-    let catalog = []
     for (let i = 0; i < 10; i++) {
-      catalog.push('Mobile Device')
+      catalogs.push({
+        id: i + 1,
+        name: catelogNames[i]
+      })
     }
     let products = []
     for (var i = 0; i < 20; i++) {
@@ -62,7 +77,7 @@ export default {
       products: products,
       showDetail: this.$route.params.id !== undefined,
       oldScrollTop: false,
-      catalog: catalog
+      catalogs: catalogs
     }
   },
   /* components: {
@@ -219,45 +234,51 @@ export default {
     margin: 0 auto;
   }
 
-  .product-list {
-    width: 75%;
-    box-sizing: border-box;
-    display: inline-block;
-    vertical-align: top;
-  }
+.wrapper{
+  width:90%;
+  min-width:1000px;
+  margin:0 auto;
+}
+.product-list{
+  width:72%;
+  box-sizing:border-box;
+  display:inline-block;
+  vertical-align:top;
+}
 
-  .catalog {
-    width: 22%;
-    margin-right: 3%;
-    min-height: 60px;
-    background: white;
-    box-sizing: border-box;
-    border: 1px solid $color2;
-    border-radius: 4px;
-    display: inline-block;
-    vertical-align: top;
-    position: relative;
-    top: 30px;
-    box-shadow: 4px 4px 20px $color1;
-    padding: 30px 0;
+.catalog{
+  width:24%;
+  margin-right:3%;
+  min-height:60px;
+  background:white;
+  box-sizing:border-box;
+  border:1px solid $color2;
+  border-radius:4px;
+  display:inline-block;
+  vertical-align:top;
+  position:relative;
+  top:30px;
+  box-shadow:4px 4px 20px $color1;
+  padding:30px 0;
 
-    p:first-child {
-      color: $color1;
-      padding-left: 40px;
-      margin-bottom: 20px;
-    }
+  p:first-child{
+    color:$color1;
+    padding-left:40px;
+    margin-bottom:5px;
+    font-size: 14px;
   }
 
   li {
     list-style: none;
   }
+}
 
-  .catalog-item {
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 40px;
-    padding-left: 40px;
-    cursor: pointer;
-  }
+.catalog-item{
+  font-weight:bold;
+  font-size:16px;
+  line-height:40px;
+  padding-left:40px;
+  cursor:pointer;
+}
 
 </style>

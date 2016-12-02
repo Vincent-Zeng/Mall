@@ -1,5 +1,5 @@
 import Vue from 'vue'
 
-export const search = (id) => {
+export const fetchProduct = (id) => {
   return Vue.http.post('/product/id', id)
 }
