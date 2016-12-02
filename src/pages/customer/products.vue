@@ -63,25 +63,6 @@ export default {
       })
     }
 
-    search(0, '')
-      .then(res => res.json())
-      .then(data => {
-        let products = []
-        for (let i = 0; i < data.length; i++) {
-          const product = data[i]
-          console.log(product)
-          products.push({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            url: product.photoURL
-          })
-        }
-        this.products = products
-      }).catch((err) => {
-        console.log(err)
-      })
-
     return {
       products: [],
       showDetail: this.$route.params.id !== undefined,
@@ -129,6 +110,27 @@ export default {
   },
   beforeUpdate: function () {
     this.showDetail = this.$route.params.id !== undefined
+  },
+  created () {
+    console.log(search)
+    search(0, '')
+      .then(res => res.json())
+      .then(data => {
+        let products = []
+        for (let i = 0; i < data.length; i++) {
+          const product = data[i]
+          console.log(product)
+          products.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            url: product.photoURL
+          })
+        }
+        this.products = products
+      }).catch((err) => {
+        console.log(err)
+      })
   }
 }
 
