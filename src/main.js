@@ -13,15 +13,15 @@ Validator.extend('verify_password', {
   }
 })
 
-/* eslint-disable no-new */
-new Vue({
-  render: h => h(App),
-  router
-}).$mount('#app')
-
 const baseURL = 'http://104.236.159.184:8080/web-ssm'
 
 Vue.http.interceptors.push((request, next) => {
   request.url = `${baseURL}${request.url}`
   next()
 })
+
+/* eslint-disable no-new */
+new Vue({
+  render: h => h(App),
+  router
+}).$mount('#app')

@@ -171,6 +171,7 @@ export default {
       img {
         display: block;
         margin: auto;
+        height:200px;
       }
     }
 
