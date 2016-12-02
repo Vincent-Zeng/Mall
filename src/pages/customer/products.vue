@@ -4,12 +4,12 @@
       <div class="catalog">
           <p>ALL CATAGORIES</p>
           <ul>
-                <li v-for="catalog in catalogs" class="catalog-item">{{ catalog.name }}</li>
+                <li v-for="catalog in catalogs" class="catalog-item" @click="searchProducts(catalog.id)">{{ catalog.name }}</li>
           </ul>
       </div>
       <div class="product-list" >
         <div class="search-box">
-          <input type="text" placeholder="Search here" v-model="keyword" @keyup.enter="searchProducts()"/>
+          <input type="text" placeholder="Search here" v-model="keyword" @keyup.enter="searchProducts(0)"/>
         </div>
         <div class="product" v-for="product in products" @click="showDetailBox(true)">
           <router-link :to="{path:'/products/' + product.id}">
@@ -17,7 +17,7 @@
               <img :src="product.url" alt="">
             </div>
             <div class="product-name">{{ product.name }}</div>
-            <div class="product-price">${{ product.price }}</div>
+            <div class="product-price">{{ product.price }}.00 HK $</div>
           </router-link>
         </div>
       </div>
@@ -38,7 +38,6 @@
 
 <script>
 import router from '../../routes'
-import pic from './images/product.png'
 import { search } from '../../services/customer/search'
 /* import foldingList from './components/folding_list' */
 export default {
@@ -46,7 +45,7 @@ export default {
   data () {
     let catalogs = []
     let catelogNames = [
-      'TV& Home Theater',
+      'TV & Home Theater',
       'Computers & Tablets',
       'Cell Phones',
       'Cameras & Camcorders',
@@ -63,26 +62,33 @@ export default {
         name: catelogNames[i]
       })
     }
-    let products = []
-    for (var i = 0; i < 20; i++) {
-      products.push({
-        id: 1,
-        name: 'iPhone 7 128G Jet Black',
-        price: '649.00',
-        url: pic
+
+    search(0, '')
+      .then(res => res.json())
+      .then(data => {
+        let products = []
+        for (let i = 0; i < data.length; i++) {
+          const product = data[i]
+          console.log(product)
+          products.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            url: product.photoURL
+          })
+        }
+        this.products = products
+      }).catch((err) => {
+        console.log(err)
       })
-    }
 
     return {
-      products: products,
+      products: [],
       showDetail: this.$route.params.id !== undefined,
       oldScrollTop: false,
       catalogs: catalogs
     }
   },
-  /* components: {
-    foldinglist: foldingList
-  }, */
   methods: {
     handleDetailClicked (productId) {
       router.push('/products/' + productId)
@@ -96,12 +102,29 @@ export default {
         document.body.scrollTop = this.oldScrollTop
       }
     },
-    searchProducts () {
-      search(0, this.keyword).then((response) => {
-        console.log(response)
-      }).catch((err) => {
-        console.log(err)
-      })
+    searchProducts (id) {
+      let keyword = this.keyword
+      if (id !== 0) {
+        keyword = ''
+      }
+      search(id, keyword)
+        .then(res => res.json())
+        .then(data => {
+          let products = []
+          for (let i = 0; i < data.length; i++) {
+            const product = data[i]
+            console.log(product)
+            products.push({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              url: product.photoURL
+            })
+          }
+          this.products = products
+        }).catch((err) => {
+          console.log(err)
+        })
     }
   },
   beforeUpdate: function () {
@@ -137,6 +160,7 @@ export default {
     margin: 14px;
     padding: 20px 0;
     cursor: pointer;
+
     a {
       color: black;
     }
@@ -145,7 +169,6 @@ export default {
       img {
         display: block;
         margin: auto;
-
       }
     }
 
