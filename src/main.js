@@ -19,9 +19,9 @@ new Vue({
   router
 }).$mount('#app')
 
-const baseURL = 'http://192.168.1.106'
+const baseURL = 'http://104.236.159.184:8080/web-ssm'
 
 Vue.http.interceptors.push((request, next) => {
   request.url = `${baseURL}${request.url}`
-  console.log(request.url)
+  next()
 })
