@@ -12,9 +12,9 @@
       <div class="">
         <form class="login-form">
           <p>
-            <label for="username">Username</label>
+            <label for="email">Email</label>
             <br />
-            <input class="input-textfield" type="text" id="username" />
+            <input class="input-textfield" type="text" id="email" />
           </p>
           <p>
             <label for="password">Password</label>
