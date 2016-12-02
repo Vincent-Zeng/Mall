@@ -108,19 +108,19 @@
               <form class="register_form">
                 <p>
                   <label for="login-email">Email</label>
-                  <br />
-                  <input type="text" id="login-email" v-model="loginemail" v-validate data-vv-rules="required|email" name="email" />
                   <span class="error" v-show="errors.has('email')">
                     {{ errors.first('email') }}
                   </span>
+                  <br />
+                  <input type="text" id="login-email" v-model="loginemail" v-validate data-vv-rules="required|email" name="email" />
                 </p>
                 <p>
                   <label for="login-password">Password</label>
-                  <br />
-                  <input type="password" id="login-password" v-model="password" v-validate data-vv-rules="required|verify_password" name="password"/>
                   <span class="error" v-show="errors.has('password')">
                     {{ errors.first('password') }}
                   </span>
+                  <br />
+                  <input type="password" id="login-password" v-model="password" v-validate data-vv-rules="required|verify_password" name="password"/>
                 </p>
                 <p>
                   <input type="checkbox" id="login-expire" :checked="expire"  />
