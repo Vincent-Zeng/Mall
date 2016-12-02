@@ -35,43 +35,43 @@
               <form class="register_form">
                 <p>
                   <label for="telephone">Telephone</label>
-                  <br />
-                  <input type="text" id="telephone" v-model="telephone" v-validate data-vv-rules="required|numeric" name="telephone" />
                   <span class="error" v-show="errors.has('telephone')">
                     {{ errors.first('telephone') }}
                   </span>
+                  <br />
+                  <input type="text" id="telephone" v-model="telephone" v-validate data-vv-rules="required|numeric" name="telephone" />
                 </p>
                 <p>
                   <label for="email">Email</label>
-                  <br />
-                  <input type="text" id="email" v-model="email" v-validate data-vv-rules="required|email" name="email" />
                   <span class="error" v-show="errors.has('email')">
                     {{ errors.first('email') }}
-                  </span>
+                  </span>                  <br />
+                  <input type="text" id="email" v-model="email" v-validate data-vv-rules="required|email" name="email" />
+
                 </p>
                 <p>
                   <label for="name">Name</label>
-                  <br />
-                  <input type="text" id="name" v-model="name" v-validate data-vv-rules="required|verify_password" name="username" />
                   <span class="error" v-show="errors.has('username')">
                     {{ errors.first('username') }}
                   </span>
+                  <br />
+                  <input type="text" id="name" v-model="name" v-validate data-vv-rules="required|verify_password" name="username" />
                 </p>
                 <p>
                   <label for="password">Password</label>
-                  <br />
-                  <input type="password" id="password" v-model="password" v-validate data-vv-rules="required|verify_password" name="password"/>
                   <span class="error" v-show="errors.has('password')">
                     {{ errors.first('password') }}
                   </span>
+                  <br />
+                  <input type="password" id="password" v-model="password" v-validate data-vv-rules="required|verify_password" name="password"/>
                 </p>
                 <p>
                   <label for="password">Password Confirm</label>
-                  <br />
-                  <input type="password" id="password-confirm" v-validate data-vv-rules="required|confirmed:password" name="password again"/>
                   <span class="error" v-show="errors.has('password again')">
                     {{ errors.first('password again') }}
                   </span>
+                  <br />
+                  <input type="password" id="password-confirm" v-validate data-vv-rules="required|confirmed:password" name="password again"/>
                 </p>
                 <p>
                   <input type="checkbox" id="expire" :checked="expire" />
@@ -446,14 +446,17 @@ $color4:#258bde;
 .register_form p{
   position:relative;
 }
+
 .error{
-  position:absolute;
-  left:290px;
-  color:red;
-  padding:6px 20px;
-  border-radius:4px;
-  background:rgb(181, 246, 217);
+  display: block;
+  color: red;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 0px;
+  margin-bottom: -20px;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 </style>
