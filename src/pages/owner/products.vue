@@ -1,18 +1,23 @@
 <template>
   <div class="owner-products">
-    <div class="owner-header">
-      <img src="./images/ring.png" alt="">
-      <span>Products list</span>
+
+    <div class="btn-list">
+      <div class="add-product-button"><router-link :to="{path:'/owner/navigation/products/new'}">Add</router-link></div>
     </div>
 
-    <div class="product-list">
-      <div class="product-item" v-for="product in products">
-        <img class="product-item-img" :src="product.avatar" alt="">
-        <span class="product-item-name">iPhone</span>
+    <div class="owner-product-list">
+      <div class="owner-header">
+        <img src="./images/products.png" alt="">
+        <span>Products</span>
+      </div>
+      <div class="product-list">
+        <div class="product-item" v-for="product in products">
+          <span class="product-item-name">{{ product.name }}</span>
 
-        <div class="function-button">
-          <div class="edit-button">Edit</div>
-          <div class="remove-button">Remove</div>
+          <div class="function-button">
+            <div class="edit-button"><router-link :to="{path:`/owner/navigation/products/${product.id}`}">Edit</router-link></div>
+            <div class="remove-button">Remove</div>
+          </div>
         </div>
       </div>
     </div>
@@ -20,17 +25,14 @@
 </template>
 
 <script>
-import pic from './images/product.png'
-
 export default {
   name: 'owner-products',
   data () {
     let products = []
     for (var i = 0; i < 20; i++) {
       products.push({
-        avatar: pic,
-        owner: 'MARY V. ROBINSON',
-        name: 'Gucci Official'
+        id: i + 1,
+        name: 'iPhone'
       })
     }
 
@@ -43,9 +45,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.owner-products {
+
+.owner-product-list {
   position: absolute;
-  margin: 56px 0px;
+  margin: 100px 0px 28px 0px;
   left: 172px;
   right: 172px;
   border: 1px solid #E4E4E4;
@@ -64,7 +67,6 @@ export default {
   span {
     color: #2B2B2B;
     font-size: 20px;
-    font-weight: bold;
     margin-left: 65px;
     height: 80px;
     line-height: 80px;
@@ -80,19 +82,11 @@ export default {
     position: relative;
     border-top: 1px solid #EEEEEE;
 
-    .product-item-img {
-      width: 30px;
-      height: 30px;
-      border-radius: 15px;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
     .product-item-name {
       color: #2B2B2B;
-      font-weight: bold;
-      margin-left: 43px;
+      font-size: 18px;
+      font-weight: normal;
+      margin-left: 4px;
       line-height: 88px;
     }
 
@@ -128,6 +122,31 @@ export default {
       }
     }
   }
+}
+
+.btn-list {
+  position: absolute;
+  margin: 28px 0px;
+  left: 172px;
+  right: 172px;
+}
+
+.add-product-button {
+  // position: absolute;
+  // left: 172px;
+  // top: 28px;
+
+  width: 114px;
+  height: 42px;
+  display: inline-block;
+  line-height: 42px;
+  text-align: center;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #0077D8;
+  color: white;
+  margin-right: 16px;
+  cursor: pointer;
 }
 
 </style>
