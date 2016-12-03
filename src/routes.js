@@ -14,6 +14,7 @@ import OwnerNavigation from './pages/owner/navigation'
 import OwnerDashboard from './pages/owner/dashboard'
 import OwnerProducts from './pages/owner/products'
 import OwnerProductDetail from './pages/owner/product-detail'
+import OwnerShop from './pages/owner/shop'
 import AdminLogin from './pages/admin/login'
 import AdminNavigation from './pages/admin/navigation'
 import AdminDashboard from './pages/admin/dashboard'
@@ -57,6 +58,10 @@ const routes = [{
     {
       path: '/owner/navigation/products/:id',
       component: OwnerProductDetail
+    },
+    {
+      path: '/owner/navigation/shop',
+      component: OwnerShop
     }
   ]
 }, {

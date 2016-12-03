@@ -1,16 +1,21 @@
 <template>
-  <div class="owner-navigation">
-    <header>
-      <nav>
-        <ul class="navigation">
-          <li class="selected-item"><router-link :to="{path:'/owner/navigation/dashboard'}">DASHBOARD</router-link></li>
-          <li>SHOP DETAIL</li>
-          <li><router-link :to="{path:'/owner/navigation/products'}">PRODUCTS</router-link></li>
-          <li>AD</li>
-          <li>ORDER</li>
-        </ul>
-      </nav>
-    </header>
+  <div class="">
+    <div class="logout-panel">
+      <span><router-link :to="{path:'/owner'}" @click="handleLogoutClicked()">LOG OUT </router-link></span>
+    </div>
+    <div class="owner-navigation">
+      <header>
+        <nav>
+          <ul class="navigation">
+            <li class="selected-item"><router-link :to="{path:'/owner/navigation/dashboard'}">DASHBOARD</router-link></li>
+            <li><router-link :to="{path:'/owner/navigation/shop'}">SHOP DETAIL</router-link></li>
+            <li><router-link :to="{path:'/owner/navigation/products'}">PRODUCTS</router-link></li>
+            <li>AD</li>
+            <li>ORDER</li>
+          </ul>
+        </nav>
+      </header>
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -22,6 +27,12 @@ export default {
     return {
 
     }
+  },
+  methods: {
+    handleLogoutClicked () {
+      this.$cookie.delete('OwnerEmail')
+      this.$cookie.delete('OwnerPassword')
+    }
   }
 }
 </script>
@@ -32,8 +43,20 @@ h1 {
   font-weight: normal;
 }
 
+.logout-panel {
+  height: 40px;
+  span {
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    color: #ACACAC;
+    float: right;
+    margin-right: 169px;
+  }
+}
+
 .owner-navigation {
-  margin-top: 40px;
+  margin-top: 0px;
 }
 
 .navigation {
