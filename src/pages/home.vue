@@ -139,6 +139,7 @@
 import { signup } from '../services/customer/signup'
 import { login } from '../services/customer/login'
 import { setCookie } from './customer/util/cookie'
+import router from '../routes'
 
 export default {
   name: 'home',
@@ -156,17 +157,30 @@ export default {
       this.showLogin = !this.showLogin
     },
     handleSignUpClick () {
-      signup(this.telephone, this.name, this.password).then((response) => {
-        console.log(response)
+      router.push('/products')
+      this.showRegister = false
+      signup(this.telephone, this.name, this.password, this.email)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        if (data.status === 0) {
+          this.alert(data.message)
+        } else if (data.status === 1) {
+          router.push('/products')
+        }
       }).catch((err) => {
         console.log(err)
       })
     },
     handleSignInClick () {
+      router.push('/products')
+      this.showRegister = false
+
       login(this.telephone, this.password).then(function (response) {
         if (this.expire === 'checked') {
           setCookie('username', 'password', 7)
         }
+        this.showLogin = false
         console.log(response)
       }).catch(function (err) {
         console.log(err)
