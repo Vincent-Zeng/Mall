@@ -4,10 +4,10 @@
       <nav>
         <ul class="navigation">
           <li class="selected-item"><router-link :to="{path:'/owner/navigation/dashboard'}">DASHBOARD</router-link></li>
+          <li>SHOP DETAIL</li>
           <li><router-link :to="{path:'/owner/navigation/products'}">PRODUCTS</router-link></li>
-          <li>ORDER</li>
           <li>AD</li>
-          <li>COMMISSION</li>
+          <li>ORDER</li>
         </ul>
       </nav>
     </header>

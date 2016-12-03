@@ -166,13 +166,17 @@ export default {
     a {
       color: black;
     }
+
     .product-img {
       width: 100%;
       img {
         display: block;
         margin: auto;
-        height:200px;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
       }
+      height: 366px;
     }
 
     .product-name {
