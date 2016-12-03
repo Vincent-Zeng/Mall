@@ -1,37 +1,43 @@
 <template>
-  <div class="owner-login">
-    <div class="login-panel">
+  <div class="owner-register">
+    <div class="register-panel">
       <div class="panel-header">
         <img src="../../assets/logo.png" alt="">
         <div class="panel-content">
-          <p class="panel-title">Log in</p>
-          <p class="panel-prompt">Log in to manage as shop owner </p>
+          <p class="panel-title">Register</p>
+          <p class="panel-prompt">Sign up to manage as shop owner.</p>
         </div>
       </div>
 
       <div class="">
-        <form class="login-form">
+        <form class="register-form">
           <p>
             <label for="email">Email</label>
             <br />
-            <input class="input-textfield" type="text" id="email" />
+            <input class="input-textfield" type="text" id="email" v-model="email"/>
+          </p>
+          <p>
+            <label for="name">Name</label>
+            <br />
+            <input class="input-textfield" type="text" id="name" v-model="name"/>
           </p>
           <p>
             <label for="password">Password</label>
             <br />
-            <input class="input-textfield"type="password" id="password" />
+            <input class="input-textfield" type="password" id="password" v-model="password"/>
+          </p>
+          <p>
+            <label for="cofirmation-password">Password Confirmation</label>
+            <br />
+            <input class="input-textfield" type="password" id="password" v-model="confirmation"/>
           </p>
           <p>
             <input type="checkbox" id="expire" />
             <label for="expire">Remember Me</label>
           </p>
-          <input @click='handleSubmitLoginForm()' class="submit-button" type="button" value="Let me in !" />
-          <div class="sign-up-router">
-            Don't have an account? Click <router-link :to="{path:'/owner/register'}" style="font-weight: bold; color: red;">Here</router-link> to Sign Up.
-          </div>
+          <input @click='handleSubmitRegisterForm()' class="submit-button" type="button" value="Let me in !" />
         </form>
       </div>
-
     </div>
   </div>
 </template>
@@ -40,14 +46,14 @@
 import router from '../../routes'
 
 export default {
-  name: 'owner-login',
+  name: 'owner-register',
   data () {
     return {
 
     }
   },
   methods: {
-    handleSubmitLoginForm () {
+    handleSubmitRegisterForm () {
       router.push('/owner/navigation/dashboard')
     }
   }
@@ -60,9 +66,9 @@ h1 {
   font-weight: normal;
 }
 
-.login-panel {
+.register-panel {
   width: 650px;
-  height: 600px;
+  height: 800px;
   border: 1px solid #E4E4E4;
   margin: 200px auto;
   box-shadow: 0px 4px 14px rgba(121, 121, 121, 0.1);
@@ -94,7 +100,7 @@ h1 {
     }
   }
 
-  .login-form {
+  .register-form {
     margin: 80px 100px;
 
     label {
@@ -136,8 +142,5 @@ h1 {
   }
 }
 
-.sign-up-router {
-  margin: 20px auto;
-}
 
 </style>

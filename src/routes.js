@@ -9,6 +9,7 @@ import Home from './pages/home'
 import Products from './pages/customer/products'
 import Product from './pages/customer/product'
 import OwnerLogin from './pages/owner/login'
+import OwnerRegister from './pages/owner/register'
 import OwnerNavigation from './pages/owner/navigation'
 import OwnerDashboard from './pages/owner/dashboard'
 import OwnerProducts from './pages/owner/products'
@@ -58,6 +59,9 @@ const routes = [{
       component: OwnerProductDetail
     }
   ]
+}, {
+  path: '/owner/register',
+  component: OwnerRegister
 }, {
   path: '/admin',
   component: AdminLogin
