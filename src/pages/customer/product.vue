@@ -53,7 +53,13 @@ export default {
         }
       })
     return {
-      product: null
+      product: {
+        id: null,
+        name: null,
+        price: null,
+        url: null,
+        description: null
+      }
     }
   },
   created () {
