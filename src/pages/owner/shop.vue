@@ -25,6 +25,7 @@
       <div class="owner-shop">
         <span>Own</span>
         <span>{{ shopName }}</span>
+        <div class="create-shop-button"><router-link :to="{path:'/owner/navigation/shop/create'}">Create</router-link></div>
       </div>
     </div>
 
@@ -137,6 +138,23 @@ export default {
     span:last-child {
       color: #2B2B2B;
       font-weight: bold;
+    }
+
+    .create-shop-button {
+      width: 114px;
+      height: 42px;
+      display: inline-block;
+      line-height: 42px;
+      text-align: center;
+      border-radius: 4px;
+      box-sizing:border-box;
+      cursor: pointer;
+      margin-top: 20px;
+      margin-right: 28px;
+      border: 1px solid #0077D8;
+      background-color: #0077D8;
+      color: white;
+      float: right;
     }
   }
 }
