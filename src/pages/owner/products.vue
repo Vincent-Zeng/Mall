@@ -28,16 +28,15 @@
 export default {
   name: 'owner-products',
   data () {
-    let products = []
-    for (var i = 0; i < 20; i++) {
-      products.push({
-        id: i + 1,
-        name: 'iPhone'
-      })
-    }
-
+    // let products = []
+    // for (var i = 0; i < 20; i++) {
+    //   products.push({
+    //     id: i + 1,
+    //     name: 'iPhone'
+    //   })
+    // }
     return {
-      products: products
+      products: null
     }
   },
   create () {

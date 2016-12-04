@@ -48,14 +48,12 @@ export default {
   },
   methods: {
     handleSubmitLoginForm () {
-      console.log(document.cookie)
       Vue.http.post('/owner/login', {
         'email': this.email,
         'password': this.password
       }).then(response => {
-        console.log(response.headers.get('Set-Cookie'))
         response.json().then(function (data) {
-          console.log(data)
+          Vue.cookie.set('ownerId', data.message)
         })
       }, (response) => {
         console.log('Looks like there was a problem. Status Code: ' +

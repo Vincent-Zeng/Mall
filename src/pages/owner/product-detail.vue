@@ -83,6 +83,16 @@ export default {
   },
   methods: {
     handleSaveProductDetailClicked (id) {
+      this.$http.post('/shop/add', {
+        categoryId: this.product.categoryId,
+        photoURL: this.product.photo,
+        detail: this.product.description,
+        name: this.product.name,
+        price: this.product.price
+      }).then((res) => res.json())
+        .then((json) => {
+          console.log(json)
+        })
     },
     handleRemovePhotoClicked (event) {
       event.stopPropagation()

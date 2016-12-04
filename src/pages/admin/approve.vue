@@ -35,12 +35,7 @@ export default {
   name: 'admin-approve',
   data () {
     return {
-      shops: [{
-        owner: 'dasdas',
-        name: 'sdada',
-        id: 1,
-        idPhotoUrl: 'dada'
-      }]
+      shops: null
     }
   },
   components: {
