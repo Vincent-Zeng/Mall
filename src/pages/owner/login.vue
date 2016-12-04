@@ -54,6 +54,7 @@ export default {
       }).then(response => {
         response.json().then(function (data) {
           Vue.cookie.set('ownerId', data.message)
+          console.log(Vue.cookie.get('ownerId'))
         })
       }, (response) => {
         console.log('Looks like there was a problem. Status Code: ' +

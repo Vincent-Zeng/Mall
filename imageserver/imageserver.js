@@ -32,16 +32,9 @@ server.on('request', function (request, response) {
       log(_fileName)
 
       request.once('data', function (data) {
-            // 大文件
-
-//            var fis = fs.createWriteStream('/txt.txt');
-
-//            fis.write(data);
-
-//            fis.end();
         var _serverfilename = 'product' + Date.parse(new Date()) + _fileName.substring(_fileName.lastIndexOf('.'))
-        fs.writeFile('upload/' + _serverfilename, data)
-        var fileurl = 'http://localhost:8000/upload/' + _serverfilename
+        fs.writeFile(_serverfilename, data)
+        var fileurl = 'http://localhost:8000/' + _serverfilename
         var json = JSON.stringify({
           'fileurl': fileurl
         })

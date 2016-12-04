@@ -162,6 +162,9 @@ export default {
       router.push('/products')
       this.showRegister = false
       signup(this.telephone, this.name, this.password, this.email)
+      window.location.reload()
+      this.$cookie.set('customerId', 1)
+
       .then(res => res.json())
       .then(data => {
         console.log(data)
@@ -175,8 +178,9 @@ export default {
       })
     },
     handleSignInClick () {
-      router.push('/products')
-      this.showRegister = false
+      this.showLogin = false
+      this.$cookie.set('customerId', 1)
+      window.location.reload()
 
       login(this.telephone, this.password).then(function (response) {
         if (this.expire === 'checked') {
@@ -190,6 +194,7 @@ export default {
     },
     handleLogoutClicked () {
       this.$cookie.delete('customerId')
+      window.location.reload()
     }
   },
   created () {
