@@ -45,12 +45,15 @@ export default {
       certificatephoto: photoaddbutton,
       closebutton: false,
       shop: {
+        name: null,
+        telephone: null,
+        contact: null
       }
     }
   },
   methods: {
     handleSaveProductDetailClicked () {
-      let body = JSON.stringify({ 'name': this.shop.name, 'telephone': this.shop.telephone, 'contact': this.shop.contact, 'idPhotoUrl': this.shop.photo })
+      let body = JSON.stringify({ 'name': this.shop.name, 'telephone': this.shop.telephone, 'contact': this.shop.contact, 'idPhotoUrl': this.certificatephoto })
       this.http.post('/shop/add', body)
         .then((res) => res.json())
         .then(json => {
