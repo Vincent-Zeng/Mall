@@ -41,6 +41,16 @@ export default {
     }
   },
   methods: {
+    handleSaveProductDetailClicked () {
+      let body = JSON.stringify({ 'name': this.shop.name, 'telephone': this.shop.telephone, 'contact': this.shop.contact, 'idPhotoUrl': this.shop.photo })
+      this.http.post('/shop/add', body)
+        .then((res) => res.json())
+        .then(json => {
+          console.log(json)
+        }).catch((err) => {
+          console.log(err)
+        })
+    }
   }
 }
 </script>

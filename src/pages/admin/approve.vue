@@ -43,8 +43,15 @@ export default {
   },
   methods: {
     handleApproveButtonClicked (event, id) {
-      event.peventDefault()
+      event.preventDefault()
       console.log('approve')
+      Vue.http.post(`/shop/changeStatus?id=${id}&status=${0}`)
+        .then((res) => res.json())
+        .then(json => {
+          console.log(json)
+        }).catch((err) => {
+          console.log(err)
+        })
     }
   },
   created () {
