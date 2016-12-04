@@ -35,7 +35,12 @@ export default {
   name: 'admin-approve',
   data () {
     return {
-      shops: []
+      shops: [{
+        owner: 'dasdas',
+        name: 'sdada',
+        id: 1,
+        idPhotoUrl: 'dada'
+      }]
     }
   },
   components: {
@@ -43,8 +48,7 @@ export default {
   },
   methods: {
     handleApproveButtonClicked (event, id) {
-      event.preventDefault()
-      console.log('approve')
+      event.stopPropagation()
       Vue.http.post(`/shop/changeStatus?id=${id}&status=${0}`)
         .then((res) => res.json())
         .then(json => {
