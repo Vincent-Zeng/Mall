@@ -13,7 +13,7 @@
           <span class="approve-word approve-shop-created">Created Shop</span>
           <span class="approve-word approve-shop-name">{{ shop.name }}</span>
           <div class="function-button">
-            <div class="approve-button">Approve</div>
+            <div class="approve-button" @click="handleApproveButtonClicked($event, id)">Approve</div>
             <div class="reject-button">Reject</div>
           </div>
         </div>
@@ -40,6 +40,12 @@ export default {
   },
   components: {
     foldinglist: foldinglist
+  },
+  methods: {
+    handleApproveButtonClicked (event, id) {
+      event.peventDefault()
+      console.log('approve')
+    }
   },
   created () {
     Vue.http.get('/shop/searchByStatus?status=3&page=1&count=10').then((response) => {
