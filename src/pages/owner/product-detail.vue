@@ -10,10 +10,10 @@
         <img src="./images/products.png" alt="">
         <span>Product Detail</span>
       </div>
-      <div class="product-image">
-        <input type="file" accept="image/*" @change="upload(file, $event)">
+      <div class="product-image" :style="{ backgroundImage:'url(' + product.photo + ')' }">
+        <input type="file" accept="image/*" @change="upload(file, $event)"  class="uploadbutton" id="uploadbutton" />
         <!-- <img class="product-photo" :src="product.photo" alt=""> -->
-        <img class="remove-photo-btn" src="./images/remove-photo-btn.png" alt="" @click="handleRemovePhotoClicked($event)">
+        <span class="remove-photo-btn" @click="handleRemovePhotoClicked($event)" v-show='closebutton'>×</span>
       </div>
       <form class="product-detail-form">
         <p>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import photoaddbutton from './images/add-photo.png'
+
 export default {
   name: 'owner-product-detail',
   data () {
@@ -64,11 +66,13 @@ export default {
         text: categoryNames[i]
       })
     }
+
     console.log(categories)
     return {
+      showclose: false,
       product: {
         id: 1,
-        photo: 'http://ohcabv7e3.bkt.clouddn.com/iPhone.png',
+        photo: photoaddbutton,
         description: 'There is no denying the fact that the success of an advertisement lies mostly in the headline. The headline should attract the reader and make him read the rest of the advertisement. The headline should be simply catchy and various key points should be embedded when deciding on the headline ',
         name: 'This is product name',
         price: '78',
@@ -82,15 +86,40 @@ export default {
     },
     handleRemovePhotoClicked (event) {
       event.stopPropagation()
-      this.product.photo = null
+      this.product.photo = photoaddbutton
+      this.closebutton = false
     },
     handleAddPhotoClicked () {
-    },
-    upload (file, e) {
-      let f = e.target.files[0]
-      file.name = f.name
-      file.size = f.size
-      this.product.photo = file
+    }
+  },
+  mounted () {
+    var file = document.getElementById('uploadbutton')
+    var that = this
+    file.onchange = function () {
+      var _files = this.files
+      console.log(_files)
+      console.log(file.value)
+      var filePath = file.value
+      if (!_files.length) return
+      if (_files.length === 1) {
+        window.fetch('/upload', {
+          method: 'POST',
+          headers: {
+            'file-name': filePath.substring(filePath.lastIndexOf('\\') + 1)
+          },
+          body: _files[0]
+        }).then(function (res) {
+          return res.json()
+        }).then(function (data) {
+          console.log(data.fileurl)
+          that.product.photo = data.fileurl
+          if (that.product !== photoaddbutton) {
+            that.closebutton = true
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
+      }
     }
   }
 }
@@ -168,6 +197,8 @@ export default {
   background-repeat: no-repeat;
   background-size: auto;
   background-image: url('./images/add-photo.png');
+  background-size:contain;
+  background-position:center center;
 
   .product-photo {
     position: absolute;
@@ -176,13 +207,20 @@ export default {
     transform: translate(-50%, -50%);
   }
 
+  .uploadbutton{
+    opacity:0;
+    width:200px;
+    height:200px;
+  }
+
   .remove-photo-btn {
+    cursor:pointer;
+    font-size:40px;
     z-index: 100;
     position: absolute;
-    top: 10px;
+    top: 0px;
     right: 10px;
-    width: 14px;
-    height: 14px;
+    color:gray;
   }
 }
 

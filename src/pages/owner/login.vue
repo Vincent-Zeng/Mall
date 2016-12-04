@@ -14,12 +14,12 @@
           <p>
             <label for="email">Email</label>
             <br />
-            <input class="input-textfield" type="text" id="email" />
+            <input class="input-textfield" type="text" id="email" v-model="email" />
           </p>
           <p>
             <label for="password">Password</label>
             <br />
-            <input class="input-textfield"type="password" id="password" />
+            <input class="input-textfield"type="password" id="password" v-model="password" />
           </p>
           <p>
             <input type="checkbox" id="expire" />
@@ -38,7 +38,7 @@
 
 <script>
 import router from '../../routes'
-
+import Vue from 'vue'
 export default {
   name: 'owner-login',
   data () {
@@ -48,6 +48,18 @@ export default {
   },
   methods: {
     handleSubmitLoginForm () {
+      console.log(document.cookie)
+      Vue.http.post('/owner/login', {
+        'email': this.email,
+        'password': this.password
+      }).then(response => {
+        response.json().then(function (data) {
+          console.log(data)
+        })
+      }, (response) => {
+        console.log('Looks like there was a problem. Status Code: ' +
+        response.status)
+      })
       router.push('/owner/navigation/dashboard')
     }
   }

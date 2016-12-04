@@ -11,12 +11,23 @@
     </div>
 
     <div class="owner-list">
-      <div class="owner-item" v-for="shop in shops">
+      <div class="owner-item" v-for="shop in shops" v-show="!isOwner">
         <img class="owner-item-avatar" :src="shop.avatar" alt="">
-        <span class="owner-item-owner">{{ shop.owner }}</span>
+        <span class="owner-item-owner">{{ shop.name }}</span>
 
         <div class="function-button">
           <div @click="suspend(shop.id)" class="suspend-button">Suspend</div>
+          <div class="delete-button">Delete</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="owner-list">
+      <div class="owner-item" v-for="owner in owners" v-show="isOwner">
+        <span class="owner-item-owner">{{ owner.name }}</span>
+
+        <div class="function-button">
+          <div @click="suspend(owner.id)" class="suspend-button">Suspend</div>
           <div class="delete-button">Delete</div>
         </div>
       </div>
@@ -25,24 +36,14 @@
 </template>
 
 <script>
-import pic from './images/avatar.png'
-
+import Vue from 'vue'
 export default {
   name: 'admin-owner',
   data () {
-    let shops = []
-    for (var i = 0; i < 20; i++) {
-      shops.push({
-        id: 1,
-        avatar: pic,
-        owner: 'MARY V. ROBINSON',
-        name: 'Gucci Official'
-      })
-    }
-
     let isOwner = true
     return {
-      shops: shops,
+      shops: [],
+      owners: [],
       isOwner: isOwner
     }
   },
@@ -55,7 +56,56 @@ export default {
     suspend (id) {
       console.log(id)
     }
+  },
+  created () {
+    Vue.http.get('/shop/searchAll?page=1&count=10').then((response) => {
+      let shops = this.shops
+      response.json().then(function (data) {
+        if (response.status !== 200) {
+          console.log('Looks like there was a problem. Status Code: ' +
+               response.status)
+          return
+        }
+        for (let i = 0; i < data.length; i++) {
+          const shop = data[i]
+          shops.push({
+            id: shop.id,
+            avatar: shop.idPhotoUrl,
+            owner: shop.contact,
+            name: shop.name
+          })
+        }
+      })
+      this.shops = shops
+    }, (response) => {
+      console.log('Looks like there was a problem. Status Code: ' +
+           response.status)
+    })
+
+    Vue.http.get('/owner/getAllOwner?page=1&pageNum=10').then((response) => {
+      let owners = this.owners
+      response.json().then(function (data) {
+        if (response.status !== 200) {
+          console.log('Looks like there was a problem. Status Code: ' +
+               response.status)
+          return
+        }
+        for (let i = 0; i < data.length; i++) {
+          const owner = data[i]
+          owners.push({
+            id: owner.id,
+            name: owner.name,
+            email: owner.email
+          })
+        }
+      })
+      this.owners = owners
+    }, (response) => {
+      console.log('Looks like there was a problem. Status Code: ' +
+           response.status)
+    })
   }
+
 }
 </script>
 
@@ -88,6 +138,7 @@ export default {
 
   .owner-span {
     margin-left: 65px;
+    cursor:pointer;
   }
 
   .shop-span {

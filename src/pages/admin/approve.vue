@@ -6,45 +6,72 @@
     </div>
 
     <div class="approve-list">
-      <div class="approve-shop" v-for="shop in shops">
-        <img class="approve-shop-avatar" :src="shop.avatar" alt="">
-        <span class="approve-word approve-shop-owner">{{ shop.owner }}</span>
-        <span class="approve-word approve-shop-created">Created Shop</span>
-        <span class="approve-word approve-shop-name">{{ shop.name }}</span>
-
-        <div class="function-button">
-          <div class="approve-button">Approve</div>
-          <div class="reject-button">Reject</div>
+      <foldinglist  v-for="shop in shops">
+        <div slot="summary" class="approve-shop">
+          <img class="approve-shop-avatar" :src="shop.idPhotoUrl" alt="">
+          <span class="approve-word approve-shop-owner">{{ shop.owner }}</span>
+          <span class="approve-word approve-shop-created">Created Shop</span>
+          <span class="approve-word approve-shop-name">{{ shop.name }}</span>
+          <div class="function-button">
+            <div class="approve-button">Approve</div>
+            <div class="reject-button">Reject</div>
+          </div>
         </div>
-      </div>
+        <div slot="detail" class="approve-shop-detail" >
+          <img class="owner-photo" :src="shop.idPhotoUrl" alt=""><div class="detail-right">
+            <p class="owner-email">Email: {{ shop.email }}</p>
+            <p class="owner-telephone">Telephone: {{ shop.telephone }}</p>
+          </div>
+        </div>
+      </foldinglist>
     </div>
   </div>
 </template>
 
 <script>
-import pic from './images/avatar.png'
-
+import Vue from 'vue'
+import foldinglist from './components/folding_list'
 export default {
   name: 'admin-approve',
   data () {
-    let shops = []
-    for (var i = 0; i < 20; i++) {
-      shops.push({
-        avatar: pic,
-        owner: 'MARY V. ROBINSON',
-        name: 'Gucci Official'
-      })
-    }
-
     return {
-      shops: shops
+      shops: []
     }
+  },
+  components: {
+    foldinglist: foldinglist
+  },
+  created () {
+    Vue.http.get('/shop/searchByStatus?status=3&page=1&count=10').then((response) => {
+      let shops = this.shops
+      response.json().then(function (data) {
+        for (let i = 0; i < data.length; i++) {
+          const shop = data[i]
+          shops.push({
+            id: shop.id,
+            idPhotoUrl: shop.idPhotoUrl,
+            owner: shop.contact,
+            name: shop.name,
+            email: shop.email,
+            telephone: shop.telephone
+          })
+        }
+      })
+      this.shops = shops
+    }, (response) => {
+      console.log('Looks like there was a problem. Status Code: ' +
+           response.status)
+    })
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+$color1: gray;
+$color2: #f5f5f5;
+$color3: #0077d8;
+$color4: #258bde;
 .admin-approve {
   position: absolute;
   margin: 56px 0px;
@@ -145,6 +172,26 @@ export default {
         cursor: pointer;
       }
     }
+  }
+
+  .approve-shop-detail{
+    border-bottom:1px solid lightgray;
+    margin-bottom: 20px;
+    padding-bottom:20px;
+  }
+  .owner-photo{
+    width:45%;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .detail-right{
+    display:inline-block;
+    width:55%;
+    vertical-align: middle;
+    box-sizing: border-box;
+    padding-left:10%;
+    font-size:30px;
   }
 }
 
