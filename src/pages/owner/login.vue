@@ -53,6 +53,7 @@ export default {
         'email': this.email,
         'password': this.password
       }).then(response => {
+        console.log(response.headers.get('Set-Cookie'))
         response.json().then(function (data) {
           console.log(data)
         })
