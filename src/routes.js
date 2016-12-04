@@ -21,6 +21,7 @@ import AdminNavigation from './pages/admin/navigation'
 import AdminDashboard from './pages/admin/dashboard'
 import AdminApprove from './pages/admin/approve'
 import AdminOwner from './pages/admin/owner'
+import ShopDetail from './pages/admin/shop-detail'
 
 const routes = [{
   path: '/',
@@ -90,6 +91,10 @@ const routes = [{
     {
       path: '/admin/navigation/owner',
       component: AdminOwner
+    },
+    {
+      path: '/admin/navigation/shopdetail',
+      component: ShopDetail
     }
   ]
 }]

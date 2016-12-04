@@ -22,7 +22,11 @@
         </p>
         <p>
           <label for="shop-certificate">Certificate</label>
-          <input type="file" accept="image/*" @change="upload(file, $event)"  class="uploadbutton" id="uploadbutton" />
+          <div class="product-image" :style="{ backgroundImage:'url(' + certificatephoto + ')' }">
+            <input type="file" class="uploadbutton" id="uploadbutton" />
+            <!-- <img class="product-photo" :src="product.photo" alt=""> -->
+            <span class="remove-photo-btn" @click="handleRemovePhotoClicked($event)" v-show='closebutton'>×</span>
+          </div>
         </p>
       </form>
 
@@ -32,10 +36,14 @@
 </template>
 
 <script>
+import photoaddbutton from './images/add-photo.png'
+
 export default {
   name: 'owner-create-shop',
   data () {
     return {
+      certificatephoto: photoaddbutton,
+      closebutton: false,
       shop: {
       }
     }
@@ -50,6 +58,43 @@ export default {
         }).catch((err) => {
           console.log(err)
         })
+    },
+    handleRemovePhotoClicked (event) {
+      event.stopPropagation()
+      this.certificatephoto = photoaddbutton
+      this.closebutton = false
+    },
+    handleAddPhotoClicked () {
+    }
+  },
+  mounted () {
+    var file = document.getElementById('uploadbutton')
+    var that = this
+    file.onchange = function () {
+      var _files = this.files
+      console.log(_files)
+      console.log(file.value)
+      var filePath = file.value
+      if (!_files.length) return
+      if (_files.length === 1) {
+        window.fetch('/upload', {
+          method: 'POST',
+          headers: {
+            'file-name': filePath.substring(filePath.lastIndexOf('\\') + 1)
+          },
+          body: _files[0]
+        }).then(function (res) {
+          return res.json()
+        }).then(function (data) {
+          console.log(data.fileurl)
+          that.certificatephoto = data.fileurl
+          if (that.product !== photoaddbutton) {
+            that.closebutton = true
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
+      }
     }
   }
 }
@@ -145,6 +190,46 @@ export default {
     outline: none;
     border-bottom: 1px solid #DEDEDE;
     padding-bottom: 20px;
+  }
+}
+
+.product-image {
+  margin-left: 28px;
+  height: 200px;
+  width: 200px;
+  border: 1px solid #E4E4E4;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0px 4px 14px 7px rgba(121, 121, 121, 0.05);
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-image: url('./images/add-photo.png');
+  background-size:contain;
+  background-position:center center;
+
+  .product-photo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .uploadbutton{
+    opacity:0;
+    left:0;
+    top:0;
+    width:200px;
+    height:200px;
+  }
+
+  .remove-photo-btn {
+    cursor:pointer;
+    font-size:40px;
+    z-index: 100;
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    color:gray;
   }
 }
 
