@@ -12,9 +12,10 @@
 
     <div class="owner-list">
       <div class="owner-item" v-for="shop in shops" v-show="!isOwner">
-        <img class="owner-item-avatar" :src="shop.avatar" alt="">
-        <span class="owner-item-owner">{{ shop.name }}</span>
-
+        <router-link :to="{path:'/admin/navigation/shopdetail'}">
+          <img class="owner-item-avatar" :src="shop.avatar" alt="">
+          <span class="owner-item-owner">{{ shop.name }}</span>
+        </router-link>
         <div class="function-button">
           <div @click="suspend(shop.id)" class="suspend-button">Suspend</div>
           <div class="delete-button">Delete</div>

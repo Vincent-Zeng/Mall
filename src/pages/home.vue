@@ -3,9 +3,10 @@
     <div class="nav-header">
       <header>
         <div class="nav-topbar">
-          <div class="user-action">
-            <a v-on:click="showRegisterForm()">SIGN UP</a>
-            <a @click="showLoginForm()">SIGN IN</a>
+          <div class="user-action" >
+            <a v-on:click="showRegisterForm()"  v-show="!isLogin">SIGN UP</a>
+            <a @click="showLoginForm()" v-show="!isLogin">SIGN IN</a>
+            <a @click="handleLogoutClicked()" v-show="isLogin">Log out</a>
           </div>
         </div>
         <div class="navbar">
@@ -145,6 +146,7 @@ export default {
   name: 'home',
   data () {
     return {
+      isLogin: false,
       showRegister: false,
       showLogin: false
     }
@@ -185,6 +187,14 @@ export default {
       }).catch(function (err) {
         console.log(err)
       })
+    },
+    handleLogoutClicked () {
+      this.$cookie.delete('customerId')
+    }
+  },
+  created () {
+    if (this.$cookie.get('customerId') !== null) {
+      this.isLogin = true
     }
   }
 }
