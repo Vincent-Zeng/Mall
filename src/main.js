@@ -16,10 +16,15 @@ Validator.extend('verify_password', {
   }
 })
 
-const baseURL = 'http://104.236.159.184:8080/web-ssm'
+// const baseURL = 'http://104.236.159.184:8080/web-ssm'
+const baseURL = 'http://192.168.1.101'
 
 Vue.http.interceptors.push((request, next) => {
   request.url = `${baseURL}${request.url}`
+  let ownerId = Vue.cookie.get('ownerId')
+  let customerId = Vue.cookie.get('customerId')
+  request.headers.set('Authorization', `ownerId=${ownerId};customerId=${customerId}`)
+  console.log(request.headers)
   next()
 })
 

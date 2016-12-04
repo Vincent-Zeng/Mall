@@ -42,14 +42,22 @@ export default {
   name: 'owner-create-shop',
   data () {
     return {
-      shop: {
-      },
       certificatephoto: photoaddbutton,
-      closebutton: false
+      closebutton: false,
+      shop: {
+      }
     }
   },
   methods: {
-    handleSaveProductDetailClicked (id) {
+    handleSaveProductDetailClicked () {
+      let body = JSON.stringify({ 'name': this.shop.name, 'telephone': this.shop.telephone, 'contact': this.shop.contact, 'idPhotoUrl': this.shop.photo })
+      this.http.post('/shop/add', body)
+        .then((res) => res.json())
+        .then(json => {
+          console.log(json)
+        }).catch((err) => {
+          console.log(err)
+        })
     },
     handleRemovePhotoClicked (event) {
       event.stopPropagation()
