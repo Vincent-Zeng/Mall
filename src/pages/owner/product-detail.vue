@@ -18,16 +18,16 @@
       <form class="product-detail-form">
         <p>
           <label for="detail-name">Email</label>
-          <input type="text" v-model="product.name" v-validate data-vv-rules="required" name="name" />
+          <input type="text" v-model="product.name" v-validate data-vv-rules="required" name="name" placeholder="Name of product"/>
         </p>
         <p>
           <label for="detail-description">Description</label>
-          <input type="text" v-model="product.description" v-validate data-vv-rules="required" name="description"/>
+          <input type="text" v-model="product.description" v-validate data-vv-rules="required" name="description" placeholder="Description of product"/>
         </p>
         <p class="detail-price">
           <label for="detail-price">Price</label>
           <span>HK$</span>
-          <input class="price-input" type="text" v-model="product.price" v-validate data-vv-rules="required" name="description"/>
+          <input class="price-input" type="text" v-model="product.price" v-validate data-vv-rules="required" name="description" placeholder=""/>
         </p>
         <p>
           <label for="detail-category">Category</label>
@@ -73,9 +73,9 @@ export default {
       product: {
         id: 1,
         photo: photoaddbutton,
-        description: 'There is no denying the fact that the success of an advertisement lies mostly in the headline. The headline should attract the reader and make him read the rest of the advertisement. The headline should be simply catchy and various key points should be embedded when deciding on the headline ',
-        name: 'This is product name',
-        price: '78',
+        description: '',
+        name: '',
+        price: '',
         categoryId: 1
       },
       categories: categories
@@ -88,7 +88,7 @@ export default {
         photoURL: this.product.photo,
         detail: this.product.description,
         name: this.product.name,
-        price: this.product.price
+        price: parseInt(this.product.price)
       }).then((res) => res.json())
         .then((json) => {
           console.log(json)
