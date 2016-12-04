@@ -39,6 +39,20 @@ export default {
     return {
       products: products
     }
+  },
+  create () {
+    this.$http.get('/product/searchByOwner?page=1&pageNum=20')
+      .then(res => res.json())
+      .then(data => {
+        let products = []
+        for (let i = 0; i < data.length; i++) {
+          const product = data[i]
+          products.push({
+            id: product.id,
+            name: product.name
+          })
+        }
+      })
   }
 }
 </script>
