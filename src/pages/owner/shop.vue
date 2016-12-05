@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 export default {
   name: 'owner-shop',
   data () {
@@ -46,11 +47,19 @@ export default {
       products: 0,
       sales: 0,
       income: 0,
-      ownerName: 'Helen Crawford',
-      shopName: 'BestBuy Digital Shop'
+      ownerName: null,
+      shopName: 'Nothing'
     }
   },
   methods: {
+  },
+  created () {
+    let ownerId = Vue.cookie.get('ownerId')
+    Vue.http.get(`/owner/getById?id=${ownerId}`)
+      .then((res) => res.json())
+      .then(json => {
+        this.ownerName = json.name
+      })
   }
 }
 </script>
