@@ -17,7 +17,7 @@
       </div>
       <form class="product-detail-form">
         <p>
-          <label for="detail-name">Email</label>
+          <label for="detail-name">Name</label>
           <input type="text" v-model="product.name" v-validate data-vv-rules="required" name="name" placeholder="Name of product"/>
         </p>
         <p>
