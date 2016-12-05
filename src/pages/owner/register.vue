@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     handleSubmitRegisterForm () {
-      router.push('/owner/navigation/dashboard')
+      router.push('/owner/navigation/shop')
     }
   }
 }

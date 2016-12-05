@@ -60,7 +60,7 @@ export default {
         console.log('Looks like there was a problem. Status Code: ' +
         response.status)
       })
-      router.push('/owner/navigation/dashboard')
+      router.push('/owner/navigation/shop')
     }
   }
 }

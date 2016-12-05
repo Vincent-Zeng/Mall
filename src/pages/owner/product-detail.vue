@@ -44,6 +44,7 @@
 
 <script>
 import photoaddbutton from './images/add-photo.png'
+import router from '../../routes'
 
 export default {
   name: 'owner-product-detail',
@@ -88,11 +89,13 @@ export default {
     // name: this.product.name,
     // price: parseInt(this.product.price)
     handleSaveProductDetailClicked (id) {
-      this.$http.get(`/shop/add?categoryId=${this.product.categoryId}&photoURL="${this.product.photo}"&detail=${this.product.description}&name=${this.product.name}&price=${parseInt(this.product.price)}`)
+      this.$http.get(`/product/add?categoryId=${this.product.categoryId}&photoURL=${this.product.photo}&detail=${this.product.description}&name=${this.product.name}&price=${parseInt(this.product.price)}`)
         .then((res) => res.json())
         .then((json) => {
+          router.push('/owner/navigation/shop')
           console.log(json)
         }).catch((err) => {
+          router.push('/owner/navigation/shop')
           console.log(err)
         })
     },
