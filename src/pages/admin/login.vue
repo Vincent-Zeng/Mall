@@ -14,12 +14,12 @@
           <p>
             <label for="username">Username</label>
             <br />
-            <input class="input-textfield" type="text" id="username" />
+            <input class="input-textfield" type="text" id="username" v-model="username" />
           </p>
           <p>
             <label for="password">Password</label>
             <br />
-            <input class="input-textfield"type="password" id="password" />
+            <input class="input-textfield"type="password" id="password" v-model="password" />
           </p>
           <p>
             <input type="checkbox" id="expire" />
@@ -34,17 +34,29 @@
 
 <script>
 import router from '../../routes'
-
+import Vue from 'vue'
 export default {
   name: 'admin-login',
   data () {
     return {
-
     }
   },
   methods: {
     handleSubmitLoginForm () {
-      router.push('/admin/navigation/dashboard')
+      Vue.http.post('/admin/login', {
+        'name': this.username,
+        'password': this.password
+      }).then(res => {
+        return res.json()
+      }).then(json => {
+        if (json.status === 1) {
+          router.push('/admin/navigation/dashboard')
+        } else {
+          window.alert(json.message)
+        }
+      }).then(err => {
+        console.log(err)
+      })
     }
   }
 }

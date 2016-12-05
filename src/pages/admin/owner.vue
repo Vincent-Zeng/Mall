@@ -11,25 +11,25 @@
     </div>
 
     <div class="owner-list">
-      <div class="owner-item" v-for="shop in shops" v-show="!isOwner">
-        <router-link :to="{path:'/admin/navigation/shopdetail'}">
+      <div class="owner-item" v-for="shop in shops" v-show="!isOwner && shop.show">
+        <router-link :to="{path:'/admin/navigation/shopdetail'}" >
           <img class="owner-item-avatar" :src="shop.avatar" alt="">
           <span class="owner-item-owner">{{ shop.name }}</span>
         </router-link>
-        <div class="function-button">
-          <div @click="suspend(shop.id)" class="suspend-button">Suspend</div>
-          <div class="delete-button">Delete</div>
+        <div class="function-button" >
+          <div @click="suspend(shop,shop.id)" class="suspend-button">Suspend</div>
+          <div @click="suspend(shop,shop.id)" class="delete-button">Delete</div>
         </div>
       </div>
     </div>
 
     <div class="owner-list">
-      <div class="owner-item" v-for="owner in owners" v-show="isOwner">
+      <div class="owner-item" v-for="owner in owners" v-show="isOwner && owner.show">
         <span class="owner-item-owner">{{ owner.name }}</span>
 
         <div class="function-button">
-          <div @click="suspend(owner.id)" class="suspend-button">Suspend</div>
-          <div class="delete-button">Delete</div>
+          <div @click="suspend(owner,owner.id)" class="suspend-button">Suspend</div>
+          <div @click="suspend(owner,owner.id)" class="delete-button">Delete</div>
         </div>
       </div>
     </div>
@@ -54,7 +54,9 @@ export default {
     },
     searchItems () {
     },
-    suspend (id) {
+    suspend (msg, id) {
+      msg.show = false
+      console.log(msg.show)
       console.log(id)
     }
   },
@@ -73,7 +75,8 @@ export default {
             id: shop.id,
             avatar: shop.idPhotoUrl,
             owner: shop.contact,
-            name: shop.name
+            name: shop.name,
+            show: true
           })
         }
       })
@@ -96,7 +99,8 @@ export default {
           owners.push({
             id: owner.id,
             name: owner.name,
-            email: owner.email
+            email: owner.email,
+            show: true
           })
         }
       })
@@ -144,6 +148,7 @@ export default {
 
   .shop-span {
     margin-left: 8px;
+    cursor:pointer;
   }
 
   .highlight-span {
