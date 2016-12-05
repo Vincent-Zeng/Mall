@@ -67,16 +67,29 @@ export default {
         text: categoryNames[i]
       })
     }
+    let productId = this.$route.params.id
+    console.log(productId)
+    this.$http.get(`/product/id?id=${productId}`).then((res) => res.json())
+      .then(json => {
+        this.product.id = productId
+        this.product.photo = json.photoURL
+        this.product.categoryId = json.categoryId
+        this.product.price = json.price
+        this.product.description = json.detail
+        this.product.name = json.name
+      }).catch((err) => {
+        console.log(err)
+      })
 
     console.log(categories)
     return {
       showclose: false,
       product: {
-        id: 1,
+        id: null,
         photo: photoaddbutton,
-        description: '',
-        name: '',
-        price: '',
+        description: null,
+        name: null,
+        price: null,
         categoryId: 1
       },
       categories: categories
@@ -89,15 +102,33 @@ export default {
     // name: this.product.name,
     // price: parseInt(this.product.price)
     handleSaveProductDetailClicked (id) {
+      // if (id === null) {
       this.$http.get(`/product/add?categoryId=${this.product.categoryId}&photoURL=${this.product.photo}&detail=${this.product.description}&name=${this.product.name}&price=${parseInt(this.product.price)}`)
         .then((res) => res.json())
         .then((json) => {
-          router.push('/owner/navigation/shop')
+          router.push('/owner/navigation/products')
           console.log(json)
         }).catch((err) => {
-          router.push('/owner/navigation/shop')
+          router.push('/owner/navigation/products')
           console.log(err)
         })
+      // } else {
+      //   this.$http.post(`/product/update`, {
+      //     categoryId: this.product.categoryId,
+      //     photoURL: this.product.photo,
+      //     detail: this.product.description,
+      //     name: this.product.name,
+      //     price: parseInt(this.product.price)
+      //   })
+      //   .then((res) => res.json())
+      //   .then((json) => {
+      //     router.push('/owner/navigation/products')
+      //     console.log(json)
+      //   }).catch((err) => {
+      //     router.push('/owner/navigation/products')
+      //     console.log(err)
+      //   })
+      // }
     },
     handleRemovePhotoClicked (event) {
       event.stopPropagation()

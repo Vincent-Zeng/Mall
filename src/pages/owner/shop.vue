@@ -23,18 +23,18 @@
         </div>
       </div>
       <div class="owner-shop">
-        <span>Own</span>
-        <span>{{ shopName }}</span>
+        <!-- <span>Own</span>
+        <span>{{ shopName }}</span> -->
         <div class="create-shop-button"><router-link :to="{path:'/owner/navigation/shop/create'}">Create</router-link></div>
       </div>
     </div>
 
-    <div class="info-panel">
+    <!-- <div class="info-panel">
       <div class="info-header">
         <img src="./images/products.png" alt="">
         <span>Information</span>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
