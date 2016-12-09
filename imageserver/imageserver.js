@@ -1,6 +1,7 @@
 var http = require('http')        // HTTP服务器API
 
 var fs = require('fs')            // 文件系统API
+var path = require('path')
 
 var server = new http.Server()    // 创建新的HTTP服务器
 
@@ -9,7 +10,7 @@ var port = 8000
 server.listen(port)            // 在端口8000伤运行它
 
 var log = require('util').log
-
+log(process.cwd())
 log('Http Server is listening ' + port + ' port.')
 
 // Node使用'on'方法注册事件处理程序
@@ -26,15 +27,15 @@ server.on('request', function (request, response) {
   switch (url.pathname) {
 
     case '/upload':
-
+      log(__dirname)
       var _fileName = request.headers['file-name']
 
       log(_fileName)
 
       request.once('data', function (data) {
         var _serverfilename = 'product' + Date.parse(new Date()) + _fileName.substring(_fileName.lastIndexOf('.'))
-        fs.writeFile(_serverfilename, data)
-        var fileurl = 'http://localhost:8000/' + _serverfilename
+        fs.writeFile(path.join(__dirname, 'upload', _serverfilename), data)
+        var fileurl = 'http://localhost:8000/imageserver/upload/' + _serverfilename
         var json = JSON.stringify({
           'fileurl': fileurl
         })
