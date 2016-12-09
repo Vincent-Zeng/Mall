@@ -23,22 +23,23 @@
         </div>
       </div>
       <div class="owner-shop">
-        <span>Own</span>
-        <span>{{ shopName }}</span>
+        <!-- <span>Own</span>
+        <span>{{ shopName }}</span> -->
         <div class="create-shop-button"><router-link :to="{path:'/owner/navigation/shop/create'}">Create</router-link></div>
       </div>
     </div>
 
-    <div class="info-panel">
+    <!-- <div class="info-panel">
       <div class="info-header">
         <img src="./images/products.png" alt="">
         <span>Information</span>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 export default {
   name: 'owner-shop',
   data () {
@@ -46,11 +47,19 @@ export default {
       products: 0,
       sales: 0,
       income: 0,
-      ownerName: 'Helen Crawford',
-      shopName: 'BestBuy Digital Shop'
+      ownerName: null,
+      shopName: 'Nothing'
     }
   },
   methods: {
+  },
+  created () {
+    let ownerId = Vue.cookie.get('ownerId')
+    Vue.http.get(`/owner/getById?id=${ownerId}`)
+      .then((res) => res.json())
+      .then(json => {
+        this.ownerName = json.name
+      })
   }
 }
 </script>

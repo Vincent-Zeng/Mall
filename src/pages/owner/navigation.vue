@@ -21,27 +21,24 @@
 </template>
 
 <script>
-import Vue from 'vue'
 export default {
   name: 'owner-navigation',
 
   data () {
     console.log(this.$cookie.get('OwnerEmail'))
-
-    Vue.http.get('/product/searchByOwner?ownerId=1&pageNum=10&page=1', {
-      headers: {
-        'cookies': 'kljsdk=11111'
-      }
-    }).then(response => {
-      response.json().then(function (data) {
-        console.log(data)
-      })
-    }, (response) => {
-      console.log('Looks like there was a problem. Status Code: ' +
-      response.status)
-    })
+    // Vue.http.get('/product/searchByOwn?pageNum=10&page=1', {
+    //   headers: {
+    //     'cookies': 'kljsdk=11111'
+    //   }
+    // }).then(response => {
+    //   response.json().then(function (data) {
+    //     console.log(data)
+    //   })
+    // }, (response) => {
+    //   console.log('Looks like there was a problem. Status Code: ' +
+    //   response.status)
+    // })
     return {
-
     }
   },
   methods: {

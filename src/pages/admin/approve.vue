@@ -13,7 +13,7 @@
           <span class="approve-word approve-shop-created">Created Shop</span>
           <span class="approve-word approve-shop-name">{{ shop.name }}</span>
           <div class="function-button">
-            <div class="approve-button" @click="handleApproveButtonClicked($event, id)">Approve</div>
+            <div class="approve-button" @click="handleApproveButtonClicked($event, shop.id)">Approve</div>
             <div class="reject-button">Reject</div>
           </div>
         </div>
@@ -31,6 +31,7 @@
 <script>
 import Vue from 'vue'
 import foldinglist from './components/folding_list'
+
 export default {
   name: 'admin-approve',
   data () {
@@ -48,17 +49,20 @@ export default {
         .then((res) => res.json())
         .then(json => {
           console.log(json)
+          window.location.reload()
         }).catch((err) => {
           console.log(err)
+          window.location.reload()
         })
     }
   },
   created () {
     Vue.http.get('/shop/searchByStatus?status=3&page=1&count=10').then((response) => {
-      let shops = this.shops
+      let shops = []
       response.json().then(function (data) {
         for (let i = 0; i < data.length; i++) {
           const shop = data[i]
+          console.log(shop)
           shops.push({
             id: shop.id,
             idPhotoUrl: shop.idPhotoUrl,

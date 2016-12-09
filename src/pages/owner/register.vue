@@ -49,12 +49,23 @@ export default {
   name: 'owner-register',
   data () {
     return {
-
     }
   },
   methods: {
     handleSubmitRegisterForm () {
-      router.push('/owner/navigation/dashboard')
+      this.$http.post('/owner/register', {
+        'email': this.email,
+        'password': this.password,
+        'name': this.name
+      }).then(res => res.json())
+        .then(json => {
+          this.$cookie.set('ownerId', json.message)
+          console.log(this.$cookie.get('ownerId'))
+          router.push('/owner')
+        }).catch((err) => {
+          console.log(err)
+          this.alert(err)
+        })
     }
   }
 }

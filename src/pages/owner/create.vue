@@ -2,7 +2,7 @@
   <div class="owner-create-shop">
     <div class="btn-list">
       <div class="function-btn cancel-product-button"><router-link :to="{path:'/owner/navigation/shop'}">Cancel</router-link></div>
-      <div class="function-btn save-product-button" @click="handleSaveProductDetailClicked(product.id)">Save</div>
+      <div class="function-btn save-product-button" @click="handleSaveProductDetailClicked()">Save</div>
     </div>
 
     <div class="create-shop-panel">
@@ -15,6 +15,10 @@
         <p>
           <label for="shop-name">Name</label>
           <input type="text" v-model="shop.name" v-validate data-vv-rules="required" name="name" placeholder="Shop name"/>
+        </p>
+        <p>
+          <label for="shop-telephone">Telephone</label>
+          <input type="text" v-model="shop.telephone" v-validate data-vv-rules="required" name="telephone" placeholder="Shop telephone"/>
         </p>
         <p>
           <label for="shop-contact">Contact</label>
@@ -37,6 +41,7 @@
 
 <script>
 import photoaddbutton from './images/add-photo.png'
+import router from '../../routes'
 
 export default {
   name: 'owner-create-shop',
@@ -54,12 +59,13 @@ export default {
   methods: {
     handleSaveProductDetailClicked () {
       let body = JSON.stringify({ 'name': this.shop.name, 'telephone': this.shop.telephone, 'contact': this.shop.contact, 'idPhotoUrl': this.certificatephoto })
-      this.http.post('/shop/add', body)
+      this.$http.post('/shop/add', body)
         .then((res) => res.json())
         .then(json => {
-          console.log(json)
+          router.push('/owner/navigation')
         }).catch((err) => {
           console.log(err)
+          router.push('/owner/navigation')
         })
     },
     handleRemovePhotoClicked (event) {

@@ -28,21 +28,10 @@
 export default {
   name: 'owner-products',
   data () {
-    // let products = []
-    // for (var i = 0; i < 20; i++) {
-    //   products.push({
-    //     id: i + 1,
-    //     name: 'iPhone'
-    //   })
-    // }
-    return {
-      products: null
-    }
-  },
-  create () {
-    this.$http.get('/product/searchByOwner?page=1&pageNum=20')
+    this.$http.get('/product/searchByOwn')
       .then(res => res.json())
       .then(data => {
+        console.log(data)
         let products = []
         for (let i = 0; i < data.length; i++) {
           const product = data[i]
@@ -51,7 +40,13 @@ export default {
             name: product.name
           })
         }
+        this.products = products
       })
+    return {
+      products: null
+    }
+  },
+  created () {
   }
 }
 </script>

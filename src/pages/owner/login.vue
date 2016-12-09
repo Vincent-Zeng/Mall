@@ -51,16 +51,14 @@ export default {
       Vue.http.post('/owner/login', {
         'email': this.email,
         'password': this.password
-      }).then(response => {
-        response.json().then(function (data) {
-          Vue.cookie.set('ownerId', data.message)
+      }).then(res => res.json())
+        .then(json => {
+          Vue.cookie.set('ownerId', json.message)
           console.log(Vue.cookie.get('ownerId'))
+          router.push('/owner/navigation/shop')
+        }).catch((err) => {
+          console.log(err)
         })
-      }, (response) => {
-        console.log('Looks like there was a problem. Status Code: ' +
-        response.status)
-      })
-      router.push('/owner/navigation/dashboard')
     }
   }
 }
