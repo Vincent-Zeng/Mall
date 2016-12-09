@@ -2,3 +2,11 @@
 node_modules/
 dist/
 npm-debug.log
+.idea/
+config/index.js.bak
+index.html.bak
+mock/
+requesttest.js
+src/eslintfix.js
+src/pages/home.vue.bak
+user.json

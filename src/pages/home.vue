@@ -162,9 +162,8 @@ export default {
       router.push('/products')
       this.showRegister = false
       signup(this.telephone, this.name, this.password, this.email)
-      window.location.reload()
       this.$cookie.set('customerId', 1)
-
+      this.isLogin = true
       .then(res => res.json())
       .then(data => {
         console.log(data)
@@ -180,7 +179,7 @@ export default {
     handleSignInClick () {
       this.showLogin = false
       this.$cookie.set('customerId', 1)
-      window.location.reload()
+      this.isLogin = true
 
       login(this.telephone, this.password).then(function (response) {
         if (this.expire === 'checked') {
@@ -194,7 +193,7 @@ export default {
     },
     handleLogoutClicked () {
       this.$cookie.delete('customerId')
-      window.location.reload()
+      this.isLogin = false
     }
   },
   created () {
@@ -238,6 +237,10 @@ $color4:#258bde;
   a:first-child {
     color: red;
     margin-right: 10px;
+    cursor:pointer;
+  }
+
+  a:nth-child(2){
     cursor:pointer;
   }
 
