@@ -148,11 +148,12 @@ export default {
       var filePath = file.value
       if (!_files.length) return
       if (_files.length === 1) {
-        window.fetch('/upload', {
+        window.fetch('http://106.14.70.91:8000/upload', {
           method: 'POST',
           headers: {
             'file-name': filePath.substring(filePath.lastIndexOf('\\') + 1)
           },
+          mode: 'cors',
           body: _files[0]
         }).then(function (res) {
           return res.json()
