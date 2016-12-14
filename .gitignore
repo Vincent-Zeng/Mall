@@ -10,3 +10,5 @@ requesttest.js
 src/eslintfix.js
 src/pages/home.vue.bak
 user.json
+eslintfix.js
+.gitignore

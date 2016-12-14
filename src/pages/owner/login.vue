@@ -32,6 +32,10 @@
         </form>
       </div>
 
+      <div class="prompt" v-show="prompt">
+        {{prompt_message}}
+      </div>
+
     </div>
   </div>
 </template>
@@ -43,7 +47,8 @@ export default {
   name: 'owner-login',
   data () {
     return {
-
+      prompt: false,
+      prompt_message: ''
     }
   },
   methods: {
@@ -53,9 +58,18 @@ export default {
         'password': this.password
       }).then(res => res.json())
         .then(json => {
-          Vue.cookie.set('ownerId', json.message)
-          console.log(Vue.cookie.get('ownerId'))
-          router.push('/owner/navigation/shop')
+          if (json.status === 1) {
+            Vue.cookie.set('ownerId', json.message)
+            console.log(Vue.cookie.get('ownerId'))
+            router.push('/owner/navigation/shop')
+          } else {
+            this.prompt_message = json.message
+            this.prompt = true
+            var that = this
+            setTimeout(function () {
+              that.prompt = false
+            }, 2000)
+          }
         }).catch((err) => {
           console.log(err)
         })
@@ -150,4 +164,21 @@ h1 {
   margin: 20px auto;
 }
 
+.prompt{
+  background:gray;
+  border-radius:5px;
+  color:white;
+  position:fixed;
+  margin:auto;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  height:40px;
+  width: 500px;
+  text-align: center;
+  font-size:20px;
+  line-height:40px;
+  padding:10px 20px;
+}
 </style>
