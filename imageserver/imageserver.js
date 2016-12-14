@@ -10,7 +10,6 @@ var port = 8000
 server.listen(port)            // 在端口8000伤运行它
 
 var log = require('util').log
-log(process.cwd())
 log('Http Server is listening ' + port + ' port.')
 
 // Node使用'on'方法注册事件处理程序
@@ -21,15 +20,19 @@ server.on('request', function (request, response) {
   var filename = null
 
     // 解析请求的URL
-
+  if (request.method == 'OPTIONS') {
+    response.setHeader('Content-Type', 'json')
+    response.setHeader('access-control-allow-origin', '*')
+    response.setHeader('access-control-allow-headers', 'file-name,Content-Type')
+    response.end()
+    return
+  }
   var url = require('url').parse(request.url)
 
   switch (url.pathname) {
 
     case '/upload':
-      log(__dirname)
       var _fileName = request.headers['file-name']
-
       log(_fileName)
 
       request.once('data', function (data) {
@@ -41,14 +44,14 @@ server.on('request', function (request, response) {
         })
         response.setHeader('Content-Type', 'json')
         response.setHeader('access-control-allow-origin', '*')
+        response.setHeader('access-control-allow-headers', 'file-name,Content-Type')
         response.write(json)
         response.end()
       })
-
       break
-
     case '/' || '/index.html' :
       filename = 'index.html'
+      break
     default:
 
       filename = filename || url.pathname.substring(1)  // 去掉前导'/'
