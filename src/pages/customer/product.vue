@@ -12,7 +12,7 @@
           </div>
 
           <p class="product-name">{{ product.name }}</p>
-          <p class="product-price">${{ product.price }}</p>
+          <p class="product-price">${{ product.price.toFixed(2) }}</p>
 
           <div class="product-add-to-cart">
             Add to cart
