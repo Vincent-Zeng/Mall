@@ -58,7 +58,7 @@ export default {
     }
 
     return {
-      items: []
+      items: items
     }
   },
   computed: {
