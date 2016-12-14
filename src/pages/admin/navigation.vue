@@ -9,7 +9,7 @@
           <li class="selected-item"><router-link :to="{path:'/admin/navigation/dashboard'}">DASHBOARD</router-link></li>
           <li><router-link :to="{path:'/admin/navigation/approve'}">WAITING QUEUE</router-link></li>
           <li><router-link :to="{path:'/admin/navigation/owner'}">OWNER & SHOP</router-link></li>
-          <li>CUSTOMER</li>
+          <li><router-link :to="{path:'/admin/navigation/customer'}">CUSTOMER</router-link></li>
           <li>AD</li>
           <li>COMMISSION</li>
           <li>ORDER</li>
