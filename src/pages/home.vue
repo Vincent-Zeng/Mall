@@ -17,10 +17,12 @@
               <nav>
                 <span id="nav-home" ><router-link :to="{path:'/'}">HOME</router-link></span>
                 <span id="nav-products"><router-link :to="{path:'/products'}">PRODUCTS</router-link></span>
+                <span id="nav-orders"><router-link :to="{path:'/orders'}" v-show="isLogin">ORDERS</router-link></span>
+                <span id="nav-orders"><router-link :to="{path:'/cart'}" v-show="isLogin">CART</router-link></span>
               </nav>
           </div>
           <div class="search-box">
-            <button>2</button>
+            <router-link :to="{path:'/cart'}" v-show="false"><button>0</button></router-link>
           </div>
         </div>
       </header>
@@ -286,7 +288,11 @@ $color4:#258bde;
       text-decoration:none;
     }
 
-    #nav-home a{
+    #nav-home a {
+      color: $color1;
+    }
+
+    #nav-orders a {
       color: $color1;
     }
 
@@ -294,7 +300,7 @@ $color4:#258bde;
       border-bottom: 3px solid $color3;
     }
 
-    #nav-sale a{
+    #nav-sale a {
       color: red;
     }
 
@@ -312,6 +318,10 @@ $color4:#258bde;
   position: absolute;
   right: 0px;
   bottom: 15px;
+
+  a {
+    cursor: pointer;
+  }
 
   button {
     border-radius: 100%;

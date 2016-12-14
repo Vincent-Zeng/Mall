@@ -8,6 +8,8 @@ Vue.use(VueResource)
 import Home from './pages/home'
 import Products from './pages/customer/products'
 import Product from './pages/customer/product'
+import Orders from './pages/customer/orders'
+import Cart from './pages/customer/cart'
 import OwnerLogin from './pages/owner/login'
 import OwnerRegister from './pages/owner/register'
 import OwnerNavigation from './pages/owner/navigation'
@@ -36,6 +38,14 @@ const routes = [{
           component: Product
         }
       ]
+    },
+    {
+      path: '/orders',
+      component: Orders
+    },
+    {
+      path: '/cart',
+      component: Cart
     }
   ]
 }, {
