@@ -1,6 +1,13 @@
 <template>
   <div class="cart">
     <div class="cart-panel">
+
+      <div class="empty-cart" v-show="isEmptyCart">
+        <img src="./images/cart.png" alt="">
+        <span>YOUR SHOPPING CART IS</span>
+        <span>EMPTY</span>
+      </div>
+
       <div class="cart-item" v-for="item in items">
         <div class="cart-item-image">
           <img :src="item.url" alt="">
@@ -21,7 +28,7 @@
       </div>
     </div>
 
-    <div class="checkout-panel">
+    <div class="checkout-panel" v-show="!isEmptyCart">
       <div class="checkout-panel-content">
         <span class="checkout-total">Total</span>
         <div class="checkout-total-price">HK $ {{ this.totalPrice.toFixed(2) }}</div>
@@ -51,7 +58,7 @@ export default {
     }
 
     return {
-      items: items
+      items: []
     }
   },
   computed: {
@@ -59,6 +66,9 @@ export default {
       return this.items.reduce((result, item) => {
         return result + item.price * item.quantity
       }, 0)
+    },
+    isEmptyCart () {
+      return this.items.length === 0
     }
   },
   methods: {
@@ -89,7 +99,7 @@ export default {
 
 .cart-panel {
   // border: 1px solid #E4E4E4;
-  margin: 50px 100px;
+  margin: 50px 180px;
 
   .cart-item {
     display: inline-block;
@@ -217,7 +227,33 @@ export default {
       font-weight: bold;
     }
   }
+}
 
+.empty-cart {
+  text-align: center;
+  font-size: 40px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100px;
+  line-height: 100px;
+
+  img {
+    height: 200px;
+    display: block;
+    margin: auto;
+  }
+
+  span {
+    height: 100px;
+    line-height: 100px;
+  }
+
+
+  span:last-child {
+    font-weight: bold;
+  }
 }
 
 </style>
