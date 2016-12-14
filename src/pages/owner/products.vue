@@ -11,12 +11,12 @@
         <span>Products</span>
       </div>
       <div class="product-list">
-        <div class="product-item" v-for="product in products">
+        <div class="product-item" v-for="product in products" v-show="product.show">
           <span class="product-item-name">{{ product.name }}</span>
 
           <div class="function-button">
             <div class="edit-button"><router-link :to="{path:`/owner/navigation/products/${product.id}`}">Edit</router-link></div>
-            <div class="remove-button">Remove</div>
+            <div class="remove-button" @click=deleteproduct(product.id,product)>Remove</div>
           </div>
         </div>
       </div>
@@ -37,13 +37,28 @@ export default {
           const product = data[i]
           products.push({
             id: product.id,
-            name: product.name
+            name: product.name,
+            show: true
           })
         }
         this.products = products
       })
     return {
       products: null
+    }
+  },
+  methods: {
+    deleteproduct (productid, product) {
+      console.log(productid)
+      this.$http.get(`/product/delete?id=${productid}`).then(function (res) {
+        return res.json()
+      }).then(function (json) {
+        if (json.status === 1) {
+          product.show = false
+        } else {
+          window.alert(json.message)
+        }
+      })
     }
   },
   created () {
