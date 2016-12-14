@@ -15,8 +15,8 @@
         <img class="customer-item-avatar" :src="customer.avatar" alt="">
         <span class="customer-item-customer">{{ customer.name }}</span>
         <div class="function-button" >
-          <div @click="suspend(customer, customer.id)" class="suspend-button">Suspend</div>
-          <div @click="suspend(customer, customer.id)" class="delete-button">Delete</div>
+          <div @click="suspendCustomer(customer.id)" class="suspend-button">Suspend</div>
+          <div @click="deleteCustomer(customer.id)" class="delete-button">Delete</div>
         </div>
       </div>
     </div>
@@ -44,12 +44,13 @@ export default {
   methods: {
     searchItems () {
     },
-    suspend (msg, id) {
+    suspendCustomer (id) {
+    },
+    deleteCustomer (id) {
     }
   },
   created () {
   }
-
 }
 </script>
 
