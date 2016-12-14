@@ -1,24 +1,34 @@
 <template>
   <div class="cart">
-    <div class="cart-item" v-for="item in items">
-
-      <div class="cart-item-image">
-        <img :src="item.url" alt="">
-      </div>
-      <div class="cart-item-info">
-        <p class="cart-item-name">{{ item.name }}</p>
-        <p class="cart-item-price">HK $ {{ item.price }}</p>
-      </div>
-
-      <div class="function-btn">
-        <div class="quantity-control-btn">
-          <span @click="reduceItem(item.id)">-</span>
-          <span class="quantity-label">{{ item.quantity }}</span>
-          <span @click="increaseItem(item.id)">+</span>
+    <div class="cart-panel">
+      <div class="cart-item" v-for="item in items">
+        <div class="cart-item-image">
+          <img :src="item.url" alt="">
         </div>
-        <p class="delete-btn" @click="removeItem(item.id)">Delete</p>
+        <div class="cart-item-info">
+          <p class="cart-item-name">{{ item.name }}</p>
+          <p class="cart-item-price">HK $ {{ item.price }}</p>
+        </div>
+
+        <div class="function-btn">
+          <div class="quantity-control-btn">
+            <span @click="reduceItem(item.id)">-</span>
+            <span class="quantity-label">{{ item.quantity }}</span>
+            <span @click="increaseItem(item.id)">+</span>
+          </div>
+          <p class="delete-btn" @click="removeItem(item.id)">Delete</p>
+        </div>
       </div>
     </div>
+
+    <div class="checkout-panel">
+      <div class="checkout-panel-content">
+        <span class="checkout-total">Total</span>
+        <div class="checkout-total-price">HK $ 1698.00</div>
+        <button class="checkout-btn" type="button" name="button">Check Out</button>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -30,7 +40,7 @@ export default {
   name: 'cart',
   data () {
     let items = []
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 20; i++) {
       items.push({
         id: i,
         url: pic,
@@ -69,7 +79,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 
-.cart {
+.cart-panel {
   // border: 1px solid #E4E4E4;
   margin: 50px 100px;
 
@@ -163,6 +173,43 @@ export default {
       }
     }
   }
+}
+
+.checkout-panel {
+  position: fixed;
+  bottom: 0px;
+  height: 100px;
+  width: 100%;
+  border-top: 1px solid #e4e4e4;
+  background-color: white;
+
+  .checkout-panel-content {
+    text-align: center;
+    line-height: 100px;
+
+    .checkout-total {
+      font-size: 16px;
+    }
+
+    .checkout-total-price {
+      display: inline-block;
+      margin-right: 30px;
+      font-size: 20px;
+      color: #FF3F13;
+    }
+
+    .checkout-btn {
+      color: white;
+      background-color: #0077D8;
+      width: 444px;
+      height: 56px;
+      border: none;
+      border-radius: 28px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+
 }
 
 </style>
