@@ -7,7 +7,7 @@
         </div>
         <div class="cart-item-info">
           <p class="cart-item-name">{{ item.name }}</p>
-          <p class="cart-item-price">HK $ {{ item.price }}</p>
+          <p class="cart-item-price">HK $ {{ item.price.toFixed(2) }}</p>
         </div>
 
         <div class="function-btn">
@@ -24,7 +24,7 @@
     <div class="checkout-panel">
       <div class="checkout-panel-content">
         <span class="checkout-total">Total</span>
-        <div class="checkout-total-price">HK $ 1698.00</div>
+        <div class="checkout-total-price">HK $ {{ this.totalPrice.toFixed(2) }}</div>
         <button class="checkout-btn" type="button" name="button">Check Out</button>
       </div>
     </div>
@@ -45,12 +45,20 @@ export default {
         id: i,
         url: pic,
         name: 'iPhone 7 16G Jet Black',
-        price: '649.00',
+        price: 649.00,
         quantity: 1
       })
     }
+
     return {
       items: items
+    }
+  },
+  computed: {
+    totalPrice () {
+      return this.items.reduce((result, item) => {
+        return result + item.price * item.quantity
+      }, 0)
     }
   },
   methods: {
