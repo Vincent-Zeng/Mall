@@ -123,6 +123,9 @@ export default {
       img {
         display: block;
         vertical-align: middle;
+        max-height: 80px;
+        max-width: 80px;
+        margin: auto;
       }
     }
 
