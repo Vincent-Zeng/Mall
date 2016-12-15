@@ -115,11 +115,12 @@ export default {
           })
       } else {
         this.$http.post(`/product/update`, {
-          categoryId: this.product.categoryId,
+          id: this.product.id,
           photoURL: this.product.photo,
           detail: this.product.description,
           name: this.product.name,
-          price: parseInt(this.product.price)
+          price: parseInt(this.product.price),
+          categoryId: this.product.categoryId
         })
         .then((res) => res.json())
         .then((json) => {
