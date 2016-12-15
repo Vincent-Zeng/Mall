@@ -39,6 +39,10 @@
         </form>
       </div>
     </div>
+
+    <div class="prompt" v-show="prompt">
+      {{prompt_message}}
+    </div>
   </div>
 </template>
 
@@ -49,6 +53,8 @@ export default {
   name: 'owner-register',
   data () {
     return {
+      prompt: false,
+      prompt_message: ''
     }
   },
   methods: {
@@ -59,9 +65,18 @@ export default {
         'name': this.name
       }).then(res => res.json())
         .then(json => {
-          this.$cookie.set('ownerId', json.message)
-          console.log(this.$cookie.get('ownerId'))
-          router.push('/owner')
+          if (json.status === 1) {
+            this.$cookie.set('ownerId', json.message)
+            console.log(this.$cookie.get('ownerId'))
+            router.push('/owner')
+          } else {
+            this.prompt_message = json.message
+            this.prompt = true
+            var that = this
+            setTimeout(function () {
+              that.prompt = false
+            }, 2000)
+          }
         }).catch((err) => {
           console.log(err)
           this.alert(err)
@@ -153,5 +168,21 @@ h1 {
   }
 }
 
-
+.prompt{
+  background:gray;
+  border-radius:5px;
+  color:white;
+  position:fixed;
+  margin:auto;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  height:40px;
+  width: 500px;
+  text-align: center;
+  font-size:20px;
+  line-height:40px;
+  padding:10px 20px;
+}
 </style>
