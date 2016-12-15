@@ -29,12 +29,39 @@
       </div>
     </div>
 
-    <!-- <div class="info-panel">
+    <div class="info-panel">
       <div class="info-header">
         <img src="./images/products.png" alt="">
         <span>Information</span>
+        <section class="command-button">
+          <button v-show=disabled class="whitebutton" @click=editShop(true)>Edit</button>
+          <button v-show=!disabled class="whitebutton" @click=editShop(false)>Cancel</button>
+          <button v-show=!disabled class="bluebutton" @click=saveEdit()>Save</button>
+        </section>
       </div>
-    </div> -->
+      <div class = "info-content">
+        <section class="shop-name">
+          <label>Shop Name</label>
+          <input v-model="shop.name" disabled v-if=disabled />
+          <input v-model="shop.name" v-else />
+        </section>
+        <section class="shop-contact">
+          <label>Shop Contact</label>
+          <input v-model="shop.contact" disabled v-if=disabled />
+          <input v-model="shop.contact"  v-else />
+        </section>
+        <section class="shop-telephone">
+          <label>Shop Telephone</label>
+          <input v-model="shop.telephone" disabled v-if=disabled />
+          <input v-model="shop.telephone" v-else />
+        </section>
+        <section class="shop-email">
+          <label>Shop Email</label>
+          <input v-model="shop.email" disabled v-if=disabled />
+          <input v-model="shop.email" v-else />
+        </section>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -43,15 +70,42 @@ import Vue from 'vue'
 export default {
   name: 'owner-shop',
   data () {
+    var shop = {}
+    this.$http.get(`/shop/searchByOwner?id=${Vue.cookie.get('ownerId')}`)
+    .then((res) => res.json())
+    .then((json) => {
+      shop.id = json.id
+      shop.email = json.email
+      shop.idPhotoUrl = json.idPhotoUrl
+      shop.name = json.name
+      shop.contact = json.contact
+      shop.telephone = json.telephone
+      console.log(shop)
+    })
     return {
+      disabled: true,
       products: 0,
       sales: 0,
       income: 0,
       ownerName: null,
-      shopName: 'Nothing'
+      shopName: 'Nothing',
+      shop: shop
     }
   },
   methods: {
+    editShop (edit) {
+      this.disabled = !edit
+    },
+    saveEdit () {
+      this.$http.post(`/shop/update`, {
+        'contact': this.shop.contact,
+        'email': this.shop.email,
+        'telephone': this.shop.telephone,
+        'idPhotoUrl': this.shop.idPhotoUrl,
+        'name': this.shop.name
+      })
+      this.editShop(false)
+    }
   },
   created () {
     let ownerId = Vue.cookie.get('ownerId')
@@ -60,13 +114,25 @@ export default {
       .then(json => {
         this.ownerName = json.name
       })
+    Vue.http.get(`/product/getNum`)
+    .then((res) => res.json())
+    .then((json) => {
+      this.products = json.message
+      console.log(json)
+    })
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-
+$color1:gray;
+$color2:#f5f5f5;
+$color3:#0077d8;
+$color4:#258bde;
+:focus{
+  outline:none;
+}
 .owner-panel {
   position: absolute;
   margin: 56px 0px 28px 0px;
@@ -174,8 +240,8 @@ export default {
   left: 172px;
   right: 172px;
   border: 1px solid #E4E4E4;
-  height: 1000px;
   box-shadow: 0px 4px 14px rgba(121, 121, 121, 0.1);
+  padding-bottom:20px;
 }
 
 .info-header {
@@ -194,6 +260,48 @@ export default {
     margin-left: 65px;
     height: 80px;
     line-height: 80px;
+  }
+
+  .command-button{
+    float:right;
+    height:80px;
+    line-height:80px;
+    padding:0 20px;
+    button{
+      padding:10px 30px;
+      border-radius:3px;
+      cursor:pointer;
+    }
+    .whitebutton{
+      background:white;
+      border:1px solid $color4;
+      color:$color4;
+    }
+    .bluebutton{
+      background:$color4;
+      border:1px solid $color4;
+      color:white;
+    }
+  }
+}
+
+.info-content{
+  padding:0 28px;
+  font-size:16px;
+  line-height:50px;
+  label{
+    color:gray;
+  }
+  label::after{
+    content:" : ";
+  }
+  input{
+    border:none;
+    width:80%;
+    font-size:16px;
+  }
+  :focus{
+    outline:none;
   }
 }
 
