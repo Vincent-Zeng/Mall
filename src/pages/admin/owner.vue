@@ -11,25 +11,25 @@
     </div>
 
     <div class="owner-list">
-      <div class="owner-item" v-for="shop in shops" v-show="!isOwner && shop.show">
+      <div class="owner-item" v-for="shop in shops" v-show="!isOwner">
         <router-link :to="{path:'/admin/navigation/shopdetail'}" >
           <img class="owner-item-avatar" :src="shop.avatar" alt="">
           <span class="owner-item-owner">{{ shop.name }}</span>
         </router-link>
         <div class="function-button" >
-          <div @click="suspend(shop,shop.id)" class="suspend-button">Suspend</div>
-          <div @click="suspend(shop,shop.id)" class="delete-button">Delete</div>
+          <div @click="changeStatus(shop, 0, 1)" class="suspend-button">{{shop.status === 0 ? "Suspend" : "nomalize"}}</div>
+          <div @click="changeStatus(shop, 1, 1)" class="delete-button">{{shop.status !== 2 ? "Delete" : "resume"}}</div>
         </div>
       </div>
     </div>
 
     <div class="owner-list">
-      <div class="owner-item" v-for="owner in owners" v-show="isOwner && owner.show">
+      <div class="owner-item" v-for="owner in owners" v-show="isOwner">
         <span class="owner-item-owner">{{ owner.name }}</span>
 
         <div class="function-button">
-          <div @click="suspend(owner,owner.id)" class="suspend-button">Suspend</div>
-          <div @click="suspend(owner,owner.id)" class="delete-button">Delete</div>
+          <div @click="changeStatus(owner, 0, 0)" class="suspend-button" >{{owner.status === 0? "suspend" : "normalize"}}</div>
+          <div @click="changeStatus(owner, 1, 0)" class="delete-button" >{{owner.status !== 2? "delete" : "resume"}}</div>
         </div>
       </div>
     </div>
@@ -54,10 +54,45 @@ export default {
     },
     searchItems () {
     },
-    suspend (msg, id) {
-      msg.show = false
-      console.log(msg.show)
-      console.log(id)
+    changeStatus (item, whichbutton, whichsection) {
+      var newStatus = item.status
+      if (whichsection === 0) {
+        if (whichbutton === 0) {
+          newStatus = item.status === 0 ? 1 : 0
+        } else {
+          newStatus = item.status === 2 ? 0 : 2
+        }
+        this.$http.post(`/owner/update`, {
+          'status': newStatus,
+          'email': item.email,
+          'name': item.name,
+          'password': item.password,
+          'isEmailVerified': item.isEmailVerified
+        })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.status === 1) {
+            item.status = newStatus
+          } else {
+            window.alert(item.message)
+          }
+        })
+      } else {
+        if (whichbutton === 0) {
+          newStatus = item.status === 0 ? 1 : 0
+        } else {
+          newStatus = item.status === 2 ? 0 : 2
+        }
+        this.$http.get(`/shop/changeStatus?status=${newStatus}&id=${item.id}`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.status === 1) {
+            item.status = newStatus
+          } else {
+            window.alert(item.message)
+          }
+        })
+      }
     }
   },
   created () {
@@ -73,6 +108,7 @@ export default {
           const shop = data[i]
           shops.push({
             id: shop.id,
+            status: shop.status,
             avatar: shop.idPhotoUrl,
             owner: shop.contact,
             name: shop.name,
@@ -100,7 +136,9 @@ export default {
             id: owner.id,
             name: owner.name,
             email: owner.email,
-            show: true
+            status: owner.status,
+            password: owner.password,
+            isEmailVerified: owner.isEmailVerified
           })
         }
       })
