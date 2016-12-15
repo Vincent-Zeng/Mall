@@ -36,29 +36,29 @@
         <section class="command-button">
           <button v-show=disabled class="whitebutton" @click=editShop(true)>Edit</button>
           <button v-show=!disabled class="whitebutton" @click=editShop(false)>Cancel</button>
-          <button v-show=!disabled class="bluebutton">Save</button>
+          <button v-show=!disabled class="bluebutton" @click=saveEdit()>Save</button>
         </section>
       </div>
       <div class = "info-content">
         <section class="shop-name">
           <label>Shop Name</label>
-          <input :value=shop.name disabled v-if=disabled />
-          <input :value=shop.name v-else />
+          <input v-model="shop.name" disabled v-if=disabled />
+          <input v-model="shop.name" v-else />
         </section>
         <section class="shop-contact">
           <label>Shop Contact</label>
-          <input :value=shop.contact disabled v-if=disabled />
-          <input :value=shop.contact  v-else />
+          <input v-model="shop.contact" disabled v-if=disabled />
+          <input v-model="shop.contact"  v-else />
         </section>
         <section class="shop-telephone">
           <label>Shop Telephone</label>
-          <input :value=shop.telephone disabled v-if=disabled />
-          <input :value=shop.telephone v-else />
+          <input v-model="shop.telephone" disabled v-if=disabled />
+          <input v-model="shop.telephone" v-else />
         </section>
         <section class="shop-email">
           <label>Shop Email</label>
-          <input :value=shop.email disabled v-if=disabled />
-          <input :value=shop.email v-else />
+          <input v-model="shop.email" disabled v-if=disabled />
+          <input v-model="shop.email" v-else />
         </section>
       </div>
     </div>
@@ -70,19 +70,41 @@ import Vue from 'vue'
 export default {
   name: 'owner-shop',
   data () {
+    var shop = {}
+    this.$http.get(`/shop/searchByOwner?id=${Vue.cookie.get('ownerId')}`)
+    .then((res) => res.json())
+    .then((json) => {
+      shop.id = json.id
+      shop.email = json.email
+      shop.idPhotoUrl = json.idPhotoUrl
+      shop.name = json.name
+      shop.contact = json.contact
+      shop.telephone = json.telephone
+      console.log(shop)
+    })
     return {
-      disabled: false,
+      disabled: true,
       products: 0,
       sales: 0,
       income: 0,
       ownerName: null,
       shopName: 'Nothing',
-      shop: {}
+      shop: shop
     }
   },
   methods: {
     editShop (edit) {
       this.disabled = !edit
+    },
+    saveEdit () {
+      this.$http.post(`/shop/update`, {
+        'contact': this.shop.contact,
+        'email': this.shop.email,
+        'telephone': this.shop.telephone,
+        'idPhotoUrl': this.shop.idPhotoUrl,
+        'name': this.shop.name
+      })
+      this.editShop(false)
     }
   },
   created () {
@@ -92,16 +114,11 @@ export default {
       .then(json => {
         this.ownerName = json.name
       })
-
-    this.$http.get(`/shop/searchByOwner?id=${ownerId}`)
+    Vue.http.get(`/product/getNum`)
     .then((res) => res.json())
     .then((json) => {
-      this.shop.id = json.id
-      this.shop.email = json.email
-      this.shop.idPhotoUrl = json.idPhotoUrl
-      this.shop.name = json.name
-      this.shop.contact = json.contact
-      this.shop.telephone = json.telephone
+      this.products = json.message
+      console.log(json)
     })
   }
 }

@@ -208,7 +208,9 @@ export default {
   width: 200px;
   border: 1px solid #E4E4E4;
   overflow: hidden;
-  position: relative;
+  position:relative;
+  top:-60px;
+  left:170px;
   box-shadow: 0px 4px 14px 7px rgba(121, 121, 121, 0.05);
   background-repeat: no-repeat;
   background-size: auto;
