@@ -62,7 +62,11 @@ export default {
       this.$http.post('/shop/add', body)
         .then((res) => res.json())
         .then(json => {
-          router.push('/owner/navigation')
+          if (json.status === 1) {
+            router.push('/owner/navigation')
+          } else {
+            window.alert(json.message)
+          }
         }).catch((err) => {
           console.log(err)
           router.push('/owner/navigation')

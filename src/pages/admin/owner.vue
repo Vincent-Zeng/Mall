@@ -154,7 +154,7 @@ export default {
     }
   },
   created () {
-    Vue.http.get('/shop/searchAll?page=1&count=10').then((response) => {
+    Vue.http.get('/shop/searchAll?page=1&count=20').then((response) => {
       let shops = this.shops
       response.json().then(function (data) {
         if (response.status !== 200) {
@@ -180,7 +180,7 @@ export default {
            response.status)
     })
 
-    Vue.http.get('/owner/getAllOwner?page=1&pageNum=10').then((response) => {
+    Vue.http.get('/owner/getAllOwner?page=1&pageNum=20').then((response) => {
       let owners = this.owners
       response.json().then(function (data) {
         if (response.status !== 200) {
