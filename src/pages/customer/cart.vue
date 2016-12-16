@@ -32,7 +32,7 @@
       <div class="checkout-panel-content">
         <span class="checkout-total">Total</span>
         <div class="checkout-total-price">HK $ {{ this.totalPrice.toFixed(2) }}</div>
-        <button class="checkout-btn" type="button" name="button">Check Out</button>
+        <button class="checkout-btn" type="button" name="button" @click="handleCheckoutClicked">Check Out</button>
       </div>
     </div>
 
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-// import router from '../../routes'
+import router from '../../routes'
 import pic from './images/product.png'
 
 export default {
@@ -88,6 +88,9 @@ export default {
       this.items = this.items.filter((item) => {
         return item.id !== id
       })
+    },
+    handleCheckoutClicked () {
+      router.push('/checkout')
     }
   }
 }
@@ -228,6 +231,8 @@ export default {
       border-radius: 28px;
       font-size: 20px;
       font-weight: bold;
+      cursor: pointer;
+      outline: none;
     }
   }
 }

@@ -18,11 +18,11 @@
                 <span id="nav-home" ><router-link :to="{path:'/'}">HOME</router-link></span>
                 <span id="nav-products"><router-link :to="{path:'/products'}">PRODUCTS</router-link></span>
                 <span id="nav-orders"><router-link :to="{path:'/orders'}" v-show="isLogin">ORDERS</router-link></span>
-                <span id="nav-orders"><router-link :to="{path:'/cart'}" v-show="isLogin">CART</router-link></span>
+                <!-- <span id="nav-orders"><router-link :to="{path:'/cart'}" v-show="isLogin">CART</router-link></span> -->
               </nav>
           </div>
           <div class="search-box">
-            <router-link :to="{path:'/cart'}" v-show="false"><button>0</button></router-link>
+            <router-link :to="{path:'/cart'}"><button>0</button></router-link>
           </div>
         </div>
       </header>
@@ -275,7 +275,7 @@ $color4:#258bde;
   width: 30%;
 
   nav {
-    min-width: 300px;
+    min-width: 400px;
 
     span {
       margin: 0 20px;
