@@ -75,7 +75,9 @@ export default {
       router.push('/products/' + productId)
     },
     showDetailBox (show) {
+      console.log(this.showDetail)
       this.showDetail = show
+      console.log(this.showDetail)
       if (show) {
         this.oldScrollTop = document.body.scrollTop
         document.body.scrollTop = 0
@@ -107,9 +109,6 @@ export default {
           console.log(err)
         })
     }
-  },
-  beforeUpdate: function () {
-    this.showDetail = this.$route.params.id !== undefined
   },
   created () {
     console.log(search)

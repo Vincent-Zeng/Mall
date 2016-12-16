@@ -109,9 +109,18 @@ export default {
           router.push('/owner/navigation/products')
           console.log(json)
         }).catch((err) => {
+          console.log(`/product/add?categoryId=${this.product.categoryId}&photoURL=${this.product.photo}&detail=${this.product.description}&name=${this.product.name}&price=${parseInt(this.product.price)}`)
           router.push('/owner/navigation/products')
           console.log(err)
         })
+
+      // this.$http.post(`/product/add`, {
+      //   'categoryId': this.product.categoryId,
+      //   'photoURL': this.product.photo,
+      //   'detail': this.product.description,
+      //   'name': this.product.name,
+      //   'price': this.product.price
+      // })
       // } else {
       //   this.$http.post(`/product/update`, {
       //     categoryId: this.product.categoryId,

@@ -35,9 +35,34 @@ server.on('request', function (request, response) {
       var _fileName = request.headers['file-name']
       log(_fileName)
 
-      request.once('data', function (data) {
+      var buffers = []
+      var nread = 0
+      request.on('data', function (trunk) {
+        buffers.push(trunk)
+        nread += trunk.length
+      })
+      request.once('end', function () {
+        var buffer = null
+        switch (buffers.length) {
+          case 0:
+            buffer = new Buffer(0)
+            break
+          case 1:
+            buffer = buffers[0]
+            break
+          default:
+            buffer = new Buffer(nread)
+            for (let i = 0, pos = 0, l = buffers.length; i < l; i++) {
+              var trunk = buffers[i]
+              trunk.copy(buffer, pos)
+              pos += trunk.length
+            }
+            break
+        }
+
+        log(buffer.length)
         var _serverfilename = 'product' + Date.parse(new Date()) + _fileName.substring(_fileName.lastIndexOf('.'))
-        fs.writeFile(path.join(__dirname, 'upload', _serverfilename), data)
+        fs.writeFile(path.join(__dirname, 'upload', _serverfilename), buffer)
         var fileurl = 'http://localhost:8000/imageserver/upload/' + _serverfilename
         var json = JSON.stringify({
           'fileurl': fileurl

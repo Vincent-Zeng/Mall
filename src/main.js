@@ -16,7 +16,7 @@ Validator.extend('verify_password', {
   }
 })
 
-const baseURL = 'http://104.236.159.184:8080/web-ssm'
+const baseURL = 'http://106.14.70.91:8080/web-ssm'
 // const baseURL = 'http://172.20.10.14:8080'
 
 Vue.http.interceptors.push((request, next) => {

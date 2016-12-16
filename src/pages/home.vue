@@ -23,7 +23,6 @@
           </div>
           <div class="search-box">
             <router-link :to="{path:'/cart'}"><button>0</button></router-link>
-          </div>
         </div>
       </header>
 
@@ -164,14 +163,14 @@ export default {
       router.push('/products')
       this.showRegister = false
       signup(this.telephone, this.name, this.password, this.email)
-      this.$cookie.set('customerId', 1)
-      this.isLogin = true
       .then(res => res.json())
       .then(data => {
         console.log(data)
         if (data.status === 0) {
           this.alert(data.message)
         } else if (data.status === 1) {
+          this.$cookie.set('customerId', 1)
+          this.isLogin = true
           router.push('/products')
         }
       }).catch((err) => {
@@ -183,7 +182,7 @@ export default {
       this.$cookie.set('customerId', 1)
       this.isLogin = true
 
-      login(this.telephone, this.password).then(function (response) {
+      login(this.email, this.password).then(function (response) {
         if (this.expire === 'checked') {
           setCookie('username', 'password', 7)
         }
@@ -275,7 +274,7 @@ $color4:#258bde;
   width: 30%;
 
   nav {
-    min-width: 400px;
+    min-width: 600px;
 
     span {
       margin: 0 20px;
