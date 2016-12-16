@@ -6,7 +6,7 @@
       <span @click="handleSpanClicked('shop')" class="shop-span" v-bind:class="{ 'highlight-span': !isOwner, 'normal-span': isOwner }">Shop</span>
 
       <div class="search-box">
-        <input type="text" placeholder="Search" @keyup.enter="searchItems"/>
+        <input type="text" placeholder="Search" @keyup.enter="searchItems()" v-model="searchkey"/>
       </div>
     </div>
 
@@ -45,7 +45,8 @@ export default {
     return {
       shops: [],
       owners: [],
-      isOwner: isOwner
+      isOwner: isOwner,
+      searchkey: null
     }
   },
   methods: {
@@ -53,6 +54,63 @@ export default {
       this.isOwner = type === 'owner'
     },
     searchItems () {
+      if (this.isOwner) {
+        Vue.http.post('/adminOwner/searchOwner', {
+          'telephone': null,
+          'status': null,
+          'keyWord': this.searchkey,
+          'email': null
+        }).then((response) => {
+          let owners = []
+          response.json().then(function (data) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' +
+                   response.status)
+              return
+            }
+            for (let i = 0; i < data.length; i++) {
+              const owner = data[i]
+              owners.push({
+                id: owner.id,
+                name: owner.name,
+                email: owner.email,
+                status: owner.status,
+                password: owner.password,
+                isEmailVerified: owner.is_email_verified
+              })
+            }
+          })
+          this.owners = owners
+        }, (response) => {
+          console.log('Looks like there was a problem. Status Code: ' +
+               response.status)
+        })
+      } else {
+        Vue.http.get(`/shop/searchLike?name=${this.searchkey}`).then((response) => {
+          let shops = []
+          response.json().then(function (data) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' +
+                   response.status)
+              return
+            }
+            for (let i = 0; i < data.length; i++) {
+              const shop = data[i]
+              shops.push({
+                id: shop.id,
+                status: shop.status,
+                avatar: shop.idPhotoUrl,
+                owner: shop.contact,
+                name: shop.name,
+                show: true
+              })
+            }
+          })
+          this.shops = shops
+        }, (response) => {
+          console.log('Looks like there was a problem. Status Code: ' + response.status)
+        })
+      }
     },
     changeStatus (item, whichbutton, whichsection) {
       var newStatus = item.status

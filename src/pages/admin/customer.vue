@@ -5,7 +5,7 @@
       <span>Customer</span>
 
       <div class="search-box">
-        <input type="text" placeholder="Search" @keyup.enter="searchItems"/>
+        <input type="text" placeholder="Search" @keyup.enter="searchItems()" v-model="searchkey" />
       </div>
     </div>
 
@@ -29,11 +29,45 @@ export default {
   name: 'admin-owner',
   data () {
     return {
-      customers: []
+      customers: [],
+      searchkey: null
     }
   },
   methods: {
     searchItems () {
+      Vue.http.post('/adminCustomer/searchCustomer', {
+        'email': null,
+        'status': null,
+        'keyWord': this.searchkey,
+        'telephone': null
+      }).then((response) => {
+        var customers = []
+        console.log(customers)
+        response.json().then(function (data) {
+          if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+                 response.status)
+            return
+          }
+          for (let i = 0; i < data.length; i++) {
+            const customer = data[i]
+            customers.push({
+              id: customer.id,
+              status: customer.status,
+              email: customer.email,
+              telephone: customer.telephone,
+              name: customer.name,
+              password: customer.password,
+              is_email_verified: customer.is_email_verified
+            })
+          }
+        })
+        this.customers = customers
+        console.log(customers)
+      }, (response) => {
+        console.log('Looks like there was a problem. Status Code: ' +
+             response.status)
+      })
     },
     changeStatus (item, whichbutton) {
       var newStatus = item.status
