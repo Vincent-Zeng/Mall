@@ -18,12 +18,11 @@
                 <span id="nav-home" ><router-link :to="{path:'/'}">HOME</router-link></span>
                 <span id="nav-products"><router-link :to="{path:'/products'}">PRODUCTS</router-link></span>
                 <span id="nav-orders"><router-link :to="{path:'/orders'}" v-show="isLogin">ORDERS</router-link></span>
-                <span id="nav-orders"><router-link :to="{path:'/cart'}" v-show="isLogin">CART</router-link></span>
+                <!-- <span id="nav-orders"><router-link :to="{path:'/cart'}" v-show="isLogin">CART</router-link></span> -->
               </nav>
           </div>
           <div class="search-box">
-            <router-link :to="{path:'/cart'}" v-show="false"><button>0</button></router-link>
-          </div>
+            <router-link :to="{path:'/cart'}"><button>0</button></router-link>
         </div>
       </header>
 
