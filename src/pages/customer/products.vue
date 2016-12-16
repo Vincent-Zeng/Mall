@@ -17,12 +17,11 @@
               <img :src="product.url" alt="">
             </div>
             <div class="product-name">{{ product.name }}</div>
-            <div class="product-price">{{ product.price }}.00 HK $</div>
+            <div class="product-price">{{ product.price.toFixed(2) }} HK $</div>
           </router-link>
         </div>
       </div>
     </div>
-
 
     <div>
       <div class="product-detail" v-show="showDetail">
@@ -75,9 +74,7 @@ export default {
       router.push('/products/' + productId)
     },
     showDetailBox (show) {
-      console.log(this.showDetail)
       this.showDetail = show
-      console.log(this.showDetail)
       if (show) {
         this.oldScrollTop = document.body.scrollTop
         document.body.scrollTop = 0
@@ -96,7 +93,6 @@ export default {
           let products = []
           for (let i = 0; i < data.length; i++) {
             const product = data[i]
-            console.log(product)
             products.push({
               id: product.id,
               name: product.name,
@@ -111,14 +107,12 @@ export default {
     }
   },
   created () {
-    console.log(search)
     search(0, '')
       .then(res => res.json())
       .then(data => {
         let products = []
         for (let i = 0; i < data.length; i++) {
           const product = data[i]
-          console.log(product)
           products.push({
             id: product.id,
             name: product.name,
