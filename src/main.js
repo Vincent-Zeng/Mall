@@ -3,9 +3,12 @@ import App from './app'
 import router from './routes'
 import VeeValidate, { Validator } from 'vee-validate'
 import VueCookie from 'vue-cookie'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
 
 Vue.use(VeeValidate)
 Vue.use(VueCookie)
+Vue.use(ElementUI)
 
 // form validate
 Validator.extend('verify_password', {

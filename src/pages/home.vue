@@ -160,20 +160,38 @@ export default {
     },
     handleSignUpClick () {
       router.push('/products')
+      this.$cookie.set('customerId', 1)
+
       this.showRegister = false
       signup(this.telephone, this.name, this.password, this.email)
       .then(res => res.json())
       .then(data => {
         console.log(data)
         if (data.status === 0) {
-          this.alert(data.message)
+          this.$message({
+            message: 'Success',
+            type: 'success'
+          })
         } else if (data.status === 1) {
           this.$cookie.set('customerId', 1)
           this.isLogin = true
           router.push('/products')
+          this.$message({
+            message: 'Login Successfully',
+            type: 'success'
+          })
+        } else {
+          this.$message({
+            message: data.message,
+            type: 'warning'
+          })
         }
       }).catch((err) => {
         console.log(err)
+        this.$message({
+          message: 'Networking Error',
+          type: 'warning'
+        })
       })
     },
     handleSignInClick () {
@@ -186,9 +204,16 @@ export default {
           setCookie('username', 'password', 7)
         }
         this.showLogin = false
-        console.log(response)
+        this.$message({
+          message: 'Login Successfully',
+          type: 'success'
+        })
       }).catch(function (err) {
         console.log(err)
+        this.$message({
+          message: 'Networking Error',
+          type: 'warning'
+        })
       })
     },
     handleLogoutClicked () {

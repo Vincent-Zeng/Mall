@@ -75,12 +75,26 @@ export default {
   },
   methods: {
     handleAddToCartClicked (id) {
-      this.$http.get(`/Favorite/addProduct?id=${id}`)
+      this.$http.get(`/Favorite/addPoduct?id=${id}`)
         .then(res => res.json())
         .then(data => {
-          console.log(data)
+          if (data.status === 0) {
+            this.$message({
+              message: 'Success',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: data.message,
+              type: 'warning'
+            })
+          }
         }).catch((err) => {
           console.log(err)
+          this.$message({
+            message: 'Networking Error',
+            type: 'warning'
+          })
         })
     },
     handleAddToFavouriteClicked (id) {
@@ -89,9 +103,23 @@ export default {
       this.$http.get(`/Favorite/addShop?id=${shopId}`)
         .then(res => res.json())
         .then(data => {
-          console.log(data)
+          if (data.status === 0) {
+            this.$message({
+              message: 'Success',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: data.message,
+              type: 'warning'
+            })
+          }
         }).catch((err) => {
           console.log(err)
+          this.$message({
+            message: 'Networking Error',
+            type: 'warning'
+          })
         })
     }
   }
