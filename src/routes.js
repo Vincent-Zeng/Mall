@@ -10,6 +10,9 @@ import Products from './pages/customer/products'
 import Product from './pages/customer/product'
 import Orders from './pages/customer/orders'
 import Cart from './pages/customer/cart'
+import Checkout from './pages/customer/checkout'
+import Ad from './pages/customer/ad'
+import Shop from './pages/customer/shop'
 import OwnerLogin from './pages/owner/login'
 import OwnerRegister from './pages/owner/register'
 import OwnerNavigation from './pages/owner/navigation'
@@ -23,6 +26,7 @@ import AdminNavigation from './pages/admin/navigation'
 import AdminDashboard from './pages/admin/dashboard'
 import AdminApprove from './pages/admin/approve'
 import AdminOwner from './pages/admin/owner'
+import AdminCustomer from './pages/admin/customer'
 import ShopDetail from './pages/admin/shop-detail'
 import Customer from './pages/admin/customer'
 
@@ -32,13 +36,11 @@ const routes = [{
   children: [
     {
       path: '/products',
-      component: Products,
-      children: [
-        {
-          path: '/products/:id',
-          component: Product
-        }
-      ]
+      component: Products
+    },
+    {
+      path: '/products/:id',
+      component: Product
     },
     {
       path: '/orders',
@@ -47,6 +49,18 @@ const routes = [{
     {
       path: '/cart',
       component: Cart
+    },
+    {
+      path: '/checkout',
+      component: Checkout
+    },
+    {
+      path: '/',
+      component: Ad
+    },
+    {
+      path: '/shops/:id',
+      component: Shop
     }
   ]
 }, {
@@ -110,6 +124,10 @@ const routes = [{
     {
       path: '/admin/navigation/shopdetail',
       component: ShopDetail
+    },
+    {
+      path: '/admin/navigation/customer',
+      component: AdminCustomer
     }
   ]
 }]
