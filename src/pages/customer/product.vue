@@ -75,10 +75,10 @@ export default {
   },
   methods: {
     handleAddToCartClicked (id) {
-      this.$http.get(`/Favorite/addPoduct?id=${id}`)
+      this.$http.get(`/Favorite/addProduct?id=${id}`)
         .then(res => res.json())
         .then(data => {
-          if (data.status === 0) {
+          if (data.status === 1) {
             this.$message({
               message: 'Success',
               type: 'success'

@@ -84,7 +84,6 @@ export default {
       item.quantity += 1
     },
     removeItem (id) {
-      console.log(id)
       this.items = this.items.filter((item) => {
         return item.id !== id
       })
@@ -92,6 +91,28 @@ export default {
     handleCheckoutClicked () {
       router.push('/checkout')
     }
+  },
+  created () {
+    this.$http.get('/cart/searchCart')
+      .then((res) => res.json())
+      .then((data) => {
+        let products = []
+        for (var i = 0; i < data.length; i++) {
+          let json = data[i]
+          products.push({
+            id: json.id,
+            url: json.photoURL,
+            quantity: json.amount,
+            name: json.name,
+            price: json.price
+          })
+        }
+        this.items = products
+        console.log(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 }
 
