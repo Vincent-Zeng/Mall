@@ -1,0 +1,216 @@
+<template>
+  <div class="orders">
+    <div class="order-header">
+      <img src="./images/shop-name.png" alt="">
+      <span>ORDER</span>
+
+      <div class="search-box">
+        <input type="text" placeholder="Search" @keyup.enter="searchItems"/>
+      </div>
+    </div>
+
+    <div class="order-list">
+      <div class="order" v-for="order in orders">
+        <div class="order-item" >
+          <img class="order-item-avatar" :src="order.avatar" alt="">
+          <span class="order-item-order">{{ order.name }}</span>
+        </div>
+        <div class="order-detail-collapse" v-if="order.status >= 1">
+          <div class="order-status order-info">
+            <span class="prompt">Status</span>
+            <span class="value">Preparing</span>
+          </div>
+        </div>
+        <div class="order-detail" v-if="order.status < 1">
+          <div class="order-shipment-company order-info">
+            <span class="prompt">Shipment Company</span>
+            <span class="value">EMS</span>
+          </div>
+          <div class="order-shipment-number order-info">
+            <span class="prompt">Shipment Number</span>
+            <span class="value">31237189731</span>
+          </div>
+          <div class="order-status order-info">
+            <span class="prompt">Status</span>
+            <span class="value">Preparing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import pic from './images/product.png'
+
+export default {
+  name: 'orders',
+  data () {
+    let orders = []
+    for (var i = 0; i < 10; i++) {
+      orders.push({
+        id: i,
+        avatar: pic,
+        name: 'Shop Name',
+        products: [
+          {
+            id: i,
+            url: pic,
+            name: 'iPhone 7 16G Jet Black',
+            price: 649.00,
+            quantity: 1
+          },
+          {
+            id: i + 1,
+            url: pic,
+            name: 'iPhone 7 16G Jet Black',
+            price: 649.00,
+            quantity: 1
+          }
+        ],
+        status: i % 3,
+        collapse: i < 1
+      })
+    }
+    return {
+      orders: orders
+    }
+  },
+  methods: {
+    searchItems () {
+    }
+  },
+  created () {
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss" scoped>
+
+.orders {
+  position: absolute;
+  margin: 56px 0px;
+  left: 172px;
+  right: 172px;
+  border: 1px solid #E4E4E4;
+}
+
+.order-header {
+  position: relative;
+
+  img {
+    margin-left: 28px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  span {
+    color: #2B2B2B;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 65px;
+    height: 80px;
+    line-height: 80px;
+  }
+
+  .search-box {
+    display: inline-block;
+    width: 500px;
+    text-align: right;
+    position: absolute;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    input {
+        background-image: url(./images/search_icon.png);
+        background-repeat: no-repeat;
+        background-position: 20px center;
+        background-size: 36px 36px;
+        width: 50%;
+        height: 50px;
+        border-radius: 100px;
+        background-color: #f5f5f5;
+        border: none;
+        padding-left: 70px;
+        font-size: 18px;
+        outline: none;
+    }
+  }
+}
+
+.order-list {
+  margin-left: 28px;
+  margin-right: 28px;
+
+  .order {
+    .order-item {
+      height: 88px;
+      position: relative;
+      border-top: 1px solid #EEEEEE;
+
+      .order-item-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .order-item-order {
+        color: #0077D8;
+        margin-left: 50px;
+        font-size: 18px;
+        font-weight: normal;
+        line-height: 88px;
+        height: 88px;
+      }
+    }
+
+    .order-detail,
+    .order-detail-collapse {
+      background-color: #fafafa;
+      height: 240px;
+
+      .order-shipment-company {
+        border-bottom: 1px solid #EEEEEE;
+      }
+
+      .order-shipment-number {
+        border-bottom: 1px solid #EEEEEE;
+      }
+
+      .order-info {
+        height: 80px;
+        position: relative;
+        margin-left: 27px;
+        margin-right: 27px;
+
+        .prompt {
+          color: #ACACAC;
+          font-size: 20px;
+          height: 80px;
+          line-height: 80px;
+        }
+
+        .value {
+          position: absolute;
+          left: 200px;
+          color: #2B2B2B;
+          font-size: 20px;
+          height: 80px;
+          line-height: 80px;
+        }
+      }
+    }
+
+    .order-detail-collapse {
+      height: 80px;
+    }
+  }
+}
+
+</style>
