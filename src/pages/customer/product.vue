@@ -26,7 +26,7 @@
       <div class="product-shop">
         <img class="product-shop-icon" src="./images/shop-name.png" alt="">
         <div class="product-shop-name"><router-link :to="{path:'/shops/' + shop.id}">{{ shop.name }}</router-link></div>
-        <div class="product-shop-favourite" @click="handleAddToFavouriteShopClicked(product.shopId)">Add to Favourite</div>
+        <div class="product-shop-favourite" @click="handleAddToFavouriteShopClicked(shop.id)">Add to Favourite</div>
       </div>
 
       <div class="product-comments">
@@ -75,12 +75,26 @@ export default {
   },
   methods: {
     handleAddToCartClicked (id) {
-      this.$http.get(`/Favorite/addProduct?id=${id}`)
+      this.$http.get(`/Favorite/addPoduct?id=${id}`)
         .then(res => res.json())
         .then(data => {
-          console.log(data)
+          if (data.status === 0) {
+            this.$message({
+              message: 'Success',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: data.message,
+              type: 'warning'
+            })
+          }
         }).catch((err) => {
           console.log(err)
+          this.$message({
+            message: 'Networking Error',
+            type: 'warning'
+          })
         })
     },
     handleAddToFavouriteClicked (id) {
@@ -89,9 +103,23 @@ export default {
       this.$http.get(`/Favorite/addShop?id=${shopId}`)
         .then(res => res.json())
         .then(data => {
-          console.log(data)
+          if (data.status === 0) {
+            this.$message({
+              message: 'Success',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: data.message,
+              type: 'warning'
+            })
+          }
         }).catch((err) => {
           console.log(err)
+          this.$message({
+            message: 'Networking Error',
+            type: 'warning'
+          })
         })
     }
   }
