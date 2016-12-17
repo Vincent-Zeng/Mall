@@ -1,14 +1,9 @@
 <template>
-  <div class="ad">
+  <div class="shop">
 
-    <router-link :to="{path:'/shops/' + 1}">
-      <div class="ad-panel">
-      </div>
-    </router-link>
-
-    <div class="product-panel">
+    <div class="shop-panel">
       <div class="product-hint">
-        Popular Now
+        {{ this.shop.name }}
       </div>
       <div class="product" v-for="product in products">
         <router-link :to="{path:'/products/' + product.id}">
@@ -28,7 +23,7 @@
 import pic from './images/product.png'
 
 export default {
-  name: 'ad',
+  name: 'shop',
   data () {
     let items = []
     for (var i = 0; i < 20; i++) {
@@ -36,13 +31,15 @@ export default {
         id: i,
         url: pic,
         name: 'iPhone 7 16G Jet Black',
-        price: 649.00,
-        quantity: 1
+        price: 649.00
       })
     }
 
     return {
-      products: items
+      products: items,
+      shop: {
+        name: 'Shop'
+      }
     }
   }
 }
@@ -60,7 +57,7 @@ export default {
   overflow: hidden;
 }
 
-.product-panel {
+.shop-panel {
   text-align: center;
 
   .product-hint {

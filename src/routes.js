@@ -12,6 +12,7 @@ import Orders from './pages/customer/orders'
 import Cart from './pages/customer/cart'
 import Checkout from './pages/customer/checkout'
 import Ad from './pages/customer/ad'
+import Shop from './pages/customer/shop'
 import OwnerLogin from './pages/owner/login'
 import OwnerRegister from './pages/owner/register'
 import OwnerNavigation from './pages/owner/navigation'
@@ -55,6 +56,10 @@ const routes = [{
     {
       path: '/',
       component: Ad
+    },
+    {
+      path: '/shops/:id',
+      component: Shop
     }
   ]
 }, {
