@@ -10,7 +10,7 @@
           <li><router-link :to="{path:'/admin/navigation/approve'}">WAITING QUEUE</router-link></li>
           <li><router-link :to="{path:'/admin/navigation/owner'}">OWNER & SHOP</router-link></li>
           <li><router-link :to="{path:'/admin/navigation/customer'}">CUSTOMER</router-link></li>
-          <li>AD</li>
+          <li><router-link :to="{path:'/admin/navigation/ad'}">AD</router-link></li>
           <li>COMMISSION</li>
           <li>ORDER</li>
         </ul>
@@ -41,7 +41,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .admin-navigation{
-  min-width:1300px;
+  min-width:1000px;
 }
 .logout {
   position: absolute;

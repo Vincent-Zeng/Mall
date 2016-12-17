@@ -21,6 +21,7 @@ import OwnerProducts from './pages/owner/products'
 import OwnerProductDetail from './pages/owner/product-detail'
 import OwnerShop from './pages/owner/shop'
 import OwnerCreateShop from './pages/owner/create'
+import OwnerAd from './pages/owner/ad'
 import AdminLogin from './pages/admin/login'
 import AdminNavigation from './pages/admin/navigation'
 import AdminDashboard from './pages/admin/dashboard'
@@ -28,6 +29,7 @@ import AdminApprove from './pages/admin/approve'
 import AdminOwner from './pages/admin/owner'
 import AdminCustomer from './pages/admin/customer'
 import ShopDetail from './pages/admin/shop-detail'
+import AdminAd from './pages/admin/ad'
 
 const routes = [{
   path: '/',
@@ -92,6 +94,10 @@ const routes = [{
     {
       path: '/owner/navigation/shop/create',
       component: OwnerCreateShop
+    },
+    {
+      path: '/owner/navigation/ad',
+      component: OwnerAd
     }
   ]
 }, {
@@ -107,6 +113,10 @@ const routes = [{
     {
       path: '/admin/navigation/dashboard',
       component: AdminDashboard
+    },
+    {
+      path: '/admin/navigation/ad',
+      component: AdminAd
     },
     {
       path: '/admin/navigation/approve',
