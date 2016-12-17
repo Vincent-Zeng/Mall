@@ -6,12 +6,12 @@
           <img src="./images/products.png" alt="">
           <span>Shops Top5</span>
         </div>
-        <div class="product-ad-list" v-for="product in productsReviewing">
-          <div class="product-ad" :style="{ backgroundImage:'url(' + product.productUrl + ')'}" v-show="product.show">
-            <span class="remove-photo-btn" @click="handleRemoveProductAdClicked(product)">×</span>
+        <div class="product-ad-list" v-for="shop in shopsPassed">
+          <div class="product-ad" :style="{ backgroundImage:'url(' + shop.photoUrl + ')'}" v-show="shop.show">
+            <span class="remove-photo-btn" @click="handleRemoveShopAdPassedClick(shop)">×</span>
           </div>
         </div>
-        <div class="product-image" :style="{ backgroundImage:'url(' + certificatephoto + ')' }" @click="showRegisterForm()" ></div>
+        <div class="product-image" :style="{ backgroundImage:'url(' + certificatephoto + ')' }" @click="showWaitingList(1)" ></div>
       </div>
     </div>
 
@@ -22,18 +22,18 @@
             <img src="./images/products.png" alt="">
             <span>Products Top10</span>
           </div>
-          <div class="product-ad-list" v-for="product in productsReviewing">
+          <div class="product-ad-list" v-for="product in productsPassed">
             <div class="product-ad" :style="{ backgroundImage:'url(' + product.productUrl + ')'}" v-show="product.show">
-              <span class="remove-photo-btn" @click="handleRemoveProductAdClicked(product)">×</span>
+              <span class="remove-photo-btn" @click="handleRemoveProductPassedAdClick(product)">×</span>
             </div>
           </div>
-          <div class="product-image" :style="{ backgroundImage:'url(' + certificatephoto + ')' }" @click="showRegisterForm()" ></div>
+          <div class="product-image" :style="{ backgroundImage:'url(' + certificatephoto + ')' }" @click="showWaitingList(0)" ></div>
         </div>
       </div>
 
     <div class="registerBox" v-show="showAddAd">
       <section>
-        <p class="close"><span v-on:click="showRegisterForm()">×</span></p>
+        <p class="close"><span v-on:click="showWaitingList()">×</span></p>
         <div class="owner-products">
           <div class="owner-product-list">
             <div class="owner-header">
@@ -45,7 +45,8 @@
                 <span class="product-item-name">{{ optionalProduct.name }}</span>
 
                 <div class="function-button">
-                  <div class="remove-button" @click=addProductAd(optionalProduct)>Add</div>
+                  <div class="bluebutton" @click=changeAdStatus(0,optionalProduct)>Approve</div>
+                  <div class="whitebutton" @click=changeAdStatus(1,optionalProduct)>Reject</div>
                 </div>
               </div>
             </div>
@@ -77,15 +78,10 @@ export default {
       oldScrollTop: null,
       optionalProducts: [],
       loaded: false,
-      shopAd: 1
+      shopsPassed: []
     }
   },
   created () {
-    this.$http.get(`/shopAd/status`)
-    .then((res) => res.json())
-    .then((json) => {
-      this.shopAd = json.status
-    })
     this.$http.get(`/productAd/getUnverified?page=1&pageNum=10`)
     .then((res) => res.json())
     .then((json) => {
@@ -105,7 +101,21 @@ export default {
         let data = json[i]
         this.productsPassed.push({
           productUrl: data.photoURL,
-          show: true
+          show: true,
+          id: data.id
+        })
+      }
+    })
+    this.$http.get(`/shopAd/verified?page=1&count=20`)
+    .then((res) => res.json())
+    .then((json) => {
+      for (let i = 0; i < json.length; i++) {
+        let data = json[i]
+        this.shopsPassed.push({
+          photoUrl: data.photoUrl,
+          show: true,
+          shopId: data.shopId,
+          adId: data.id
         })
       }
     })
@@ -116,112 +126,127 @@ export default {
       this.certificatephoto = photoaddbutton
       this.closebutton = false
     },
-    handleRemoveProductAdClicked (item) {
-      this.$http.get(`/productAd/delete?productAdId=${item.id}`)
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.status === 1) {
-          item.show = false
-        } else {
-          window.alert(json.message)
-        }
-      })
-    },
-    changeShopAdStatus () {
-      if (this.shopAd === 1) {
-        this.$http.get(`/shopAd/delete`)
+    handleRemoveProductPassedAdClick (item) {
+      this.$http.get(`/productAd/update?pAdId=${item.id}&status=3`)
         .then((res) => res.json())
         .then((json) => {
           if (json.status === 0) {
             window.alert(json.message)
           } else {
-            this.shopAd = 3
+            item.show = false
+          }
+        })
+    },
+    handleRemoveShopAdPassedClick (item) {
+      this.$http.get(`/shopAd/changeStatus?shopId=${item.shopId}&status=3`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.status === 0) {
+            window.alert(json.message)
+          } else {
+            item.show = false
+          }
+        })
+    },
+    changeAdStatus (operation, item) {
+      if (item.type === 0) {
+        let status = operation === 0 ? 1 : 2
+        this.$http.get(`/productAd/update?pAdId=${item.id}&status=${status}`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.status === 0) {
+            window.alert(json.message)
+          } else {
+            item.show = false
+            this.$http.get(`/productAd/getVerified`)
+            .then((res) => res.json())
+            .then((json) => {
+              this.productsPassed = []
+              for (let i = 0; i < json.length; i++) {
+                let data = json[i]
+                this.productsPassed.push({
+                  productUrl: data.photoURL,
+                  show: true,
+                  id: data.id
+                })
+              }
+            })
           }
         })
       } else {
-        this.$http.get(`/shopAd/add?photoUrl=${this.certificatephoto}`)
+        let status = operation === 0 ? 1 : 2
+        this.$http.get(`/shopAd/changeStatus?shopId=${item.shopId}&status=${status}`)
         .then((res) => res.json())
         .then((json) => {
           if (json.status === 0) {
             window.alert(json.message)
           } else {
-            this.shopAd = 0
+            item.show = false
+            this.$http.get(`/shopAd/verified?page=1&count=20`)
+            .then((res) => res.json())
+            .then((json) => {
+              this.shopsPassed = []
+              for (let i = 0; i < json.length; i++) {
+                let data = json[i]
+                this.shopsPassed.push({
+                  photoUrl: data.photoUrl,
+                  show: true,
+                  shopId: data.shopId,
+                  adId: data.id
+                })
+              }
+            })
           }
         })
       }
     },
-    addProductAd (item) {
-      this.$http.get(`/productAd/add?productId=${item.id}`)
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.status === 0) {
-          window.alert(json.message)
-        } else {
-          item.show = false
-        }
-      })
-    },
-    showRegisterForm () {
+    showWaitingList (type) {
       if (!this.showAddAd) {
         this.oldScrollTop = document.body.scrollTop
         document.body.scrollTop = 0
+        if (type === 0) {
+          this.$http.get(`/productAd/getUnverified?page=1&pageNum=20`)
+          .then((res) => res.json())
+          .then((json) => {
+            var optionalProducts = []
+            for (let i = 0; i < json.length; i++) {
+              let data = json[i]
+              optionalProducts.push({
+                productUrl: data.photoURL,
+                show: true,
+                type: 0,
+                id: data.id,
+                name: data.name
+              })
+            }
+            this.optionalProducts = optionalProducts
+          })
+        } else {
+          this.$http.get(`/shopAd/unverified?page=1&count=20`)
+          .then((res) => res.json())
+          .then((json) => {
+            var optionalProducts = []
+            for (let i = 0; i < json.length; i++) {
+              let data = json[i]
+              optionalProducts.push({
+                photoURL: data.photoUrl,
+                show: true,
+                type: 1,
+                shopId: data.shopId,
+                adId: data.id,
+                name: data.name
+              })
+            }
+            this.optionalProducts = optionalProducts
+          })
+        }
       } else {
         document.body.scrollTop = this.oldScrollTop
       }
       this.showAddAd = !this.showAddAd
-      if (!this.loaded) {
-        this.$http.get('/product/searchByOwn')
-        .then(res => res.json())
-        .then(data => {
-          console.log(data)
-          let optionalProducts = []
-          for (let i = 0; i < data.length; i++) {
-            const product = data[i]
-            console.log(product)
-            optionalProducts.push({
-              id: product.id,
-              name: product.name,
-              show: true
-            })
-          }
-          this.optionalProducts = optionalProducts
-          console.log(111)
-          console.log(this.optionalProducts)
-          console.log(optionalProducts)
-          this.loaded = true
-        })
-      }
     }
   },
   mounted () {
-    var file = document.getElementById('uploadbutton')
-    var that = this
-    file.onchange = function () {
-      var _files = this.files
-      console.log(_files)
-      console.log(file.value)
-      var filePath = file.value
-      if (!_files.length) return
-      if (_files.length === 1) {
-        window.fetch('http://106.14.70.91:8000/upload', {
-          method: 'POST',
-          headers: {
-            'file-name': filePath.substring(filePath.lastIndexOf('\\') + 1)
-          },
-          body: _files[0]
-        }).then(function (res) {
-          return res.json()
-        }).then(function (data) {
-          console.log(data.fileurl)
-          that.certificatephoto = data.fileurl
-          if (that.product !== photoaddbutton) {
-            that.closebutton = true
-          }
-        }).catch(function (error) {
-          console.log(error)
-        })
-      }
-    }
   }
 }
 </script>
@@ -275,11 +300,13 @@ button{
   background:white;
   border:1px solid $color4;
   color:$color4;
+  cursor:pointer;
 }
 .bluebutton{
   background:$color4;
   border:1px solid $color4;
   color:white;
+  cursor:pointer;
 }
 
 .product-image {

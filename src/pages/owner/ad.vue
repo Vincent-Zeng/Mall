@@ -102,27 +102,24 @@ export default {
     .then((json) => {
       this.shopAd = json.status
     })
-    this.$http.get(`/productAd/getUnverified?page=1&pageNum=10`)
+    this.$http.get(`/productAd/getPAdByOwner?page=1&pageNum=20`)
     .then((res) => res.json())
     .then((json) => {
       for (let i = 0; i < json.length; i++) {
         let data = json[i]
-        this.productsReviewing.push({
-          productUrl: data.photoURL,
-          show: true,
-          id: data.id
-        })
-      }
-    })
-    this.$http.get(`/productAd/getVerified`)
-    .then((res) => res.json())
-    .then((json) => {
-      for (let i = 0; i < json.length; i++) {
-        let data = json[i]
-        this.productsPassed.push({
-          productUrl: data.photoURL,
-          show: true
-        })
+        if (data.status === 0) {
+          this.productsReviewing.push({
+            productUrl: data.photoURL,
+            show: true,
+            id: data.id
+          })
+        }
+        if (data.status === 1) {
+          this.productsPassed.push({
+            productUrl: data.photoURL,
+            show: true
+          })
+        }
       }
     })
   },
@@ -194,28 +191,29 @@ export default {
       if (!this.showAddAd) {
         this.oldScrollTop = document.body.scrollTop
         document.body.scrollTop = 0
+
+        this.$http.get('/product/searchByOwnForAd?page=1&count=10')
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+          let optionalProducts = []
+          for (let i = 0; i < data.length; i++) {
+            const product = data[i]
+            console.log(product)
+            optionalProducts.push({
+              id: product.id,
+              name: product.name,
+              show: true,
+              photoURL: product.photoURL
+            })
+          }
+          this.optionalProducts = optionalProducts
+          this.loaded = true
+        })
       } else {
         document.body.scrollTop = this.oldScrollTop
       }
       this.showAddAd = !this.showAddAd
-      this.$http.get('/product/searchByOwnForAd?page=1&count=10')
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-        let optionalProducts = []
-        for (let i = 0; i < data.length; i++) {
-          const product = data[i]
-          console.log(product)
-          optionalProducts.push({
-            id: product.id,
-            name: product.name,
-            show: true,
-            photoURL: product.photoURL
-          })
-        }
-        this.optionalProducts = optionalProducts
-        this.loaded = true
-      })
     }
   },
   mounted () {
