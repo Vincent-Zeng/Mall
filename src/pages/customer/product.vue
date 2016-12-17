@@ -25,7 +25,7 @@
 
       <div class="product-shop">
         <img class="product-shop-icon" src="./images/shop-name.png" alt="">
-        <div class="product-shop-name">BestBuy Digital Shop</div>
+        <div class="product-shop-name"><router-link :to="{path:'/shops/' + shop.id}">{{ shop.name }}</router-link></div>
         <div class="product-shop-favourite" @click="handleAddToFavouriteShopClicked(product.shopId)">Add to Favourite</div>
       </div>
 
@@ -50,9 +50,16 @@ export default {
           name: data.name,
           price: data.price,
           url: data.photoURL,
-          description: data.detail,
-          shopId: data.shopId
+          description: data.detail
         }
+        this.$http.get(`/shop/searchById?id=${data.shopId}`)
+        .then(res => res.json())
+        .then(data => {
+          this.shop = {
+            id: data.id,
+            name: data.name
+          }
+        })
       })
     return {
       product: {
@@ -61,12 +68,14 @@ export default {
         price: 0,
         url: null,
         description: null
+      },
+      shop: {
       }
     }
   },
   methods: {
     handleAddToCartClicked (id) {
-      this.$http.get(`/favorite/addProduct?id=${id}`)
+      this.$http.get(`/Favorite/addProduct?id=${id}`)
         .then(res => res.json())
         .then(data => {
           console.log(data)
@@ -77,7 +86,7 @@ export default {
     handleAddToFavouriteClicked (id) {
     },
     handleAddToFavouriteShopClicked (shopId) {
-      this.$http.get(`/favorite/addShop?id=${shopId}`)
+      this.$http.get(`/Favorite/addShop?id=${shopId}`)
         .then(res => res.json())
         .then(data => {
           console.log(data)
@@ -105,6 +114,7 @@ h1 {
   flex-direction: row;
   justify-content: space-around;
   position:relative;
+  height: 400px;
 }
 
 .product-img {
