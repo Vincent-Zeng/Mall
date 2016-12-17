@@ -5,7 +5,7 @@
       <div class="product-hint">
         {{ this.shop.name }}
       </div>
-      <div class="" v-show="this.products.length === 0">
+      <div class="no-products" v-show="this.products.length === 0">
         No products for now
       </div>
       <div class="product" v-for="product in products">
@@ -81,6 +81,10 @@ export default {
     font-size: 40px;
     font-weight: bolder;
   }
+}
+
+.no-products {
+  font-size: 30px;
 }
 
 .product {
