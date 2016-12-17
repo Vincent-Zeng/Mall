@@ -7,17 +7,17 @@
 
     <div class="approve-list">
       <foldinglist  v-for="shop in shops">
-        <div slot="summary" class="approve-shop">
+        <div slot="summary" class="approve-shop" v-show="shop.show">
           <img class="approve-shop-avatar" :src="shop.idPhotoUrl" alt="">
           <span class="approve-word approve-shop-owner">{{ shop.owner }}</span>
           <span class="approve-word approve-shop-created">Created Shop</span>
           <span class="approve-word approve-shop-name">{{ shop.name }}</span>
           <div class="function-button">
-            <div class="approve-button" @click="handleApproveButtonClicked($event, shop.id)">Approve</div>
-            <div class="reject-button">Reject</div>
+            <div class="approve-button" @click="handleApproveButtonClicked($event, shop)">Approve</div>
+            <div class="reject-button" @click="handleRejectButtonClicked($event, shop)">Reject</div>
           </div>
         </div>
-        <div slot="detail" class="approve-shop-detail" >
+        <div slot="detail" class="approve-shop-detail" v-show="shop.show">
           <img class="owner-photo" :src="shop.idPhotoUrl" alt=""><div class="detail-right">
             <p class="owner-email">Email: {{ shop.email }}</p>
             <p class="owner-telephone">Telephone: {{ shop.telephone }}</p>
@@ -43,18 +43,29 @@ export default {
     foldinglist: foldinglist
   },
   methods: {
-    handleApproveButtonClicked (event, id) {
+    handleApproveButtonClicked (event, item) {
       event.stopPropagation()
-      Vue.http.post(`/shop/changeStatus?id=${id}&status=${0}`)
+      Vue.http.post(`/shop/changeStatus?id=${item.id}&status=${0}`)
         .then((res) => res.json())
         .then(json => {
           console.log(json)
-          window.location.reload()
+          item.show = false
         }).catch((err) => {
           console.log(err)
-          window.location.reload()
+        })
+    },
+    handleRejectButtonClicked (event, item) {
+      event.stopPropagation()
+      Vue.http.post(`/shop/changeStatus?id=${item.id}&status=2`)
+        .then((res) => res.json())
+        .then(json => {
+          console.log(json)
+          item.show = false
+        }).catch((err) => {
+          console.log(err)
         })
     }
+
   },
   created () {
     Vue.http.get('/shop/searchByStatus?status=3&page=1&count=10').then((response) => {
@@ -69,7 +80,8 @@ export default {
             owner: shop.contact,
             name: shop.name,
             email: shop.email,
-            telephone: shop.telephone
+            telephone: shop.telephone,
+            show: true
           })
         }
       })

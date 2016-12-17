@@ -1,22 +1,22 @@
 <template>
-  <div class="admin-customer">
-    <div class="customer-header">
-      <!-- <img src="./images/customer.png" alt=""> -->
-      <img src="./images/ring.png" alt="">
-      <span>Customers</span>
+  <div class="admin-owner">
+    <div class="owner-header">
+      <img src="./images/owner.png" alt="">
+      <span>Customer</span>
 
       <div class="search-box">
-        <input type="text" placeholder="Search" @keyup.enter="searchItems"/>
+        <input type="text" placeholder="Search" @keyup.enter="searchItems()" v-model="searchkey" />
       </div>
     </div>
 
-    <div class="customer-list">
-      <div class="customer-item" v-for="customer in customers">
-        <img class="customer-item-avatar" :src="customer.avatar" alt="">
-        <span class="customer-item-customer">{{ customer.name }}</span>
+    <div class="owner-list">
+      <div class="owner-item" v-for="customer in customers">
+        <router-link :to="{path:'/admin/navigation/customer_detail'}" >
+          <span class="owner-item-owner">{{ customer.name }}</span>
+        </router-link>
         <div class="function-button" >
-          <div @click="suspendCustomer(customer.id)" class="suspend-button">Suspend</div>
-          <div @click="deleteCustomer(customer.id)" class="delete-button">Delete</div>
+          <div @click="changeStatus(customer, 0)" class="suspend-button">{{customer.status === 0 ? "Suspend" : "nomalize"}}</div>
+          <div @click="changeStatus(customer, 1)" class="delete-button">{{customer.status !== 2 ? "Delete" : "resume"}}</div>
         </div>
       </div>
     </div>
@@ -24,39 +24,134 @@
 </template>
 
 <script>
-import pic from './images/avatar.png'
-
+import Vue from 'vue'
 export default {
-  name: 'admin-customer',
+  name: 'admin-owner',
   data () {
-    let customers = []
-    for (var i = 0; i < 10; i++) {
-      customers.push({
-        id: i,
-        avatar: pic,
-        name: 'Shop Name'
-      })
-    }
     return {
-      customers: customers
+      customers: [],
+      searchkey: null
     }
   },
   methods: {
     searchItems () {
+      Vue.http.post('/adminCustomer/searchCustomer', {
+        'email': null,
+        'status': null,
+        'keyWord': this.searchkey,
+        'telephone': null
+      }).then((response) => {
+        var customers = []
+        console.log(customers)
+        response.json().then(function (data) {
+          if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+                 response.status)
+            return
+          }
+          for (let i = 0; i < data.length; i++) {
+            const customer = data[i]
+            customers.push({
+              id: customer.id,
+              status: customer.status,
+              email: customer.email,
+              telephone: customer.telephone,
+              name: customer.name,
+              password: customer.password,
+              is_email_verified: customer.is_email_verified
+            })
+          }
+        })
+        this.customers = customers
+        console.log(customers)
+      }, (response) => {
+        console.log('Looks like there was a problem. Status Code: ' +
+             response.status)
+      })
     },
-    suspendCustomer (id) {
-    },
-    deleteCustomer (id) {
+    changeStatus (item, whichbutton) {
+      var newStatus = item.status
+      if (whichbutton === 0) {
+        newStatus = item.status === 0 ? 1 : 0
+      } else {
+        newStatus = item.status === 2 ? 0 : 2
+      }
+      if (newStatus === 0) {
+        this.$http.get(`/adminCustomer/whitelist?id=${item.id}`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.status === 1) {
+            item.status = newStatus
+          } else {
+            window.alert(json.message)
+          }
+        })
+      }
+      if (newStatus === 1) {
+        this.$http.get(`/adminCustomer/blacklist?id=${item.id}`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.status === 1) {
+            item.status = newStatus
+          } else {
+            window.alert(json.message)
+          }
+        })
+      }
+      if (newStatus === 2) {
+        this.$http.get(`/adminCustomer/delete?id=${item.id}`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.status === 1) {
+            item.status = newStatus
+          } else {
+            window.alert(json.message)
+          }
+        })
+      }
     }
   },
   created () {
+    Vue.http.post('/adminCustomer/searchCustomer', {
+      'email': null,
+      'status': null,
+      'keyWord': null,
+      'telephone': null
+    }).then((response) => {
+      var customers = this.customers
+      console.log(customers)
+      response.json().then(function (data) {
+        if (response.status !== 200) {
+          console.log('Looks like there was a problem. Status Code: ' +
+               response.status)
+          return
+        }
+        for (let i = 0; i < data.length; i++) {
+          const customer = data[i]
+          customers.push({
+            id: customer.id,
+            status: customer.status,
+            email: customer.email,
+            telephone: customer.telephone,
+            name: customer.name,
+            password: customer.password,
+            is_email_verified: customer.is_email_verified
+          })
+        }
+      })
+      this.customers = customers
+      console.log(customers)
+    }, (response) => {
+      console.log('Looks like there was a problem. Status Code: ' +
+           response.status)
+    })
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.admin-customer {
+.admin-owner {
   position: absolute;
   margin: 56px 0px;
   left: 172px;
@@ -64,7 +159,7 @@ export default {
   border: 1px solid #E4E4E4;
 }
 
-.customer-header {
+.owner-header {
   position: relative;
 
   img {
@@ -75,22 +170,11 @@ export default {
   }
 
   span {
-    color: #2B2B2B;
     font-size: 20px;
     font-weight: bold;
-    margin-left: 65px;
     height: 80px;
     line-height: 80px;
-  }
-
-  .customer-span {
     margin-left: 65px;
-    cursor:pointer;
-  }
-
-  .shop-span {
-    margin-left: 8px;
-    cursor:pointer;
   }
 
   .highlight-span {
@@ -127,16 +211,16 @@ export default {
   }
 }
 
-.customer-list {
+.owner-list {
   margin-left: 28px;
   margin-right: 28px;
 
-  .customer-item {
+  .owner-item {
     height: 88px;
     position: relative;
     border-top: 1px solid #EEEEEE;
 
-    .customer-item-avatar {
+    .owner-item-avatar {
       width: 30px;
       height: 30px;
       border-radius: 15px;
@@ -145,7 +229,7 @@ export default {
       transform: translateY(-50%);
     }
 
-    .customer-item-customer {
+    .owner-item-owner {
       color: #0077D8;
       margin-left: 50px;
       font-size: 18px;

@@ -40,6 +40,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.admin-navigation{
+  min-width:1300px;
+}
 .logout {
   position: absolute;
   top: 13px;

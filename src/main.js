@@ -27,7 +27,6 @@ Vue.http.interceptors.push((request, next) => {
   console.log(request.headers)
   next()
 })
-
 /* eslint-disable no-new */
 new Vue({
   render: h => h(App),

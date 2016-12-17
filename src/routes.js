@@ -28,6 +28,7 @@ import AdminApprove from './pages/admin/approve'
 import AdminOwner from './pages/admin/owner'
 import AdminCustomer from './pages/admin/customer'
 import ShopDetail from './pages/admin/shop-detail'
+import Customer from './pages/admin/customer'
 
 const routes = [{
   path: '/',
@@ -115,6 +116,10 @@ const routes = [{
     {
       path: '/admin/navigation/owner',
       component: AdminOwner
+    },
+    {
+      path: '/admin/navigation/customer',
+      component: Customer
     },
     {
       path: '/admin/navigation/shopdetail',
