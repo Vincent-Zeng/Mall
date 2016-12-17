@@ -11,10 +11,16 @@
 
     <div class="order-list">
       <div class="order" v-for="order in orders">
-        <div class="order-item" >
-          <img class="order-item-avatar" :src="order.avatar" alt="">
-          <span class="order-item-order">{{ order.name }}</span>
+
+        <div class="order-item">
+          <div class="order-img" v-for="product in order.products" >
+            <img class="order-item-avatar" :src="product.url" alt="">
+          </div>
+          <div class="order-created-at">
+            {{ order.createdAt }}
+          </div>
         </div>
+
         <div class="order-detail-collapse" v-if="order.status >= 1">
           <div class="order-status order-info">
             <span class="prompt">Status</span>
@@ -24,15 +30,15 @@
         <div class="order-detail" v-if="order.status < 1">
           <div class="order-shipment-company order-info">
             <span class="prompt">Shipment Company</span>
-            <span class="value">EMS</span>
+            <span class="value">{{ order.shipment.company }}</span>
           </div>
           <div class="order-shipment-number order-info">
             <span class="prompt">Shipment Number</span>
-            <span class="value">31237189731</span>
+            <span class="value">{{ order.shipment.number }}</span>
           </div>
           <div class="order-status order-info">
             <span class="prompt">Status</span>
-            <span class="value">Preparing</span>
+            <span class="value">{{ translateStatus(order.status) }}</span>
           </div>
         </div>
       </div>
@@ -69,7 +75,12 @@ export default {
           }
         ],
         status: i % 3,
-        collapse: i < 1
+        shipment: {
+          company: 'EMS',
+          number: 32198401741
+        },
+        collapse: i < 1,
+        createdAt: '2016-1-1 12:00:09'
       })
     }
     return {
@@ -78,6 +89,21 @@ export default {
   },
   methods: {
     searchItems () {
+    },
+    translateStatus (status) {
+      console.log(status)
+      switch (status) {
+        case 1:
+          return 'Preparing'
+        case 2:
+          return 'Shipping'
+        case 3:
+          return 'Received'
+        case 4:
+          return 'Done'
+        default:
+          return 'Preparing'
+      }
     }
   },
   created () {
@@ -147,27 +173,44 @@ export default {
 
   .order {
     .order-item {
-      height: 88px;
+      height: 150px;
       position: relative;
       border-top: 1px solid #EEEEEE;
+      border-bottom: 1px solid #EEEEEE;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
 
-      .order-item-avatar {
-        width: 30px;
-        height: 30px;
-        border-radius: 15px;
+      .order-img {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #E4E4E4;
+        position: relative;
+        margin-right: 20px;
+        img {
+          display: inline-block;
+          margin-right: 20px;
+          max-width: 85px;
+          max-height: 85px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      .order-created-at {
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        right: 20px;
       }
-
-      .order-item-order {
-        color: #0077D8;
-        margin-left: 50px;
-        font-size: 18px;
-        font-weight: normal;
-        line-height: 88px;
-        height: 88px;
-      }
+      // .order-item-order {
+      //   color: #0077D8;
+      //   margin-left: 50px;
+      //   font-size: 18px;
+      //   font-weight: normal;
+      //   line-height: 88px;
+      //   height: 88px;
+      // }
     }
 
     .order-detail,

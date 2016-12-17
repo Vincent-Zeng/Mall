@@ -41,6 +41,32 @@ export default {
         name: 'Shop'
       }
     }
+  },
+  created () {
+    this.$http.get(`/shop/searchById?id=${this.$route.params.id}`)
+    .then(res => res.json())
+    .then(data => {
+      this.shop = {
+        id: data.id,
+        name: data.name
+      }
+    })
+
+    this.$http.get(`/product/searchByShop?shopId=${this.$route.params.id}&count=100&page=1`)
+    .then(res => res.json())
+    .then(data => {
+      let products = []
+      for (let i = 0; i < data.length; i++) {
+        const product = data[i]
+        products.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          url: product.photoURL
+        })
+      }
+      this.products = products
+    })
   }
 }
 
