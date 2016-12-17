@@ -26,7 +26,7 @@
       <div class="product-shop">
         <img class="product-shop-icon" src="./images/shop-name.png" alt="">
         <div class="product-shop-name"><router-link :to="{path:'/shops/' + shop.id}">{{ shop.name }}</router-link></div>
-        <div class="product-shop-favourite" @click="handleAddToFavouriteShopClicked(product.shopId)">Add to Favourite</div>
+        <div class="product-shop-favourite" @click="handleAddToFavouriteShopClicked(shop.id)">Add to Favourite</div>
       </div>
 
       <div class="product-comments">
