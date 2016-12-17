@@ -11,6 +11,8 @@ import Product from './pages/customer/product'
 import Orders from './pages/customer/orders'
 import Cart from './pages/customer/cart'
 import Checkout from './pages/customer/checkout'
+import Ad from './pages/customer/ad'
+import Shop from './pages/customer/shop'
 import OwnerLogin from './pages/owner/login'
 import OwnerRegister from './pages/owner/register'
 import OwnerNavigation from './pages/owner/navigation'
@@ -33,13 +35,11 @@ const routes = [{
   children: [
     {
       path: '/products',
-      component: Products,
-      children: [
-        {
-          path: '/products/:id',
-          component: Product
-        }
-      ]
+      component: Products
+    },
+    {
+      path: '/products/:id',
+      component: Product
     },
     {
       path: '/orders',
@@ -52,6 +52,14 @@ const routes = [{
     {
       path: '/checkout',
       component: Checkout
+    },
+    {
+      path: '/',
+      component: Ad
+    },
+    {
+      path: '/shops/:id',
+      component: Shop
     }
   ]
 }, {

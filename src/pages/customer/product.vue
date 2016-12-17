@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="product">
+
       <div class="product-info">
         <div class="product-img">
           <img class="product-image" :src="product.url" alt="">
@@ -8,24 +9,24 @@
         <div class="product-detail">
           <div class="product-summary">
             <img src="./images/rating.png" alt="">
-            <p>21 reviews</p>
+            <p>0 reviews</p>
           </div>
 
           <p class="product-name">{{ product.name }}</p>
-          <p class="product-price">${{ product.price.toFixed(2) }}</p>
+          <p class="product-price">HK ${{ product.price.toFixed(2) }}</p>
 
-          <div class="product-add-to-cart">
+          <div class="product-add-to-cart" @click="handleAddToCartClicked(product.id)">
             Add to cart
           </div>
 
-          <p class="product-description">{{ product.description}}</p>
+          <p class="product-description">{{ product.description }}</p>
         </div>
       </div>
 
       <div class="product-shop">
         <img class="product-shop-icon" src="./images/shop-name.png" alt="">
         <div class="product-shop-name">BestBuy Digital Shop</div>
-        <div class="product-shop-favourite">Add to Favourite</div>
+        <div class="product-shop-favourite" @click="handleAddToFavouriteShopClicked(product.shopId)">Add to Favourite</div>
       </div>
 
       <div class="product-comments">
@@ -49,20 +50,41 @@ export default {
           name: data.name,
           price: data.price,
           url: data.photoURL,
-          description: data.detail
+          description: data.detail,
+          shopId: data.shopId
         }
       })
     return {
       product: {
         id: null,
         name: null,
-        price: null,
+        price: 0,
         url: null,
         description: null
       }
     }
   },
-  created () {
+  methods: {
+    handleAddToCartClicked (id) {
+      this.$http.get(`/favorite/addProduct?id=${id}`)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+        }).catch((err) => {
+          console.log(err)
+        })
+    },
+    handleAddToFavouriteClicked (id) {
+    },
+    handleAddToFavouriteShopClicked (shopId) {
+      this.$http.get(`/favorite/addShop?id=${shopId}`)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+        }).catch((err) => {
+          console.log(err)
+        })
+    }
   }
 }
 </script>
@@ -71,6 +93,11 @@ export default {
 <style lang="scss" scoped>
 h1 {
   font-weight: normal;
+}
+
+.product {
+  width: 800px;
+  margin: 100px auto;
 }
 
 .product-info {
@@ -91,6 +118,8 @@ h1 {
     top: 50%;
     left:50%;
     transform: translate(-50%,-50%);
+    max-height: 300px;
+    max-width: 300px;
   }
 }
 
@@ -130,6 +159,7 @@ h1 {
     color: #0077D8;
     padding-right: 20px;
     float: right;
+    cursor: pointer;
   }
 }
 
@@ -171,6 +201,7 @@ h1 {
     text-align: center;
     margin-top: 21px;
     margin-bottom: 21px;
+    cursor: pointer;
   }
 
   .product-description {
