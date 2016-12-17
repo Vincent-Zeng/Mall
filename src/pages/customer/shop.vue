@@ -5,6 +5,9 @@
       <div class="product-hint">
         {{ this.shop.name }}
       </div>
+      <div class="" v-show="this.products.length === 0">
+        No products for now
+      </div>
       <div class="product" v-for="product in products">
         <router-link :to="{path:'/products/' + product.id}">
           <div class="product-img">
@@ -20,23 +23,11 @@
 </template>
 
 <script>
-import pic from './images/product.png'
-
 export default {
   name: 'shop',
   data () {
-    let items = []
-    for (var i = 0; i < 20; i++) {
-      items.push({
-        id: i,
-        url: pic,
-        name: 'iPhone 7 16G Jet Black',
-        price: 649.00
-      })
-    }
-
     return {
-      products: items,
+      products: [],
       shop: {
         name: 'Shop'
       }
@@ -52,7 +43,7 @@ export default {
       }
     })
 
-    this.$http.get(`/product/searchByShop?shopId=${this.$route.params.id}&count=100&page=1`)
+    this.$http.get(`/product/searchByShop?id=${this.$route.params.id}&count=100&page=1`)
     .then(res => res.json())
     .then(data => {
       let products = []
