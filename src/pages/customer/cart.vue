@@ -19,11 +19,11 @@
 
         <div class="function-btn">
           <div class="quantity-control-btn">
-            <span @click="reduceItem(item.id)">-</span>
+            <span @click="reduceItem(item)">-</span>
             <span class="quantity-label">{{ item.quantity }}</span>
-            <span @click="increaseItem(item.id)">+</span>
+            <span @click="increaseItem(item)">+</span>
           </div>
-          <p class="delete-btn" @click="removeItem(item.id)">Delete</p>
+          <p class="delete-btn" @click="removeItem(item)">Delete</p>
         </div>
       </div>
     </div>
@@ -40,25 +40,37 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import router from '../../routes'
-import pic from './images/product.png'
+
+function reload (component) {
+  Vue.http.get('/cart/searchCart')
+    .then((res) => res.json())
+    .then((data) => {
+      let products = []
+      for (var i = 0; i < data.length; i++) {
+        let json = data[i]
+        products.push({
+          id: json.id,
+          url: json.photoURL,
+          quantity: json.amount,
+          name: json.name,
+          price: json.price
+        })
+      }
+      component.items = products
+      console.log(data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
 
 export default {
   name: 'cart',
   data () {
-    let items = []
-    for (var i = 0; i < 20; i++) {
-      items.push({
-        id: i,
-        url: pic,
-        name: 'iPhone 7 16G Jet Black',
-        price: 649.00,
-        quantity: 1
-      })
-    }
-
     return {
-      items: items
+      items: []
     }
   },
   computed: {
@@ -72,47 +84,50 @@ export default {
     }
   },
   methods: {
-    reduceItem (id) {
-      let item = this.items[id]
+    reduceItem (item) {
       if (item.quantity <= 0) {
         return
       }
       item.quantity -= 1
-    },
-    increaseItem (id) {
-      let item = this.items[id]
-      item.quantity += 1
-    },
-    removeItem (id) {
-      this.items = this.items.filter((item) => {
-        return item.id !== id
+      this.$http.get(`/cart/updateAmount?id=${item.id}&amount=${item.quantity}`)
+      .then((res) => res.json())
+      .then(data => {
+        reload(this)
       })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    increaseItem (item) {
+      item.quantity += 1
+      this.$http.get(`/cart/updateAmount?id=${item.id}&amount=${item.quantity}`)
+        .then((res) => res.json())
+        .then(data => {
+          reload(this)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    removeItem (item) {
+      this.$http.get(`/cart/deleteProductInCart?id=${item.id}`)
+        .then((res) => res.json())
+        .then(data => {
+          reload(this)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      // this.items = this.items.filter((item) => {
+      //   return item.id !== id
+      // })
     },
     handleCheckoutClicked () {
       router.push('/checkout')
     }
   },
   created () {
-    this.$http.get('/cart/searchCart')
-      .then((res) => res.json())
-      .then((data) => {
-        let products = []
-        for (var i = 0; i < data.length; i++) {
-          let json = data[i]
-          products.push({
-            id: json.id,
-            url: json.photoURL,
-            quantity: json.amount,
-            name: json.name,
-            price: json.price
-          })
-        }
-        this.items = products
-        console.log(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    reload(this)
   }
 }
 

@@ -45,6 +45,7 @@ export default {
     fetchProduct(this.$route.params.id)
       .then(res => res.json())
       .then(data => {
+        console.log(data)
         this.product = {
           id: data.id,
           name: data.name,
@@ -75,7 +76,7 @@ export default {
   },
   methods: {
     handleAddToCartClicked (id) {
-      this.$http.get(`/Favorite/addProduct?id=${id}`)
+      this.$http.get(`/cart/addCart?id=${id}&amount=1`)
         .then(res => res.json())
         .then(data => {
           if (data.status === 1) {
@@ -98,6 +99,27 @@ export default {
         })
     },
     handleAddToFavouriteClicked (id) {
+      this.$http.get(`/Favorite/addProduct?id=${id}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 1) {
+            this.$message({
+              message: 'Success',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: data.message,
+              type: 'warning'
+            })
+          }
+        }).catch((err) => {
+          console.log(err)
+          this.$message({
+            message: 'Networking Error',
+            type: 'warning'
+          })
+        })
     },
     handleAddToFavouriteShopClicked (shopId) {
       this.$http.get(`/Favorite/addShop?id=${shopId}`)
