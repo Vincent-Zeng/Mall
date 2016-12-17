@@ -95,6 +95,11 @@ h1 {
   font-weight: normal;
 }
 
+.product {
+  width: 800px;
+  margin: 100px auto;
+}
+
 .product-info {
   display: flex;
   flex-direction: row;

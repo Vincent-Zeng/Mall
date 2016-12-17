@@ -33,13 +33,11 @@ const routes = [{
   children: [
     {
       path: '/products',
-      component: Products,
-      children: [
-        {
-          path: '/products/:id',
-          component: Product
-        }
-      ]
+      component: Products
+    },
+    {
+      path: '/products/:id',
+      component: Product
     },
     {
       path: '/orders',

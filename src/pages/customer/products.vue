@@ -11,7 +11,7 @@
         <div class="search-box">
           <input type="text" placeholder="Search here" v-model="keyword" @keyup.enter="searchProducts(0)"/>
         </div>
-        <div class="product" v-for="product in products" @click="showDetailBox(true)">
+        <div class="product" v-for="product in products">
           <router-link :to="{path:'/products/' + product.id}">
             <div class="product-img">
               <img :src="product.url" alt="">
@@ -21,16 +21,6 @@
           </router-link>
         </div>
       </div>
-    </div>
-
-    <div>
-      <div class="product-detail" v-show="showDetail">
-        <div class="box-top-bar">
-          <span @click="showDetailBox(false)"><router-link :to="{path:'/products'}">×</router-link></span>
-        </div>
-        <router-view></router-view>
-      </div>
-      <div class="shade" v-show="showDetail"></div>
     </div>
   </div>
 </template>
@@ -72,15 +62,6 @@ export default {
   methods: {
     handleDetailClicked (productId) {
       router.push('/products/' + productId)
-    },
-    showDetailBox (show) {
-      this.showDetail = show
-      if (show) {
-        this.oldScrollTop = document.body.scrollTop
-        document.body.scrollTop = 0
-      } else {
-        document.body.scrollTop = this.oldScrollTop
-      }
     },
     searchProducts (id) {
       let keyword = this.keyword
@@ -184,45 +165,6 @@ export default {
       color: #FF3F13;
       text-align: center;
     }
-  }
-
-  .product-detail {
-    position: absolute;
-    top: 100px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: 600px;
-    border: 1px solid $color2;
-    border-radius: 4px;
-    padding: 20px 30px;
-    z-index: 90;
-    background: white;
-    box-shadow: 4px 4px 20px $color1;
-  }
-
-  .box-top-bar {
-    color: gray;
-    height: 30px;
-    line-height: 30px;
-    span {
-      font-size: 30px;
-      float: right;
-    }
-    a {
-      color: gray;
-    }
-  }
-
-  .shade {
-    z-index: 89;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0.4;
-    background-color: black;
   }
 
   a {
