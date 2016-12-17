@@ -53,7 +53,7 @@ const routes = [{
       component: Checkout
     },
     {
-      path: '/ad',
+      path: '/',
       component: Ad
     }
   ]
