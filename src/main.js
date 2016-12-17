@@ -24,7 +24,6 @@ Vue.http.interceptors.push((request, next) => {
   let ownerId = Vue.cookie.get('ownerId')
   let customerId = Vue.cookie.get('customerId')
   request.headers.set('Authorization', `ownerId=${ownerId};customerId=${customerId}`)
-  console.log(request.headers)
   next()
 })
 /* eslint-disable no-new */
