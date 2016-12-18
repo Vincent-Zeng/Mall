@@ -1,13 +1,21 @@
 <template>
   <div class="ad">
 
-    <router-link :to="{path:'/shops/' + 1}">
-      <div class="ad-panel">
+    <div class="empty-cart" v-show="this.products.length === 0 && this.shops.length === 0">
+      <span>NO ADVERTISEMENT FOR</span>
+      <span>NOW</span>
+    </div>
+
+    <div class="ad-panel-all">
+      <div class="ad-panel" v-for="shop in shops">
+        <router-link :to="{path:'/shops/' + shop.id}">
+          <img :src="shop.url" alt="">
+        </router-link>
       </div>
-    </router-link>
+    </div>
 
     <div class="product-panel">
-      <div class="product-hint">
+      <div class="product-hint" v-show="this.products.length > 0">
         Popular Now
       </div>
       <div class="product" v-for="product in products">
@@ -25,25 +33,57 @@
 </template>
 
 <script>
-import pic from './images/product.png'
-
 export default {
   name: 'ad',
   data () {
-    let items = []
-    for (var i = 0; i < 20; i++) {
-      items.push({
-        id: i,
-        url: pic,
-        name: 'iPhone 7 16G Jet Black',
-        price: 649.00,
-        quantity: 1
-      })
-    }
-
     return {
-      products: items
+      products: [],
+      shops: []
     }
+  },
+  created () {
+    this.$http.get('/productAd/getVerified')
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      let products = []
+      for (var i = 0; i < data.length; i++) {
+        let json = data[i]
+        products.push({
+          id: json.id,
+          price: json.price,
+          name: json.name,
+          url: json.photoURL
+        })
+      }
+      this.products = products
+    }).catch((err) => {
+      console.log(err)
+      this.$message({
+        message: 'Networking Error',
+        type: 'warning'
+      })
+    })
+    this.$http.get('/shopAd/verified')
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      let shops = []
+      for (var i = 0; i < data.length; i++) {
+        let json = data[i]
+        shops.push({
+          id: json.shopId,
+          url: json.photoUrl
+        })
+      }
+      this.shops = shops
+    }).catch((err) => {
+      console.log(err)
+      this.$message({
+        message: 'Networking Error',
+        type: 'warning'
+      })
+    })
   }
 }
 
@@ -52,12 +92,22 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 
+.ad-panel-all {
+  margin: 0px 0px 20px 0px;
+  text-align: center;
+}
+
 .ad-panel {
-  margin: 0px 0px 70px 0px;
-  width: 100%;
-  height: 400px;
-  background-color: gray;
+  width: 16%;
+  height: 80px;
   overflow: hidden;
+  display: inline-block;
+  border: 1px solid #eeeeee;
+
+  img {
+    max-width: 100%;
+    max-height: 80px;
+  }
 }
 
 .product-panel {
@@ -104,6 +154,27 @@ export default {
     font-size: 18px;
     color: #FF3F13;
     text-align: center;
+  }
+}
+
+.empty-cart {
+  text-align: center;
+  font-size: 40px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100px;
+  line-height: 100px;
+
+  span {
+    height: 100px;
+    line-height: 100px;
+  }
+
+
+  span:last-child {
+    font-weight: bold;
   }
 }
 
