@@ -16,7 +16,7 @@
 
           <div class="function-button">
             <div class="edit-button"><router-link :to="{path:`/owner/navigation/products/${product.id}`}">Edit</router-link></div>
-            <div class="remove-button" @click=deleteproduct(product.id,product)>Remove</div>
+            <div class="remove-button" @click="deleteproduct(product.id,product)">Remove</div>
           </div>
         </div>
       </div>
