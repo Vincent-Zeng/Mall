@@ -6,7 +6,7 @@
           <img src="./images/products.png" alt="">
           <span>Shop AD</span>
           <div class="shop-apply">
-              <button class="whitebutton" @click="changeShopAdStatus()">{{this.shopAd === 1? "Withdray": (this.shopAd === 0 ? "Applyed" :"Apply")}}</button>
+              <button class="whitebutton" @click="changeShopAdStatus()">{{this.shopAd === 1? "Withdraw": (this.shopAd === 0 ? "Applyed" :"Apply")}}</button>
           </div>
         </div>
         <div class="product-image" :style="{ backgroundImage:'url(' + certificatephoto + ')' }">
