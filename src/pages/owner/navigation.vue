@@ -10,7 +10,7 @@
             <li class="selected-item"><router-link :to="{path:'/owner/navigation/dashboard'}">DASHBOARD</router-link></li>
             <li><router-link :to="{path:'/owner/navigation/shop'}">SHOP DETAIL</router-link></li>
             <li><router-link :to="{path:'/owner/navigation/products'}">PRODUCTS</router-link></li>
-            <li>AD</li>
+            <li><router-link :to="{path:'/owner/navigation/ad'}">AD</router-link></li>
             <li>ORDER</li>
           </ul>
         </nav>
@@ -70,6 +70,7 @@ h1 {
 
 .owner-navigation {
   margin-top: 0px;
+  min-width:1000px;
 }
 
 .navigation {
