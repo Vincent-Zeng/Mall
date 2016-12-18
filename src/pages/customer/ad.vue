@@ -50,7 +50,7 @@ export default {
       for (var i = 0; i < data.length; i++) {
         let json = data[i]
         products.push({
-          id: json.id,
+          id: json.productId,
           price: json.price,
           name: json.name,
           url: json.photoURL
