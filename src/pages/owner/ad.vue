@@ -28,7 +28,7 @@
             <span class="remove-photo-btn" @click="handleRemoveProductAdClicked(product)">×</span>
           </div>
         </div>
-        <div class="product-image" :style="{ backgroundImage:'url(' + certificatephoto + ')' }" @click="showRegisterForm()" ></div>
+        <div class="product-image" :style="{ backgroundImage:'url(' + photoaddbutton + ')' }" @click="showRegisterForm()" ></div>
       </div>
     </div>
 
@@ -81,6 +81,7 @@ export default {
   data () {
     return {
       certificatephoto: photoaddbutton,
+      photoaddbutton: photoaddbutton,
       closebutton: false,
       shop: {
         name: null,

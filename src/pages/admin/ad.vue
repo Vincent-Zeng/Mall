@@ -38,7 +38,7 @@
           <div class="owner-product-list">
             <div class="owner-header">
               <img src="./images/products.png" alt="">
-              <span>Products</span>
+              <span>Waiting Queue</span>
             </div>
             <div class="product-list">
               <div class="product-item" v-for="optionalProduct in optionalProducts" v-show="optionalProduct.show">
