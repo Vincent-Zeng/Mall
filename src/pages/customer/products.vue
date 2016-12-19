@@ -147,6 +147,7 @@ export default {
         display: block;
         margin: auto;
         position: relative;
+        width:80%;
         top: 50%;
         transform: translateY(-50%);
       }
