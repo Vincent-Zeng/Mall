@@ -123,7 +123,7 @@ export default {
       // })
     },
     handleCheckoutClicked () {
-      router.push('/checkout')
+      router.push(`/checkout?amount=${this.totalPrice}`)
     }
   },
   created () {

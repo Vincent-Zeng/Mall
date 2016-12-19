@@ -4,14 +4,14 @@
     <div class="checkout-panel">
       <div class="checkout-amount">
         <span class="prompt">Amount</span>
-        <span class="checkout-money value">HK$ 33.00</span>
+        <span class="checkout-money value">HK$ {{ amount.toFixed(2) }}</span>
       </div>
       <div class="checkout-via">
         <span class="prompt">Via</span>
         <span class="value">Alipay</span>
       </div>
       <div class="checkout-img">
-        <img src="./images/product.png" alt="">
+        <img src="./images/qrcode.jpg" alt="">
       </div>
       <button type="button" class="checkout-btn" @click="handleConfirmClicked">Confirm</button>
     </div>
@@ -25,6 +25,8 @@ import pic from './images/product.png'
 export default {
   name: 'cart',
   data () {
+    this.amount = this.$route.params.amount
+    console.log(this.$route.params.amount)
     let items = []
     for (var i = 0; i < 20; i++) {
       items.push({
@@ -37,12 +39,15 @@ export default {
     }
 
     return {
-      items: items
+      items: items,
+      amount: 5800
     }
   },
   methods: {
     handleConfirmClicked () {
     }
+  },
+  created () {
   }
 }
 
@@ -54,8 +59,8 @@ export default {
 .checkout-panel {
   margin: auto;
   margin-top: 50px;
-  width: 300px;
-  height: 400px;
+  width: 500px;
+  height: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
