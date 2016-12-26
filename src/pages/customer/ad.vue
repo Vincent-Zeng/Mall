@@ -1,17 +1,21 @@
 <template>
   <div class="ad">
-
     <div class="empty-cart" v-show="this.products.length === 0 && this.shops.length === 0">
       <span>NO ADVERTISEMENT FOR</span>
       <span>NOW</span>
     </div>
-
     <div class="ad-panel-all">
-      <div class="ad-panel" v-for="shop in shops">
-        <router-link :to="{path:'/shops/' + shop.id}">
-          <img :src="shop.url" alt="">
-        </router-link>
-      </div>
+      <swiper :options="swiperOption">
+        <swiper-slide v-for="shop in shops">
+          <router-link :to="{path:'/shops/' + shop.id}">
+            <img :src="shop.url" alt="" class="banner-img">
+          </router-link>
+        </swiper-slide>
+        <div class="swiper-pagination"  slot="pagination"></div>
+        <div class="swiper-button-prev" slot="button-prev"></div>
+        <div class="swiper-button-next" slot="button-next"></div>
+        <div class="swiper-scrollbar"   slot="scrollbar"></div>
+      </swiper>
     </div>
 
     <div class="product-panel">
@@ -33,12 +37,37 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import AwesomeSwiper from 'vue-awesome-swiper'
+Vue.use(AwesomeSwiper)
 export default {
   name: 'ad',
   data () {
+    let shops = []
+    for (let i = 0; i < 10; i++) {
+      let shop = {
+        id: 1,
+        url: 'http://ohcabv7e3.bkt.clouddn.com/monitor.jpg'
+      }
+      shops.push(shop)
+    }
     return {
       products: [],
-      shops: []
+      shops: shops,
+      swiperOption: {
+        notNextTick: true,
+        autoplay: 1000,
+        autoplayDisableOnInteraction: false,
+        grabCursor: true,
+        paginationClickable: true,
+        mousewheelControl: true,
+        observeParents: true,
+        autoHeight: true,
+        pagination: '.swiper-pagination',
+        prevButton: '.swiper-button-prev',
+        nextButton: '.swiper-button-next',
+        scrollbar: '.swiper-scrollbar'
+      }
     }
   },
   created () {
@@ -67,16 +96,16 @@ export default {
     this.$http.get('/shopAd/verified')
     .then(res => res.json())
     .then(data => {
-      console.log(data)
-      let shops = []
-      for (var i = 0; i < data.length; i++) {
-        let json = data[i]
-        shops.push({
-          id: json.shopId,
-          url: json.photoUrl
-        })
-      }
-      this.shops = shops
+      // console.log(data)
+      // let shops = []
+      // for (var i = 0; i < data.length; i++) {
+      //   let json = data[i]
+      //   shops.push({
+      //     id: json.shopId,
+      //     url: json.photoUrl
+      //   })
+      // }
+      // this.shops = shops
     }).catch((err) => {
       console.log(err)
       this.$message({
@@ -91,7 +120,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-
+.banner-img{
+  height: 200px;
+}
 .ad-panel-all {
   margin: 0px 0px 20px 0px;
   text-align: center;
