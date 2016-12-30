@@ -218,7 +218,7 @@ export default {
     },
     handleSignInClick () {
       this.showLogin = false
-      this.$cookie.set('customerId', 1)
+      this.$cookie.set('customerId', 15)
       this.isLogin = true
 
       login(this.email, this.password).then(function (response) {
