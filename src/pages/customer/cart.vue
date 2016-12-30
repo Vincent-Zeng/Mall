@@ -14,7 +14,7 @@
         </div>
         <div class="cart-item-info">
           <p class="cart-item-name">{{ item.name }}</p>
-          <p class="cart-item-price">HK $ {{ item.price.toFixed(2) }}</p>
+          <p class="cart-item-price">HK $ {{ item.price ? item.price.toFixed(2) : 0 }}</p>
         </div>
 
         <div class="function-btn">
