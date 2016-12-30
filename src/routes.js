@@ -32,10 +32,12 @@ import ShopDetail from './pages/admin/shop-detail'
 import AdminAd from './pages/admin/ad'
 
 const routes = [{
+  name: 'customer-home',
   path: '/',
   component: Home,
   children: [
     {
+      name: 'customer-products',
       path: '/products',
       component: Products
     },
@@ -44,6 +46,7 @@ const routes = [{
       component: Product
     },
     {
+      name: 'customer-orders',
       path: '/orders',
       component: Orders
     },
@@ -72,10 +75,12 @@ const routes = [{
   component: OwnerNavigation,
   children: [
     {
+      name: 'owner-dashboard',
       path: '/owner/navigation/dashboard',
       component: OwnerDashboard
     },
     {
+      name: 'owner-products',
       path: '/owner/navigation/products',
       component: OwnerProducts
     },
@@ -88,6 +93,7 @@ const routes = [{
       component: OwnerProductDetail
     },
     {
+      name: 'owner-shop',
       path: '/owner/navigation/shop',
       component: OwnerShop
     },
@@ -96,6 +102,7 @@ const routes = [{
       component: OwnerCreateShop
     },
     {
+      name: 'owner-ad',
       path: '/owner/navigation/ad',
       component: OwnerAd
     }
@@ -107,36 +114,38 @@ const routes = [{
   path: '/admin',
   component: AdminLogin
 }, {
+  name: 'admin-navigation',
   path: '/admin/navigation',
   component: AdminNavigation,
   children: [
     {
+      name: 'admin-dashboard',
       path: '/admin/navigation/dashboard',
       component: AdminDashboard
     },
     {
+      name: 'admin-ad',
       path: '/admin/navigation/ad',
       component: AdminAd
     },
     {
+      name: 'admin-approve',
       path: '/admin/navigation/approve',
       component: AdminApprove
     },
     {
+      name: 'admin-owner',
       path: '/admin/navigation/owner',
       component: AdminOwner
     },
     {
+      name: 'admin-customer',
       path: '/admin/navigation/customer',
       component: AdminCustomer
     },
     {
       path: '/admin/navigation/shopdetail',
       component: ShopDetail
-    },
-    {
-      path: '/admin/navigation/customer',
-      component: AdminCustomer
     }
   ]
 }]

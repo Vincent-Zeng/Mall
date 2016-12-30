@@ -7,11 +7,11 @@
       <header>
         <nav>
           <ul class="navigation">
-            <li class="selected-item"><router-link :to="{path:'/owner/navigation/dashboard'}">DASHBOARD</router-link></li>
-            <li><router-link :to="{path:'/owner/navigation/shop'}">SHOP DETAIL</router-link></li>
-            <li><router-link :to="{path:'/owner/navigation/products'}">PRODUCTS</router-link></li>
-            <li><router-link :to="{path:'/owner/navigation/ad'}">AD</router-link></li>
-            <li>ORDER</li>
+            <li @click="handleTabClick(0)" :class="{'selected-item': now === 0}"><router-link :to="{path:'/owner/navigation/dashboard'}">DASHBOARD</router-link></li>
+            <li @click="handleTabClick(1)" :class="{'selected-item': now === 1}"><router-link :to="{path:'/owner/navigation/shop'}">SHOP DETAIL</router-link></li>
+            <li @click="handleTabClick(2)" :class="{'selected-item': now === 2}"><router-link :to="{path:'/owner/navigation/products'}">PRODUCTS</router-link></li>
+            <li @click="handleTabClick(3)" :class="{'selected-item': now === 3}"><router-link :to="{path:'/owner/navigation/ad'}">AD</router-link></li>
+            <li @click="handleTabClick(4)" :class="{'selected-item': now === 4}">ORDER</li>
           </ul>
         </nav>
       </header>
@@ -38,13 +38,34 @@ export default {
     //   console.log('Looks like there was a problem. Status Code: ' +
     //   response.status)
     // })
+    let now = null
+    switch (this.$route.name) {
+      case 'owner-dashboard':
+        now = 0
+        break
+      case 'owner-shop':
+        now = 1
+        break
+      case 'owner-products':
+        now = 2
+        break
+      case 'owner-ad':
+        now = 3
+        break
+      default:
+        now = null
+    }
     return {
+      now: now
     }
   },
   methods: {
     handleLogoutClicked () {
       this.$cookie.delete('OwnerEmail')
       this.$cookie.delete('OwnerPassword')
+    },
+    handleTabClick (index) {
+      this.now = index
     }
   }
 }

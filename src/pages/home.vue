@@ -15,9 +15,9 @@
           </div>
           <div class="top-nav">
               <nav>
-                <span id="nav-home" ><router-link :to="{path:'/'}">HOME</router-link></span>
-                <span id="nav-products"><router-link :to="{path:'/products'}">PRODUCTS</router-link></span>
-                <span id="nav-orders"><router-link :to="{path:'/orders'}" v-show="isLogin">ORDERS</router-link></span>
+                <span @click="handleTabClick(0)" :class="{'selected-item': now === 0}" id="nav-home" ><router-link :to="{path:'/'}">HOME</router-link></span>
+                <span @click="handleTabClick(1)" :class="{'selected-item': now === 1}" id="nav-products"><router-link :to="{path:'/products'}">PRODUCTS</router-link></span>
+                <span @click="handleTabClick(2)" :class="{'selected-item': now === 2}" id="nav-orders"><router-link :to="{path:'/orders'}" v-show="isLogin">ORDERS</router-link></span>
               </nav>
           </div>
           <div class="search-box">
@@ -145,10 +145,29 @@ import router from '../routes'
 export default {
   name: 'home',
   data () {
+    let now = null
+    console.log(this.$route.name)
+    console.log(this.$route.path)
+    switch (this.$route.name) {
+      case 'customer-home':
+        now = 0
+        break
+      case 'customer-products':
+        now = 1
+        break
+      case 'customer-orders':
+        now = 2
+        break
+      default:
+        now = null
+        this.$route.path === '/' ? now = 0 : null
+    }
+    console.log(now)
     return {
       isLogin: false,
       showRegister: false,
-      showLogin: false
+      showLogin: false,
+      now: now
     }
   },
   methods: {
@@ -157,6 +176,9 @@ export default {
     },
     showLoginForm () {
       this.showLogin = !this.showLogin
+    },
+    handleTabClick (index) {
+      this.now = index
     },
     handleSignUpClick () {
       router.push('/products')
@@ -311,7 +333,7 @@ $color4:#258bde;
       text-decoration:none;
     }
 
-    #nav-home a {
+    a {
       color: $color1;
     }
 
@@ -319,8 +341,13 @@ $color4:#258bde;
       color: $color1;
     }
 
-    #nav-products {
-      border-bottom: 3px solid $color3;
+    .selected-item {
+      font-weight: bolder;
+      padding-bottom: 3px;
+      border-bottom: 4px solid #0077D8;
+      a{
+        color: black;
+      }
     }
 
     #nav-sale a {

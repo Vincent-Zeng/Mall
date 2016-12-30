@@ -6,13 +6,13 @@
       </div>
       <nav>
         <ul class="navigation">
-          <li class="selected-item"><router-link :to="{path:'/admin/navigation/dashboard'}">DASHBOARD</router-link></li>
-          <li><router-link :to="{path:'/admin/navigation/approve'}">WAITING QUEUE</router-link></li>
-          <li><router-link :to="{path:'/admin/navigation/owner'}">OWNER & SHOP</router-link></li>
-          <li><router-link :to="{path:'/admin/navigation/customer'}">CUSTOMER</router-link></li>
-          <li><router-link :to="{path:'/admin/navigation/ad'}">AD</router-link></li>
-          <li>COMMISSION</li>
-          <li>ORDER</li>
+          <li @click="handleTabClick(0)" :class="{'selected-item': now === 0}"><router-link :to="{path:'/admin/navigation/dashboard'}">DASHBOARD</router-link></li>
+          <li @click="handleTabClick(1)" :class="{'selected-item': now === 1}"><router-link :to="{path:'/admin/navigation/approve'}">WAITING QUEUE</router-link></li>
+          <li @click="handleTabClick(2)" :class="{'selected-item': now === 2}"><router-link :to="{path:'/admin/navigation/owner'}">OWNER & SHOP</router-link></li>
+          <li @click="handleTabClick(3)" :class="{'selected-item': now === 3}"><router-link :to="{path:'/admin/navigation/customer'}">CUSTOMER</router-link></li>
+          <li @click="handleTabClick(4)" :class="{'selected-item': now === 4}"><router-link :to="{path:'/admin/navigation/ad'}">AD</router-link></li>
+          <li @click="handleTabClick(5)" :class="{'selected-item': now === 5}">COMMISSION</li>
+          <li @click="handleTabClick(6)" :class="{'selected-item': now === 6}">ORDER</li>
         </ul>
       </nav>
     </header>
@@ -26,13 +26,39 @@ import router from '../../routes'
 export default {
   name: 'admin-navigation',
   data () {
+    let now = null
+    switch (this.$route.name) {
+      case 'admin-navigation':
+        now = null
+        break
+      case 'admin-approve':
+        now = 1
+        break
+      case 'admin-owner':
+        now = 2
+        break
+      case 'admin-customer':
+        now = 3
+        break
+      case 'admin-ad':
+        now = 4
+        break
+      case 'admin-dashboard':
+        now = 0
+        break
+      default:
+        now = null
+    }
     return {
-
+      now: now
     }
   },
   methods: {
     handleLogoutClicked () {
       router.push('/admin')
+    },
+    handleTabClick (index) {
+      this.now = index
     }
   }
 }
@@ -41,7 +67,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .admin-navigation{
-  min-width:1000px;
+  min-width:1300px;
 }
 .logout {
   position: absolute;

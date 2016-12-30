@@ -259,8 +259,8 @@ $color4:#258bde;
 
 .create-shop-panel {
   margin: 20px 0px 0px 0px;
+  position: absolute;;
   left: 172px;
-  right: 172px;
   border: 1px solid #E4E4E4;
   min-width:1000px;
   box-shadow: 0px 4px 14px rgba(121, 121, 121, 0.1);

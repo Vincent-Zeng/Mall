@@ -140,6 +140,7 @@ $color4:#258bde;
   right: 172px;
   border: 1px solid #E4E4E4;
   height: 260px;
+  min-width:800px;
   box-shadow: 0px 4px 14px rgba(121, 121, 121, 0.1);
 
   .owner-panel-info {
@@ -239,6 +240,7 @@ $color4:#258bde;
   margin: 372px 0px 28px 0px;
   left: 172px;
   right: 172px;
+  min-width:800px;
   border: 1px solid #E4E4E4;
   box-shadow: 0px 4px 14px rgba(121, 121, 121, 0.1);
   padding-bottom:20px;
