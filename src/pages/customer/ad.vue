@@ -170,6 +170,8 @@ export default {
       position: relative;
       top: 50%;
       transform: translateY(-50%);
+      max-width: 70%;
+      max-height: 70%;
     }
     height: 366px;
   }

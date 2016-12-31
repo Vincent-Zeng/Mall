@@ -10,10 +10,12 @@ import Products from './pages/customer/products'
 import Product from './pages/customer/product'
 import Orders from './pages/customer/orders'
 import Cart from './pages/customer/cart'
+import Pay from './pages/customer/pay'
 import Checkout from './pages/customer/checkout'
 import CheckoutOrder from './pages/customer/checkout-orders'
 import Ad from './pages/customer/ad'
 import Shop from './pages/customer/shop'
+import Favourite from './pages/customer/favourite'
 import OwnerLogin from './pages/owner/login'
 import OwnerRegister from './pages/owner/register'
 import OwnerNavigation from './pages/owner/navigation'
@@ -70,6 +72,14 @@ const routes = [{
     {
       path: '/shops/:id',
       component: Shop
+    },
+    {
+      path: '/pay',
+      component: Pay
+    },
+    {
+      path: '/favourite',
+      component: Favourite
     }
   ]
 }, {
