@@ -21,6 +21,10 @@
           <input type="text" v-model="product.name" v-validate data-vv-rules="required" name="name" placeholder="Name of product"/>
         </p>
         <p>
+          <label for="detail-amount">Left</label>
+          <input type="text" v-model="product.amount" v-validate data-vv-rules="required|number" name="detail-amount" placeholder="Amount of product"/>
+        </p>
+        <p>
           <label for="detail-description">Description</label>
           <input type="text" v-model="product.description" v-validate data-vv-rules="required" name="description" placeholder="Description of product"/>
         </p>
@@ -77,6 +81,7 @@ export default {
         this.product.price = json.price
         this.product.description = json.detail
         this.product.name = json.name
+        this.product.amount = json.amount
       }).catch((err) => {
         console.log(err)
       })
@@ -90,7 +95,8 @@ export default {
         description: null,
         name: null,
         price: null,
-        categoryId: 1
+        categoryId: 1,
+        amount: null
       },
       categories: categories
     }
@@ -103,7 +109,7 @@ export default {
     // price: parseInt(this.product.price)
     handleSaveProductDetailClicked (id) {
       if (id === null) {
-        this.$http.get(`/product/add?categoryId=${this.product.categoryId}&photoURL=${this.product.photo}&detail=${this.product.description}&name=${this.product.name}&price=${parseInt(this.product.price)}`)
+        this.$http.get(`/product/add?categoryId=${this.product.categoryId}&photoURL=${this.product.photo}&detail=${this.product.description}&name=${this.product.name}&amount=${this.product.amount}&price=${parseInt(this.product.price)}`)
           .then((res) => res.json())
           .then((json) => {
             router.push('/owner/navigation/products')
@@ -120,7 +126,8 @@ export default {
           detail: this.product.description,
           name: this.product.name,
           price: parseInt(this.product.price),
-          categoryId: this.product.categoryId
+          categoryId: this.product.categoryId,
+          amount: this.product.amount
         })
         .then((res) => res.json())
         .then((json) => {
@@ -184,6 +191,7 @@ export default {
   right: 172px;
   border: 1px solid #E4E4E4;
   height: 1000px;
+  min-width:1000px;
 }
 
 .owner-header {
@@ -210,7 +218,7 @@ export default {
   margin: 28px 0px;
   left: 172px;
   right: 172px;
-
+  min-width:500px;
   .function-btn {
     width: 114px;
     height: 42px;

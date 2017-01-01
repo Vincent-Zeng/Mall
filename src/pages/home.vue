@@ -134,7 +134,10 @@
         </section>
     </div>
   </div>
-  <router-view></router-view>
+  <div class="ad-component">
+    <router-view></router-view>
+  </div>
+
 </template>
 
 <script>
@@ -279,6 +282,11 @@ $color4:#258bde;
   float:left;
 }
 
+.ad-component{
+  width:90%;
+  min-width: 1000px;
+  margin: 0 auto;
+}
 .user-action {
   float: right;
 

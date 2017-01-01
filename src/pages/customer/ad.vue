@@ -43,17 +43,9 @@ Vue.use(AwesomeSwiper)
 export default {
   name: 'ad',
   data () {
-    let shops = []
-    for (let i = 0; i < 10; i++) {
-      let shop = {
-        id: 1,
-        url: 'http://ohcabv7e3.bkt.clouddn.com/monitor.jpg'
-      }
-      shops.push(shop)
-    }
     return {
       products: [],
-      shops: shops,
+      shops: [],
       swiperOption: {
         notNextTick: true,
         autoplay: 1000,
@@ -96,16 +88,15 @@ export default {
     this.$http.get('/shopAd/verified')
     .then(res => res.json())
     .then(data => {
-      // console.log(data)
-      // let shops = []
-      // for (var i = 0; i < data.length; i++) {
-      //   let json = data[i]
-      //   shops.push({
-      //     id: json.shopId,
-      //     url: json.photoUrl
-      //   })
-      // }
-      // this.shops = shops
+      let shops = []
+      for (var i = 0; i < data.length; i++) {
+        let json = data[i]
+        shops.push({
+          id: json.shopId,
+          url: json.photoUrl
+        })
+      }
+      this.shops = shops
     }).catch((err) => {
       console.log(err)
       this.$message({
@@ -124,7 +115,6 @@ export default {
   height: 200px;
 }
 .ad-panel-all {
-  margin: 0px 0px 20px 0px;
   text-align: center;
 }
 
@@ -142,8 +132,8 @@ export default {
 }
 
 .product-panel {
-  text-align: center;
-
+  min-width: 1000px;
+  width:100%;
   .product-hint {
     font-size: 40px;
     font-weight: bolder;
@@ -169,11 +159,12 @@ export default {
       margin: auto;
       position: relative;
       top: 50%;
+      max-width: 80%;
       transform: translateY(-50%);
       max-width: 70%;
       max-height: 70%;
     }
-    height: 366px;
+    height: 240px;
   }
 
   .product-name {

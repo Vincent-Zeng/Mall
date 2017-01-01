@@ -11,7 +11,7 @@
             <li @click="handleTabClick(1)" :class="{'selected-item': now === 1}"><router-link :to="{path:'/owner/navigation/shop'}">SHOP DETAIL</router-link></li>
             <li @click="handleTabClick(2)" :class="{'selected-item': now === 2}"><router-link :to="{path:'/owner/navigation/products'}">PRODUCTS</router-link></li>
             <li @click="handleTabClick(3)" :class="{'selected-item': now === 3}"><router-link :to="{path:'/owner/navigation/ad'}">AD</router-link></li>
-            <li @click="handleTabClick(4)" :class="{'selected-item': now === 4}">ORDER</li>
+            <li @click="handleTabClick(4)" :class="{'selected-item': now === 4}"><router-link :to="{path:'/owner/navigation/order'}">ORDER</router-link></li>
           </ul>
         </nav>
       </header>
@@ -51,6 +51,9 @@ export default {
         break
       case 'owner-ad':
         now = 3
+        break
+      case 'owner-order':
+        now = 4
         break
       default:
         now = null

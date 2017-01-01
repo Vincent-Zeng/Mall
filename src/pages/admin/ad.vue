@@ -43,7 +43,7 @@
             <div class="product-list">
               <div class="product-item" v-for="optionalProduct in optionalProducts" v-show="optionalProduct.show">
                 <span class="product-item-name">{{ optionalProduct.name }}</span>
-
+                <span class="product-item-price">{{optionalProduct.price}}</span>
                 <div class="function-button">
                   <div class="bluebutton" @click=changeAdStatus(0,optionalProduct)>Approve</div>
                   <div class="whitebutton" @click=changeAdStatus(1,optionalProduct)>Reject</div>
@@ -216,7 +216,8 @@ export default {
                 show: true,
                 type: 0,
                 id: data.id,
-                name: data.name
+                name: data.name,
+                price: data.price
               })
             }
             this.optionalProducts = optionalProducts
@@ -234,7 +235,8 @@ export default {
                 type: 1,
                 shopId: data.shopId,
                 adId: data.id,
-                name: data.name
+                name: data.name,
+                price: data.price
               })
             }
             this.optionalProducts = optionalProducts
@@ -494,6 +496,19 @@ button{
       font-weight: normal;
       margin-left: 4px;
       line-height: 88px;
+    }
+
+    .product-item-price{
+      color: red;
+      padding-left:200px;
+    }
+
+    .product-item-price::after{
+      content: " / day"
+    }
+
+    .product-item-price::before{
+      content: "$ "
     }
 
     .function-button {

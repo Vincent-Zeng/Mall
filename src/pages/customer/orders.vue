@@ -115,10 +115,10 @@ export default {
 <style lang="scss" scoped>
 
 .orders {
-  position: absolute;
+  min-width:1000px;
+
   margin: 56px 0px;
-  left: 172px;
-  right: 172px;
+
   border: 1px solid #E4E4E4;
 }
 

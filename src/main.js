@@ -5,10 +5,11 @@ import VeeValidate, { Validator } from 'vee-validate'
 import VueCookie from 'vue-cookie'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
+import locale from 'element-ui/lib/locale/lang/en'
 
 Vue.use(VeeValidate)
 Vue.use(VueCookie)
-Vue.use(ElementUI)
+Vue.use(ElementUI, { locale })
 
 // form validate
 Validator.extend('verify_password', {

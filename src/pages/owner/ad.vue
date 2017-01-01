@@ -5,14 +5,21 @@
         <div class="create-shop-header">
           <img src="./images/products.png" alt="">
           <span>Shop AD</span>
-          <div class="shop-apply">
-              <button class="whitebutton" @click="changeShopAdStatus()">{{this.shopAd === 1? "Withdraw": (this.shopAd === 0 ? "Applyed" :"Apply")}}</button>
-          </div>
         </div>
         <div class="product-image" :style="{ backgroundImage:'url(' + certificatephoto + ')' }">
           <input type="file" class="uploadbutton" id="uploadbutton" />
           <!-- <img class="product-photo" :src="product.photo" alt=""> -->
           <span class="remove-photo-btn" @click="handleRemovePhotoClicked($event)" v-show='closebutton'>×</span>
+        </div>
+        <div class="shop-ad-panel-right">
+          <div>
+              <span>$</span>
+              <input type="text" placeholder="commission" v-model="shopAdPrice" />
+              <span>/day</span>
+          </div>
+          <div class="shop-apply">
+              <button class="whitebutton" @click="changeShopAdStatus()">{{this.shopAd === 1? "Withdraw": (this.shopAd === 0 ? "Applyed" :"Apply")}}</button>
+          </div>
         </div>
       </div>
     </div>
@@ -59,7 +66,11 @@
             <div class="product-list">
               <div class="product-item" v-for="optionalProduct in optionalProducts" v-show="optionalProduct.show">
                 <span class="product-item-name">{{ optionalProduct.name }}</span>
-
+                <div class="product-ad-commission">
+                    <span>$</span>
+                    <input type="text" placeholder="commission" v-model="optionalProduct.price" />
+                    <span>/day</span>
+                </div>
                 <div class="function-button">
                   <div class="remove-button" @click=addProductAd(optionalProduct)>Add</div>
                 </div>
@@ -81,6 +92,7 @@ export default {
   data () {
     return {
       certificatephoto: photoaddbutton,
+      shopAdPrice: null,
       photoaddbutton: photoaddbutton,
       closebutton: false,
       shop: {
@@ -153,7 +165,7 @@ export default {
           }
         })
       } else {
-        this.$http.get(`/shopAd/add?photoUrl=${this.certificatephoto}`)
+        this.$http.get(`/shopAd/add?photoUrl=${this.certificatephoto}&price=${this.shopAdPrice}`)
         .then((res) => res.json())
         .then((json) => {
           if (json.status === 0) {
@@ -165,7 +177,7 @@ export default {
       }
     },
     addProductAd (item) {
-      this.$http.get(`/productAd/add?productId=${item.id}`)
+      this.$http.get(`/productAd/add?productId=${item.id}&price=${item.price}`)
       .then((res) => res.json())
       .then((json) => {
         if (json.status === 0) {
@@ -205,7 +217,8 @@ export default {
               id: product.id,
               name: product.name,
               show: true,
-              photoURL: product.photoURL
+              photoURL: product.photoURL,
+              price: null
             })
           }
           this.optionalProducts = optionalProducts
@@ -257,14 +270,45 @@ $color2:#f5f5f5;
 $color3:#0077d8;
 $color4:#258bde;
 
+.wrapper{
+  margin-left: 172px;
+  .shop-ad,.products-ad,.products-ad-passed{
+    margin: 0;
+  }
+}
 .create-shop-panel {
   margin: 20px 0px 0px 0px;
-  position: absolute;;
-  left: 172px;
   border: 1px solid #E4E4E4;
   min-width:1000px;
   box-shadow: 0px 4px 14px rgba(121, 121, 121, 0.1);
   padding-bottom:40px;
+  position:relative;
+  .shop-ad-panel-right{
+    position:absolute;
+    left:320px;
+    top:140px;
+    .shop-apply{
+        display:inline-block;
+    }
+    input {
+      display: inline-block;
+      border: none;
+      font-size: 16px;
+      top: 30px;
+      width: 90px;
+      outline: none;
+      margin-bottom: 30px;
+      margin-left:10px;
+      text-align:center;
+    }
+    button{
+      width:160px;
+    }
+    span{
+      color:red;
+      font-size: 20px;
+    }
+  }
   .create-shop-header {
     position: relative;
 
@@ -285,10 +329,6 @@ $color4:#258bde;
   }
 }
 
-.shop-apply{
-    display:inline-block;
-    margin-left:40px;
-}
 
 button{
   padding:10px 30px;
@@ -456,6 +496,25 @@ button{
 .owner-product-list {
   left: 172px;
   right: 172px;
+  .product-ad-commission{
+    display: inline-block;
+    padding-left:280px;
+    input {
+      display: inline-block;
+      border: none;
+      font-size: 16px;
+      top: 30px;
+      width: 90px;
+      outline: none;
+      margin-bottom: 30px;
+      margin-left:10px;
+      text-align:center;
+    }
+    span{
+      color:red;
+      font-size: 20px;
+    }
+  }
 }
 
 .owner-header {

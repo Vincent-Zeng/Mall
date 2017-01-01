@@ -25,6 +25,7 @@ import OwnerProductDetail from './pages/owner/product-detail'
 import OwnerShop from './pages/owner/shop'
 import OwnerCreateShop from './pages/owner/create'
 import OwnerAd from './pages/owner/ad'
+import OwnerOrder from './pages/owner/order'
 import AdminLogin from './pages/admin/login'
 import AdminNavigation from './pages/admin/navigation'
 import AdminDashboard from './pages/admin/dashboard'
@@ -35,7 +36,6 @@ import ShopDetail from './pages/admin/shop-detail'
 import AdminAd from './pages/admin/ad'
 
 const routes = [{
-  name: 'customer-home',
   path: '/',
   component: Home,
   children: [
@@ -93,6 +93,11 @@ const routes = [{
       name: 'owner-dashboard',
       path: '/owner/navigation/dashboard',
       component: OwnerDashboard
+    },
+    {
+      name: 'owner-order',
+      path: '/owner/navigation/order',
+      component: OwnerOrder
     },
     {
       name: 'owner-products',

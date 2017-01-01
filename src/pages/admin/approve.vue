@@ -106,6 +106,7 @@ $color4: #258bde;
   left: 172px;
   right: 172px;
   border: 1px solid #E4E4E4;
+  min-width: 1000px;
 }
 
 .approve-header {

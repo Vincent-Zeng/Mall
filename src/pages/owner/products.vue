@@ -28,7 +28,7 @@
 export default {
   name: 'owner-products',
   data () {
-    this.$http.get('/product/searchByOwn')
+    this.$http.get('/product/searchByOwner?page=1&pageNum=10')
       .then(res => res.json())
       .then(data => {
         console.log(data)
@@ -71,9 +71,9 @@ export default {
 
 .owner-product-list {
   position: absolute;
-  margin: 100px 0px 28px 0px;
-  left: 172px;
-  right: 172px;
+  margin: 100px 0px 28px 172px;
+  min-width:800px;
+  width:80%;
   border: 1px solid #E4E4E4;
 }
 
