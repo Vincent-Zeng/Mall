@@ -4,9 +4,9 @@
       <img src="./images/shop-name.png" alt="">
       <span>ORDER</span>
 
-      <div class="search-box">
+      <!-- <div class="search-box">
         <input type="text" placeholder="Search" @keyup.enter="searchItems"/>
-      </div>
+      </div> -->
     </div>
 
     <div class="order-list">
@@ -16,18 +16,21 @@
           <div class="order-img" v-for="product in order.products" >
             <img class="order-item-avatar" :src="product.url" alt="">
           </div>
+          <div class="function-button">
+            <div class="review-button" v-show="order.status !== 4">Review</div>
+          </div>
           <div class="order-created-at">
             {{ order.createdAt }}
           </div>
         </div>
 
-        <div class="order-detail-collapse" v-if="order.status >= 1">
+        <div class="order-detail-collapse" v-if="order.status < 1">
           <div class="order-status order-info">
             <span class="prompt">Status</span>
             <span class="value">Preparing</span>
           </div>
         </div>
-        <div class="order-detail" v-if="order.status < 1">
+        <div class="order-detail" v-if="order.status >= 1">
           <div class="order-shipment-company order-info">
             <span class="prompt">Shipment Company</span>
             <span class="value">{{ order.shipment.company }}</span>
@@ -91,8 +94,9 @@ export default {
     searchItems () {
     },
     translateStatus (status) {
-      console.log(status)
       switch (status) {
+        case 0:
+          return 'Unpaied'
         case 1:
           return 'Preparing'
         case 2:
@@ -102,11 +106,46 @@ export default {
         case 4:
           return 'Done'
         default:
-          return 'Preparing'
+          return 'Waiting for Confirmation'
       }
     }
   },
   created () {
+    let body = JSON.stringify({
+      page: 1,
+      count: 2000
+    })
+    this.$http.post('/order/search', body)
+      .then((res) => res.json())
+      .then((json) => {
+        let orders = []
+        for (var i = 0; i < json.length; i++) {
+          let order = json[i]
+          console.log(order)
+          let products = []
+          for (var j = 0; j < order.products.length; j++) {
+            let product = order.products[j]
+            products.push({
+              id: product.productId,
+              url: product.photoURL,
+              price: product.price,
+              quantity: product.amount
+            })
+          }
+          orders.push({
+            id: order.id,
+            products: products,
+            createdAt: order.createdAt,
+            status: order.processStatus,
+            shipment: {
+              company: order.expressId,
+              number: order.expressId
+            }
+          })
+          console.log(order.processStatus)
+        }
+        this.orders = orders
+      })
   }
 }
 </script>
@@ -141,30 +180,30 @@ export default {
     line-height: 80px;
   }
 
-  .search-box {
-    display: inline-block;
-    width: 500px;
-    text-align: right;
-    position: absolute;
-    right: 28px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    input {
-        background-image: url(./images/search_icon.png);
-        background-repeat: no-repeat;
-        background-position: 20px center;
-        background-size: 36px 36px;
-        width: 50%;
-        height: 50px;
-        border-radius: 100px;
-        background-color: #f5f5f5;
-        border: none;
-        padding-left: 70px;
-        font-size: 18px;
-        outline: none;
-    }
-  }
+  // .search-box {
+  //   display: inline-block;
+  //   width: 500px;
+  //   text-align: right;
+  //   position: absolute;
+  //   right: 28px;
+  //   top: 50%;
+  //   transform: translateY(-50%);
+  //
+  //   input {
+  //       background-image: url(./images/search_icon.png);
+  //       background-repeat: no-repeat;
+  //       background-position: 20px center;
+  //       background-size: 36px 36px;
+  //       width: 50%;
+  //       height: 50px;
+  //       border-radius: 100px;
+  //       background-color: #f5f5f5;
+  //       border: none;
+  //       padding-left: 70px;
+  //       font-size: 18px;
+  //       outline: none;
+  //   }
+  // }
 }
 
 .order-list {
@@ -253,6 +292,40 @@ export default {
     .order-detail-collapse {
       height: 80px;
     }
+  }
+}
+
+.review-btn {
+  cursor: pointer;
+  background-color: white;
+  border: 1px solid #0077D8;
+  color: #0077D8;
+  margin-right: 16px;
+}
+
+.function-button {
+  display: inline-block;
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  div {
+    width: 114px;
+    height: 42px;
+    display: inline-block;
+    line-height: 42px;
+    text-align: center;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .review-button {
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid #0077D8;
+    color: #0077D8;
+    margin-right: 140px;
   }
 }
 

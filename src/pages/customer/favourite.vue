@@ -12,7 +12,7 @@
           <img class="owner-item-avatar" :src="shop.avatar" alt="">
           <span class="owner-item-owner">{{ shop.name }}</span>
         </router-link>
-        <div class="function-button" >
+        <div class="function-button">
           <div class="remove-button">{{shop.status === 0 ? "Remove" : "Resume"}}</div>
         </div>
       </div>
