@@ -33,7 +33,7 @@
         <div class="order-detail" v-if="order.status >= 1">
           <div class="order-shipment-company order-info">
             <span class="prompt">Shipment Company</span>
-            <span class="value">{{ order.shipment.company }}</span>
+            <span class="value">{{ translateExpressCompany(order.shipment.company) }}</span>
           </div>
           <div class="order-shipment-number order-info">
             <span class="prompt">Shipment Number</span>
@@ -75,6 +75,23 @@ export default {
         default:
           return 'Waiting for Confirmation'
       }
+    }
+  },
+  translateExpressCompany (id) {
+    switch (id) {
+      case 1:
+        return 'Yunda Express'
+      case 2:
+        return 'Yuantong Express'
+      case 3:
+        return 'SF Express'
+      case 4:
+        return 'EMS'
+      case 5:
+        return 'STO Express'
+      default:
+        console.log(id)
+        return 'Unknown Express Compnay'
     }
   },
   created () {
