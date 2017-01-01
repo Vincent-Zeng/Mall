@@ -50,44 +50,11 @@
 </template>
 
 <script>
-import pic from './images/product.png'
-
 export default {
   name: 'orders',
   data () {
-    let orders = []
-    for (var i = 0; i < 10; i++) {
-      orders.push({
-        id: i,
-        avatar: pic,
-        name: 'Shop Name',
-        products: [
-          {
-            id: i,
-            url: pic,
-            name: 'iPhone 7 16G Jet Black',
-            price: 649.00,
-            quantity: 1
-          },
-          {
-            id: i + 1,
-            url: pic,
-            name: 'iPhone 7 16G Jet Black',
-            price: 649.00,
-            quantity: 1
-          }
-        ],
-        status: i % 3,
-        shipment: {
-          company: 'EMS',
-          number: 32198401741
-        },
-        collapse: i < 1,
-        createdAt: '2016-1-1 12:00:09'
-      })
-    }
     return {
-      orders: orders
+      orders: []
     }
   },
   methods: {
