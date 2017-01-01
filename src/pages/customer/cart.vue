@@ -14,7 +14,7 @@
         </div>
         <div class="cart-item-info">
           <p class="cart-item-name">{{ item.name }}</p>
-          <p class="cart-item-price">HK $ {{ item.price.toFixed(2) }}</p>
+          <p class="cart-item-price">HK $ {{ item.price ? item.price.toFixed(2) : 0 }}</p>
         </div>
 
         <div class="function-btn">
@@ -47,19 +47,20 @@ function reload (component) {
   Vue.http.get('/cart/searchCart')
     .then((res) => res.json())
     .then((data) => {
+      console.log(data)
       let products = []
       for (var i = 0; i < data.length; i++) {
         let json = data[i]
         products.push({
           id: json.id,
           url: json.photoURL,
-          quantity: json.amount,
+          quantity: json.subAmount,
           name: json.name,
-          price: json.price
+          price: json.price,
+          left: json.amount
         })
       }
       component.items = products
-      console.log(data)
     })
     .catch((err) => {
       console.log(err)
@@ -99,6 +100,9 @@ export default {
       })
     },
     increaseItem (item) {
+      if (item.left <= 0) {
+        return
+      }
       item.quantity += 1
       this.$http.get(`/cart/updateAmount?id=${item.id}&amount=${item.quantity}`)
         .then((res) => res.json())
@@ -123,7 +127,7 @@ export default {
       // })
     },
     handleCheckoutClicked () {
-      router.push(`/checkout?amount=${this.totalPrice}`)
+      router.push(`/checkout-order?amount=${this.totalPrice}`)
     }
   },
   created () {

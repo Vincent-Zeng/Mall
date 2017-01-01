@@ -9,11 +9,12 @@
         <div class="product-detail">
           <div class="product-summary">
             <img src="./images/rating.png" alt="">
-            <p>0 reviews</p>
+            <!-- <p>0 reviews</p> -->
           </div>
 
           <p class="product-name">{{ product.name }}</p>
           <p class="product-price">HK ${{ product.price.toFixed(2) }}</p>
+          <p class="product-left-amount">{{ product.amount }} left</p>
 
           <div class="product-add-to-cart" @click="handleAddToCartClicked(product.id)">
             Add to cart
@@ -30,7 +31,26 @@
       </div>
 
       <div class="product-comments">
+        <div class="product-review">
+          REVIEWS
+        </div>
 
+        <div class="product-comment" v-for="comment in comments">
+          <div class="product-comment-avatar">
+            {{ comment.name.substring(0,2).toUpperCase() }}
+          </div>
+          <div class="product-comment-detail">
+            <div class="product-comment-name">
+              {{ comment.name }}
+            </div>
+            <div class="product-comment-content">
+              {{ comment.content }}
+            </div>
+            <div class="product-comment-rate">
+              {{ comment.rate }}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -51,7 +71,8 @@ export default {
           name: data.name,
           price: data.price,
           url: data.photoURL,
-          description: data.detail
+          description: data.detail,
+          amount: data.amount
         }
         this.$http.get(`/shop/searchById?id=${data.shopId}`)
         .then(res => res.json())
@@ -62,6 +83,20 @@ export default {
           }
         })
       })
+    this.$http.get(`/product/getComments?id=${this.$route.params.id}&page=1&count=1000`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        let comments = []
+        for (var i = 0; i < data.length; i++) {
+          comments.push({
+            content: data.comment,
+            name: data.customerName,
+            rate: data.rate
+          })
+        }
+        this.comments = comments
+      })
     return {
       product: {
         id: null,
@@ -71,7 +106,14 @@ export default {
         description: null
       },
       shop: {
-      }
+      },
+      comments: [
+        {
+          name: 'Julia Peterson',
+          content: 'My skin has always been soft. But now it feels like a babies bottom. I love it and the smell is pleasent and not strong',
+          rate: 5
+        }
+      ]
     }
   },
   methods: {
@@ -250,6 +292,13 @@ h1 {
     margin-bottom: 7px;
   }
 
+  .product-left-amount {
+    margin-top: 7px;
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-weight: lighter;
+  }
+
   .product-add-to-cart {
     width: 100%;
     background-color: #0077D8;
@@ -275,5 +324,45 @@ h1 {
   }
 }
 
+.product-comments {
+  margin-top: 28px;
+  .product-review {
+    color: #ACACAC;
+    font-size: 16px;
+    margin-bottom: 28px;
+  }
+
+  .product-comment {
+    position: relative;
+    margin-bottom: 14px;
+    .product-comment-avatar {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      left: 0px;
+      top: 0px;
+      color: white;
+      background-color: #A2A6E0;
+      border-radius: 30px;
+    }
+
+    .product-comment-detail {
+      margin-left: 80px;
+      font-size: 16px;
+
+      .product-comment-name {
+        color: #2B2B2B;
+        font-weight: bolder;
+      }
+
+      .product-comment-content {
+        margin-top: 14px;
+        margin-bottom: 14px;
+      }
+    }
+  }
+}
 
 </style>
