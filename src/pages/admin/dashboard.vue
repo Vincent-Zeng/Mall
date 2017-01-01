@@ -1,25 +1,39 @@
 <template>
-  <div class="owner-dashboard">
-    <div class="info-header">
-      <img src="./images/dashboard-logo.png" alt="">
-      <span @click="handleSpanClicked('income')" class="income-span" v-bind:class="{ 'highlight-span': isIncome, 'normal-span': !isIncome }">Income</span>
-      <span @click="handleSpanClicked('sales')" class="sales-span" v-bind:class="{ 'highlight-span': !isIncome, 'normal-span': isIncome }">Sales</span>
-      <el-dropdown @command="handleCommand" class="dropDownMenu">
-        <span class="el-dropdown-link" hide-on-click>
-          {{dropDownMenu}} <i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="Daily">Daily</el-dropdown-item>
-          <el-dropdown-item command="Weekly">Weekly</el-dropdown-item>
-          <el-dropdown-item command="Monthly">Monthly</el-dropdown-item>
-          <el-dropdown-item command="Yearly">Yearly</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+  <div>
+    <div class="commission">
+      <label for="commision-value">Commission Rate : </label>
+      <input type="text" class="commision-value" v-model="commissionValue" id="commission-value" v-show="editable" />
+      <span v-show="!editable">{{commissionValue}}</span>
+      <div class="function-button">
+        <div class="edit-button" v-show="!editable" @click="handleEditClick()">Edit</div>
+        <div class="edit-button" v-show="editable" @click="handleSaveClick()">Save</div>
+        <div class="remove-button" v-show="editable" @click="handleCancleClick()">Cancle</div>
+      </div>
     </div>
-    <div id="line-chart">
+    <div class="owner-dashboard">
 
+      <div class="info-header">
+        <img src="./images/dashboard-logo.png" alt="">
+        <span @click="handleSpanClicked('income')" class="income-span" v-bind:class="{ 'highlight-span': isIncome, 'normal-span': !isIncome }">Income</span>
+        <span @click="handleSpanClicked('sales')" class="sales-span" v-bind:class="{ 'highlight-span': !isIncome, 'normal-span': isIncome }">Sales</span>
+        <el-dropdown @command="handleCommand" class="dropDownMenu">
+          <span class="el-dropdown-link" hide-on-click>
+            {{dropDownMenu}} <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="Daily">Daily</el-dropdown-item>
+            <el-dropdown-item command="Weekly">Weekly</el-dropdown-item>
+            <el-dropdown-item command="Monthly">Monthly</el-dropdown-item>
+            <el-dropdown-item command="Yearly">Yearly</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+      <div id="line-chart">
+
+      </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -31,10 +45,29 @@ export default {
       isIncome: true,
       dropDownMenu: 'Daily',
       xAxis: [],
-      yAxis: []
+      yAxis: [],
+      editable: false,
+      commissionValue: ''
     }
   },
   methods: {
+    handleEditClick () {
+      this.editable = true
+    },
+    handleSaveClick () {
+      this.$http.get(`/mallConfig/update?value=${this.commissionValue}`)
+      .then(res => res.json())
+      .then(json => {
+        if (json.status === 1) {
+          this.editable = false
+        } else {
+          window.alert(json.message)
+        }
+      })
+    },
+    handleCancleClick () {
+      this.editable = false
+    },
     handleSpanClicked (type) {
       this.isIncome = type === 'income'
       this.dropDownMenu = 'Daily'
@@ -56,27 +89,38 @@ export default {
         }
         this.xAxis = xAxis
         this.yAxis = yAxis
-      })
-      var myChart = echarts.getInstanceByDom(document.getElementById('line-chart'))
-      myChart.setOption({
-        title: {
-          text: this.isIncome ? 'Income' : 'Sales',
-          subtext: this.dropDownMenu
-        },
-        xAxis: {
-          data: this.xAxis
-        },
-        yAxis: {
-          axisLabel: {
-            formatter: this.isIncome ? '$ {value}' : '{value}',
-            textStyle: {
-              color: '#5c6076'
+        var myChart = echarts.getInstanceByDom(document.getElementById('line-chart'))
+        myChart.setOption({
+          title: {
+            text: this.isIncome ? 'Income' : 'Sales',
+            subtext: this.dropDownMenu
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              animation: false
+            },
+            formatter: function (params) {
+              console.log('start')
+              console.log(params)
+              return params[0].name + '<br />' + params[0].value
             }
+          },
+          xAxis: {
+            data: this.xAxis
+          },
+          yAxis: {
+            axisLabel: {
+              formatter: this.isIncome ? '$ {value}' : '{value}',
+              textStyle: {
+                color: '#5c6076'
+              }
+            }
+          },
+          series: {
+            data: this.yAxis
           }
-        },
-        series: {
-          data: this.yAxis
-        }
+        })
       })
     },
     handleCommand (command) {
@@ -102,10 +146,13 @@ export default {
           break
       }
       let url = null
+      let yItem = null
       if (this.isIncome) {
         url = '/admin/income'
+        yItem = 'income'
       } else {
         url = '/order/num'
+        yItem = 'num'
       }
       this.$http.get(`${url}?cond=${cond}`)
       .then((res) => res.json())
@@ -113,35 +160,70 @@ export default {
         let xAxis = []
         let yAxis = []
         for (let i = 0; i < json.length; i++) {
-          let xItem = json[i].year + '/' + json[i].month + '/' + json[i].day
+          let xItem
+          switch (cond) {
+            case 0:
+              xItem = json[i].year + '/' + json[i].month + '/' + json[i].day
+              break
+            case 1:
+              xItem = json[i].year + 'w' + json[i].week
+              break
+            case 2:
+              xItem = json[i].year + '/' + json[i].month
+              break
+            case 3:
+              xItem = json[i].year
+              break
+            default:
+              console.log(json[i])
+          }
+
           xAxis.push(xItem)
-          yAxis.push(json[i].income)
+          yAxis.push(json[i][yItem])
         }
         this.xAxis = xAxis
         this.yAxis = yAxis
-      })
-      var myChart = echarts.getInstanceByDom(document.getElementById('line-chart'))
-      myChart.setOption({
-        title: {
-          text: this.isIncome ? 'Income' : 'Sales',
-          subtext: this.dropDownMenu
-        },
-        xAxis: {
-          data: this.xAxis
-        },
-        yAxis: {
-          axisLabel: {
-            formatter: this.isIncome ? '$ {value}' : '{value}',
-            textStyle: {
-              color: '#5c6076'
+        var myChart = echarts.getInstanceByDom(document.getElementById('line-chart'))
+        myChart.setOption({
+          title: {
+            text: this.isIncome ? 'Income' : 'Sales',
+            subtext: this.dropDownMenu
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              animation: false
+            },
+            formatter: function (params) {
+              console.log('start')
+              console.log(params)
+              return params[0].name + '<br />' + params[0].value
             }
+          },
+          xAxis: {
+            data: this.xAxis
+          },
+          yAxis: {
+            axisLabel: {
+              formatter: this.isIncome ? '$ {value}' : '{value}',
+              textStyle: {
+                color: '#5c6076'
+              }
+            }
+          },
+          series: {
+            data: this.yAxis
           }
-        },
-        series: {
-          data: this.yAxis
-        }
+        })
       })
     }
+  },
+  created () {
+    this.$http.get(`/mallConfig/get?key=1`)
+    .then(res => res.json())
+    .then(json => {
+      this.commissionValue = json.value
+    })
   },
   mounted () {
     // 获取坐标轴数据
@@ -157,65 +239,76 @@ export default {
       }
       this.xAxis = xAxis
       this.yAxis = yAxis
-    })
-    // 绘制图表
-    var myChart = echarts.init(document.getElementById('line-chart'))
-    myChart.setOption({
-      title: {
-        text: this.isIncome ? 'Income' : 'Sales',
-        subtext: this.dropDownMenu
-      },
-      xAxis: {
-        axisLine: {
-          lineStyle: {
-            color: '#ccc'
+      // 绘制图表
+      var myChart = echarts.init(document.getElementById('line-chart'))
+      myChart.setOption({
+        title: {
+          text: this.isIncome ? 'Income' : 'Sales',
+          subtext: this.dropDownMenu
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            animation: false
+          },
+          formatter: function (params) {
+            console.log('start')
+            console.log(params)
+            return params[0].name + '<br />' + params[0].value
           }
         },
-        axisTick: {
-          show: false
-        },
-        axisLabel: {
-          textStyle: {
-            color: '#5c6076'
-          }
-        },
-        type: 'category',
-        boundaryGap: false,
-        data: this.xAxis
-      },
-      yAxis: {
-        splitLine: {
-          show: false
-        },
-        axisLine: {
-          lineStyle: {
-            color: '#ccc'
-          }
-        },
-        axisTick: {
-          show: false
-        },
-        type: 'value',
-        axisLabel: {
-          formatter: '$ {value}',
-          textStyle: {
-            color: '#5c6076'
-          }
-        }
-      },
-      series: [
-        {
-          name: 'income',
-          type: 'line',
-          smooth: true,
-          itemStyle: {
-            normal: {
-              color: '#258bde'
+        xAxis: {
+          axisLine: {
+            lineStyle: {
+              color: '#ccc'
             }
           },
-          data: this.yAxis
-        }
-      ]
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            textStyle: {
+              color: '#5c6076'
+            }
+          },
+          type: 'category',
+          boundaryGap: false,
+          data: this.xAxis
+        },
+        yAxis: {
+          splitLine: {
+            show: false
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#ccc'
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          type: 'value',
+          axisLabel: {
+            formatter: '$ {value}',
+            textStyle: {
+              color: '#5c6076'
+            }
+          }
+        },
+        series: [
+          {
+            name: 'income',
+            type: 'line',
+            smooth: true,
+            itemStyle: {
+              normal: {
+                color: '#258bde'
+              }
+            },
+            data: this.yAxis
+          }
+        ]
+      })
     })
   }
 }
@@ -231,9 +324,69 @@ h1 {
   font-weight: normal;
 }
 
+.commission{
+  min-width:800px;
+  width: 80%;
+  height:80px;
+  margin-top: 10px;
+  margin-left: 172px;
+  line-height:80px;
+  label{
+    color: gray;
+    font-size:20px;
+  }
+  span{
+    color: red;
+    width:200px;
+    display:inline-block;
+    text-align:center;
+    font-size:20px;
+  }
+  input{
+    border-radius:3px;
+    border:1px solid lightgray;
+    vertical-align: middle;
+    outline: none;
+    width:180px;
+    margin-left:20px;
+    text-align:center;
+    font-size:20px;
+    height:30px;
+  }
+  .function-button {
+    display: inline-block;
+    margin-left:30px;
+    div {
+      width: 114px;
+      height: 42px;
+      display: inline-block;
+      line-height: 42px;
+      text-align: center;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .edit-button {
+      background-color: #0077D8;
+      color: white;
+      margin-right: 16px;
+      cursor: pointer;
+    }
+
+    .remove-button {
+      background-color: white;
+      border: 1px solid #0077D8;
+      color: #0077D8;
+      cursor: pointer;
+    }
+  }
+}
+
+
 .owner-dashboard{
+  width: 80%;
   position: absolute;
-  margin: 30px 0px 28px 0px;
+  margin: 10px 0px 28px 0px;
   left: 172px;
   right: 172px;
   border: 1px solid #E4E4E4;

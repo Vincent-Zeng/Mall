@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="search-box">
+      <input type="text" placeholder="Enter Order Id to search" v-model="keyword" @keyup.enter="searchProducts()"/>
+    </div>
     <div class="owner-order-list">
       <div class="owner-header">
         <img src="./images/products.png" alt="">
@@ -9,16 +12,14 @@
             {{dropDownMenu}} <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="Unshipped">Unshipped</el-dropdown-item>
-            <el-dropdown-item command="Shipped">Shipped</el-dropdown-item>
-            <el-dropdown-item command="history" disabled divided>history</el-dropdown-item>
+            <el-dropdown-item command="history" disabled>history</el-dropdown-item>
             <el-dropdown-item command="Daily">&nbsp&nbspDaily</el-dropdown-item>
             <el-dropdown-item command="Weekly">&nbsp&nbspWeekly</el-dropdown-item>
             <el-dropdown-item command="Monthly">&nbsp&nbspMonthly</el-dropdown-item>
             <el-dropdown-item command="Yearly">&nbsp&nbspYearly</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <div class="date-picker" v-show="menuId !== 0 && menuId !== 1">
+        <div class="date-picker" v-show="menuId !== -1">
           <el-date-picker v-model="timetemp.time0" @change="handleTimeChangeClick0" type="date" v-show="dateType==='date'" placeholder="Select Time"></el-date-picker>
           <el-date-picker v-model="timetemp.time1" @change="handleTimeChangeClick1" type="week" v-show="dateType==='week'" placeholder="Select Time" :picker-options="pickerOptions0"></el-date-picker>
           <el-date-picker v-model="timetemp.time2" @change="handleTimeChangeClick2" type="month" v-show="dateType==='month'" placeholder="Select Time"></el-date-picker>
@@ -30,11 +31,7 @@
         <foldinglist class="order-item" v-show="order.show">
           <div slot="summary">
             <span  class="order-item-name">Created by {{ order.customerName }} At {{ order.createdAt }}</span>
-            <div class="function-button" v-show="menuId === 0">
-              <div @click="changeStatus($event,order,0)" class="suspend-button">{{order.status === 1 ? "Prepare" : "Prepared"}}</div>
-            </div>
           </div>
-
           <div slot="detail" class="detail">
             <div class="order-item-detail">
               <div class="detail-products-list">
@@ -64,6 +61,10 @@
                   <span>Total</span>
                   <span>$ {{order.price}}</span>
                 </p>
+                <p v-show="menuId !== 2 && menuId !== 3 && menuId !== 4 && menuId !== 5">
+                  <span>Status</span>
+                  <span>{{order.processStatusMes}}</span>
+                </p>
                 <p>
                   <span>Recipient Name</span>
                   <span>{{order.customerName}}</span>
@@ -76,24 +77,13 @@
                   <span>Recipient Telephone</span>
                   <span>{{order.telephone}}</span>
                 </p>
-                <p v-show="menuId !== 0 && menuId !== 1">
+                <p>
                   <span>Express Company</span>
                   <span>{{order.expressCompany}}</span>
                 </p>
-                <p v-show="menuId !== 0 && menuId !== 1">
+                <p>
                   <span>Express Number</span>
                   <span>{{order.number}}</span>
-                </p>
-                <p v-show="menuId === 0 || menuId === 1">
-                  <label for="expressCompany">Express Company</label>
-                  <el-select v-model="order.expressCompany" placeholder="Select please">
-                    <el-option v-for="item in selectOptions" :value="item.value"></el-option>
-                  </el-select>
-                </p>
-                <p v-show="menuId === 0 || menuId === 1">
-                  <label for="expressNumber">Express Number</label>
-                  <input type="text" v-model="order.number" id="expressNumber" />
-                  <button class="bluebutton" @click="changeStatus($event,order,1)">Save</button>
                 </p>
               </div>
             </div>
@@ -111,8 +101,8 @@
     data () {
       return {
         orders: [],
-        dropDownMenu: 'Unshipped',
-        menuId: 1,
+        dropDownMenu: 'Daily',
+        menuId: 2,
         dateType: 'date',
         time0: '',
         time1: '',
@@ -127,30 +117,18 @@
         pickerOptions0: {
           firstDayOfWeek: 1
         },
-        selectOptions: [
-          {
-            value: 'Yunda Express'
-          },
-          {
-            value: 'Yuantong Express'
-          },
-          {
-            value: 'SF Express'
-          },
-          {
-            value: 'EMS'
-          },
-          {
-            value: 'STO Express'
-          }
-        ]
+        keyword: ''
       }
     },
     mounted () {
     },
     created () {
       let orders = []
-      this.$http.get(`/order/listByProcessStatus?status=1&page=1&count=10`)
+      this.$http.post(`/order/listByTime?`, {
+        id: 0,
+        page: 1,
+        count: 10
+      })
       .then((res) => res.json())
       .then((json) => {
         for (let i = 0; i < json.length; i++) {
@@ -193,13 +171,24 @@
           orders.push(order)
         }
       })
-
-      this.$http.get(`/order/listByProcessStatus?status=2&page=1&count=10`)
-      .then((res) => res.json())
-      .then((json) => {
-        for (let i = 0; i < json.length; i++) {
+      this.orders = orders
+    },
+    components: {
+      foldinglist: foldinglist
+    },
+    methods: {
+      searchProducts () {
+        this.menuId = -1
+        this.dropDownMenu = ''
+        let orders = []
+        this.$http.get(`/order/getById?id=${this.keyword}`)
+        .then(res => res.json())
+        .then(json => {
+          if (json.id === null) {
+            return
+          }
           let expressCompany
-          switch (json[i].expressId) {
+          switch (json.expressId) {
             case 1:
               expressCompany = 'Yunda Express'
               break
@@ -216,82 +205,56 @@
               expressCompany = 'STO Express'
               break
             default:
-              console.log(json[i].expressId)
+              console.log(json.expressId)
           }
-          let order = {
-            id: json[i].id,
-            customerName: json[i].customerName === '' ? 'Anonym' : json[i].customerName,
-            customerEmail: json[i].customerEmail,
-            amount: json[i].amount,
-            address: json[i].address,
-            telephone: json[i].telephone,
-            expressId: json[i].expressId,
-            expressCompany: expressCompany,
-            products: json[i].products,
-            number: json[i].number,
-            price: json[i].price,
-            createdAt: json[i].createdAt,
-            status: 2,
-            show: true
-          }
-          orders.push(order)
-        }
-      })
-      console.log(orders)
-      this.orders = orders
-    },
-    components: {
-      foldinglist: foldinglist
-    },
-    methods: {
-      changeStatus (event, item, whichButton) {
-        event.stopPropagation()
-        if (whichButton === 0) {
-          if (item.status === 1) {
-            this.$http.get(`/order/changeProcessStatus?status=2&id=${item.id}`)
-            .then(res => res.json())
-            .then(json => {
-              item.status = 2
-            })
-          }
-        } else {
-          let expressId
-          switch (item.expressCompany) {
-            case 'Yunda Express':
-              expressId = 1
+          let processStatusMes = ''
+          switch (json.processStatus) {
+            case -1:
+              processStatusMes = 'Unconfirmed'
               break
-            case 'Yuantong Express':
-              expressId = 2
+            case 0:
+              processStatusMes = 'Unpaid'
               break
-            case 'SF Express':
-              expressId = 3
+            case 1:
+              processStatusMes = 'Processing Order'
               break
-            case 'EMS':
-              expressId = 4
+            case 2:
+              processStatusMes = 'Preparing for shipment'
               break
-            case 'STO Express':
-              expressId = 5
+            case 3:
+              processStatusMes = 'Shipped'
+              break
+            case 4:
+              processStatusMes = 'Complete'
               break
             default:
-              console.log(item.expressCompany)
+              console.log(json.processStatus)
           }
-          this.$http.get(`/order/changeProcessStatus?status=3&id=${item.id}&expressId=${expressId}&number=${item.number}`)
-          .then(res => res.json())
-          .then(json => {
-            item.show = false
-          })
-        }
+          let order = {
+            id: json.id,
+            customerName: json.customerName === null ? 'Anonym' : json.customerName,
+            customerEmail: json.customerEmail,
+            amount: json.amount,
+            address: json.address,
+            telephone: json.telephone,
+            expressId: json.expressId,
+            expressCompany: expressCompany,
+            products: json.products,
+            number: json.number,
+            price: json.price,
+            createdAt: json.createdAt,
+            status: json.processStatus,
+            show: true,
+            processStatusMes: processStatusMes
+          }
+          orders.push(order)
+        })
+        this.orders = orders
       },
       handleCommand (command) {
         // 下拉菜单名称更改
         this.dropDownMenu = command
         switch (command) {
-          case 'Unshipped':
-            this.menuId = 0
-            break
-          case 'Shipped':
-            this.menuId = 1
-            break
           case 'Daily':
             this.menuId = 2
             this.dateType = 'date'
@@ -336,210 +299,72 @@
             break
         }
         // 请求不同的下拉菜单项下的数据 start
-        if (this.menuId === 0) {
-          let orders = []
-          this.$http.get(`/order/listByProcessStatus?status=1&page=1&count=10`)
-          .then((res) => res.json())
-          .then((json) => {
-            for (let i = 0; i < json.length; i++) {
-              let expressCompany
-              switch (json[i].expressId) {
-                case 1:
-                  expressCompany = 'Yunda Express'
-                  break
-                case 2:
-                  expressCompany = 'Yuantong Express'
-                  break
-                case 3:
-                  expressCompany = 'SF Express'
-                  break
-                case 4:
-                  expressCompany = 'EMS'
-                  break
-                case 5:
-                  expressCompany = 'STO Express'
-                  break
-                default:
-                  console.log(json[i].expressId)
-              }
-              let order = {
-                id: json[i].id,
-                customerName: json[i].customerName === '' ? 'Anonym' : json[i].customerName,
-                customerEmail: json[i].customerEmail,
-                amount: json[i].amount,
-                address: json[i].address,
-                telephone: json[i].telephone,
-                expressId: json[i].expressId,
-                expressCompany: expressCompany,
-                products: json[i].products,
-                number: json[i].number,
-                price: json[i].price,
-                createdAt: json[i].createdAt,
-                status: 1,
-                show: true
-              }
-              orders.push(order)
-            }
-          })
-
-          this.$http.get(`/order/listByProcessStatus?status=2&page=1&count=10`)
-          .then((res) => res.json())
-          .then((json) => {
-            for (let i = 0; i < json.length; i++) {
-              let expressCompany
-              switch (json[i].expressId) {
-                case 1:
-                  expressCompany = 'Yunda Express'
-                  break
-                case 2:
-                  expressCompany = 'Yuantong Express'
-                  break
-                case 3:
-                  expressCompany = 'SF Express'
-                  break
-                case 4:
-                  expressCompany = 'EMS'
-                  break
-                case 5:
-                  expressCompany = 'STO Express'
-                  break
-                default:
-                  console.log(json[i].expressId)
-              }
-              let order = {
-                id: json[i].id,
-                customerName: json[i].customerName === '' ? 'Anonym' : json[i].customerName,
-                customerEmail: json[i].customerEmail,
-                amount: json[i].amount,
-                address: json[i].address,
-                telephone: json[i].telephone,
-                expressId: json[i].expressId,
-                expressCompany: expressCompany,
-                products: json[i].products,
-                number: json[i].number,
-                price: json[i].price,
-                createdAt: json[i].createdAt,
-                status: 2,
-                show: true
-              }
-              orders.push(order)
-            }
-          })
-          this.orders = orders
-        } else if (this.menuId === 1) {
-          let orders = []
-          this.$http.get(`/order/listByProcessStatus?status=3&page=1&count=10`)
-          .then((res) => res.json())
-          .then((json) => {
-            for (let i = 0; i < json.length; i++) {
-              let expressCompany
-              switch (json[i].expressId) {
-                case 1:
-                  expressCompany = 'Yunda Express'
-                  break
-                case 2:
-                  expressCompany = 'Yuantong Express'
-                  break
-                case 3:
-                  expressCompany = 'SF Express'
-                  break
-                case 4:
-                  expressCompany = 'EMS'
-                  break
-                case 5:
-                  expressCompany = 'STO Express'
-                  break
-                default:
-                  console.log(json[i].expressId)
-              }
-              let order = {
-                id: json[i].id,
-                customerName: json[i].customerName === '' ? 'Anonym' : json[i].customerName,
-                customerEmail: json[i].customerEmail,
-                amount: json[i].amount,
-                address: json[i].address,
-                telephone: json[i].telephone,
-                expressId: json[i].expressId,
-                expressCompany: expressCompany,
-                products: json[i].products,
-                number: json[i].number,
-                price: json[i].price,
-                createdAt: json[i].createdAt,
-                status: 3,
-                show: true
-              }
-              orders.push(order)
-            }
-          })
-          this.orders = orders
-        } else {
-          let id = 0
-          switch (this.menuId) {
-            case 2:
-              id = 0
-              break
-            case 3:
-              id = 1
-              break
-            case 4:
-              id = 2
-              break
-            case 5:
-              id = 3
-              break
-            default:
-              console.log(this.menuId)
-          }
-          let orders = []
-          this.$http.post(`/order/listByTime`, {
-            id: id,
-            page: 1,
-            count: 10
-          })
-          .then((res) => res.json())
-          .then((json) => {
-            for (let i = 0; i < json.length; i++) {
-              let expressCompany
-              switch (json[i].expressId) {
-                case 1:
-                  expressCompany = 'Yunda Express'
-                  break
-                case 2:
-                  expressCompany = 'Yuantong Express'
-                  break
-                case 3:
-                  expressCompany = 'SF Express'
-                  break
-                case 4:
-                  expressCompany = 'EMS'
-                  break
-                case 5:
-                  expressCompany = 'STO Express'
-                  break
-                default:
-                  console.log(json[i].expressId)
-              }
-              let order = {
-                id: json[i].id,
-                customerName: json[i].customerName === '' ? 'Anonym' : json[i].customerName,
-                customerEmail: json[i].customerEmail,
-                amount: json[i].amount,
-                address: json[i].address,
-                telephone: json[i].telephone,
-                expressId: json[i].expressId,
-                expressCompany: expressCompany,
-                products: json[i].products,
-                number: json[i].number,
-                price: json[i].price,
-                createdAt: json[i].createdAt,
-                status: json[i].processStatus,
-                show: true
-              }
-              orders.push(order)
-            }
-          })
-          this.orders = orders
+        let id = 0
+        switch (this.menuId) {
+          case 2:
+            id = 0
+            break
+          case 3:
+            id = 1
+            break
+          case 4:
+            id = 2
+            break
+          case 5:
+            id = 3
+            break
+          default:
+            console.log(this.menuId)
         }
+        let orders = []
+        this.$http.post(`/order/listByTime`, {
+          id: id,
+          page: 1,
+          count: 10
+        })
+        .then((res) => res.json())
+        .then((json) => {
+          for (let i = 0; i < json.length; i++) {
+            let expressCompany
+            switch (json[i].expressId) {
+              case 1:
+                expressCompany = 'Yunda Express'
+                break
+              case 2:
+                expressCompany = 'Yuantong Express'
+                break
+              case 3:
+                expressCompany = 'SF Express'
+                break
+              case 4:
+                expressCompany = 'EMS'
+                break
+              case 5:
+                expressCompany = 'STO Express'
+                break
+              default:
+                console.log(json[i].expressId)
+            }
+            let order = {
+              id: json[i].id,
+              customerName: json[i].customerName === '' ? 'Anonym' : json[i].customerName,
+              customerEmail: json[i].customerEmail,
+              amount: json[i].amount,
+              address: json[i].address,
+              telephone: json[i].telephone,
+              expressId: json[i].expressId,
+              expressCompany: expressCompany,
+              products: json[i].products,
+              number: json[i].number,
+              price: json[i].price,
+              createdAt: json[i].createdAt,
+              status: json[i].processStatus,
+              show: true
+            }
+            orders.push(order)
+          }
+        })
+        this.orders = orders
         // 请求不同的下拉菜单项下的数据 end
       },
       handleSearchByTimeClick () {
@@ -653,6 +478,26 @@ $color2:#f5f5f5;
 $color3:#0077d8;
 $color4:#258bde;
 
+.search-box {
+  margin:40px 70px 25px 172px;
+  min-width:800px;
+  width:70%;
+  input {
+    width: 100%;
+    background-image: url(./images/search_icon.png);
+    background-repeat: no-repeat;
+    background-position: 20px center;
+    background-size: 36px 36px;
+    height: 50px;
+    border-radius: 100px;
+    background-color: $color2;
+    border: none;
+    padding-left: 70px;
+    font-size: 20px;
+    outline: none;
+  }
+}
+
 .owner-order-list {
   position: absolute;
   margin: 10px 0px 28px 172px;
@@ -714,8 +559,8 @@ $color4:#258bde;
             border:1px solid lightgray;
             background:white;
             display:inline-block;
-            text-align:center;
             vertical-align: middle;
+            text-align:center;
             height: 300px;
             img{
               height:140px;

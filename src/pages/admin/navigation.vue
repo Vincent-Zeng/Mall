@@ -11,8 +11,7 @@
           <li @click="handleTabClick(2)" :class="{'selected-item': now === 2}"><router-link :to="{path:'/admin/navigation/owner'}">OWNER & SHOP</router-link></li>
           <li @click="handleTabClick(3)" :class="{'selected-item': now === 3}"><router-link :to="{path:'/admin/navigation/customer'}">CUSTOMER</router-link></li>
           <li @click="handleTabClick(4)" :class="{'selected-item': now === 4}"><router-link :to="{path:'/admin/navigation/ad'}">AD</router-link></li>
-          <li @click="handleTabClick(5)" :class="{'selected-item': now === 5}">COMMISSION</li>
-          <li @click="handleTabClick(6)" :class="{'selected-item': now === 6}">ORDER</li>
+          <li @click="handleTabClick(6)" :class="{'selected-item': now === 6}"><router-link :to="{path:'/admin/navigation/order'}">ORDER</router-link></li>
         </ul>
       </nav>
     </header>

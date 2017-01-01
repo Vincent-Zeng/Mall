@@ -56,27 +56,38 @@ export default {
         }
         this.xAxis = xAxis
         this.yAxis = yAxis
-      })
-      var myChart = echarts.getInstanceByDom(document.getElementById('line-chart'))
-      myChart.setOption({
-        title: {
-          text: this.isIncome ? 'Income' : 'Sales',
-          subtext: this.dropDownMenu
-        },
-        xAxis: {
-          data: this.xAxis
-        },
-        yAxis: {
-          axisLabel: {
-            formatter: this.isIncome ? '$ {value}' : '{value}',
-            textStyle: {
-              color: '#5c6076'
+        var myChart = echarts.getInstanceByDom(document.getElementById('line-chart'))
+        myChart.setOption({
+          title: {
+            text: this.isIncome ? 'Income' : 'Sales',
+            subtext: this.dropDownMenu
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              animation: false
+            },
+            formatter: function (params) {
+              console.log('start')
+              console.log(params)
+              return params[0].name + '<br />' + params[0].value
             }
+          },
+          xAxis: {
+            data: this.xAxis
+          },
+          yAxis: {
+            axisLabel: {
+              formatter: this.isIncome ? '$ {value}' : '{value}',
+              textStyle: {
+                color: '#5c6076'
+              }
+            }
+          },
+          series: {
+            data: this.yAxis
           }
-        },
-        series: {
-          data: this.yAxis
-        }
+        })
       })
     },
     handleCommand (command) {
@@ -102,10 +113,13 @@ export default {
           break
       }
       let url = null
+      let yItem = null
       if (this.isIncome) {
         url = '/owner/income'
+        yItem = 'income'
       } else {
         url = '/order/num'
+        yItem = 'num'
       }
       this.$http.get(`${url}?cond=${cond}`)
       .then((res) => res.json())
@@ -113,33 +127,58 @@ export default {
         let xAxis = []
         let yAxis = []
         for (let i = 0; i < json.length; i++) {
-          let xItem = json[i].year + '/' + json[i].month + '/' + json[i].day
+          let xItem
+          switch (cond) {
+            case 0:
+              xItem = json[i].year + '/' + json[i].month + '/' + json[i].day
+              break
+            case 1:
+              xItem = json[i].year + 'w' + json[i].week
+              break
+            case 2:
+              xItem = json[i].year + '/' + json[i].month
+              break
+            case 3:
+              xItem = json[i].year
+              break
+            default:
+              console.log(json[i])
+          }
           xAxis.push(xItem)
-          yAxis.push(json[i].income)
+          yAxis.push(json[i][yItem])
         }
         this.xAxis = xAxis
         this.yAxis = yAxis
-      })
-      var myChart = echarts.getInstanceByDom(document.getElementById('line-chart'))
-      myChart.setOption({
-        title: {
-          text: this.isIncome ? 'Income' : 'Sales',
-          subtext: this.dropDownMenu
-        },
-        xAxis: {
-          data: this.xAxis
-        },
-        yAxis: {
-          axisLabel: {
-            formatter: this.isIncome ? '$ {value}' : '{value}',
-            textStyle: {
-              color: '#5c6076'
+        var myChart = echarts.getInstanceByDom(document.getElementById('line-chart'))
+        myChart.setOption({
+          title: {
+            text: this.isIncome ? 'Income' : 'Sales',
+            subtext: this.dropDownMenu
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              animation: false
+            },
+            formatter: function (params) {
+              return params[0].name + '<br />' + params[0].value
             }
+          },
+          xAxis: {
+            data: this.xAxis
+          },
+          yAxis: {
+            axisLabel: {
+              formatter: this.isIncome ? '$ {value}' : '{value}',
+              textStyle: {
+                color: '#5c6076'
+              }
+            }
+          },
+          series: {
+            data: this.yAxis
           }
-        },
-        series: {
-          data: this.yAxis
-        }
+        })
       })
     }
   },
@@ -157,65 +196,74 @@ export default {
       }
       this.xAxis = xAxis
       this.yAxis = yAxis
-    })
-    // 绘制图表
-    var myChart = echarts.init(document.getElementById('line-chart'))
-    myChart.setOption({
-      title: {
-        text: this.isIncome ? 'Income' : 'Sales',
-        subtext: this.dropDownMenu
-      },
-      xAxis: {
-        axisLine: {
-          lineStyle: {
-            color: '#ccc'
+      // 绘制图表
+      var myChart = echarts.init(document.getElementById('line-chart'))
+      myChart.setOption({
+        title: {
+          text: this.isIncome ? 'Income' : 'Sales',
+          subtext: this.dropDownMenu
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            animation: false
+          },
+          formatter: function (params) {
+            return params[0].name + '<br />' + params[0].value
           }
         },
-        axisTick: {
-          show: false
-        },
-        axisLabel: {
-          textStyle: {
-            color: '#5c6076'
-          }
-        },
-        type: 'category',
-        boundaryGap: false,
-        data: this.xAxis
-      },
-      yAxis: {
-        splitLine: {
-          show: false
-        },
-        axisLine: {
-          lineStyle: {
-            color: '#ccc'
-          }
-        },
-        axisTick: {
-          show: false
-        },
-        type: 'value',
-        axisLabel: {
-          formatter: '$ {value}',
-          textStyle: {
-            color: '#5c6076'
-          }
-        }
-      },
-      series: [
-        {
-          name: 'income',
-          type: 'line',
-          smooth: true,
-          itemStyle: {
-            normal: {
-              color: '#258bde'
+        xAxis: {
+          axisLine: {
+            lineStyle: {
+              color: '#ccc'
             }
           },
-          data: this.yAxis
-        }
-      ]
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            textStyle: {
+              color: '#5c6076'
+            }
+          },
+          type: 'category',
+          boundaryGap: false,
+          data: this.xAxis
+        },
+        yAxis: {
+          splitLine: {
+            show: false
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#ccc'
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          type: 'value',
+          axisLabel: {
+            formatter: '$ {value}',
+            textStyle: {
+              color: '#5c6076'
+            }
+          }
+        },
+        series: [
+          {
+            name: 'income',
+            type: 'line',
+            smooth: true,
+            itemStyle: {
+              normal: {
+                color: '#258bde'
+              }
+            },
+            data: this.yAxis
+          }
+        ]
+      })
     })
   }
 }

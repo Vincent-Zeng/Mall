@@ -34,6 +34,7 @@ import AdminOwner from './pages/admin/owner'
 import AdminCustomer from './pages/admin/customer'
 import ShopDetail from './pages/admin/shop-detail'
 import AdminAd from './pages/admin/ad'
+import AdminOrder from './pages/admin/order'
 
 const routes = [{
   path: '/',
@@ -166,6 +167,11 @@ const routes = [{
     {
       path: '/admin/navigation/shopdetail',
       component: ShopDetail
+    },
+    {
+      name: 'admin-order',
+      path: '/admin/navigation/order',
+      component: AdminOrder
     }
   ]
 }]

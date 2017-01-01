@@ -106,6 +106,7 @@ export default {
       margin: auto;
       position: relative;
       top: 50%;
+      max-width:80%;
       transform: translateY(-50%);
     }
     height: 366px;
