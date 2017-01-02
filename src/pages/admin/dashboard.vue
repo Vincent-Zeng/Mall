@@ -2,8 +2,9 @@
   <div>
     <div class="commission">
       <label for="commision-value">Commission Rate : </label>
+      <b v-show="editable">%</b>
       <input type="text" class="commision-value" v-model="commissionValue" id="commission-value" v-show="editable" />
-      <span v-show="!editable">{{commissionValue}}</span>
+      <span v-show="!editable">%{{commissionValue}}</span>
       <div class="function-button">
         <div class="edit-button" v-show="!editable" @click="handleEditClick()">Edit</div>
         <div class="edit-button" v-show="editable" @click="handleSaveClick()">Save</div>
@@ -342,13 +343,15 @@ h1 {
     text-align:center;
     font-size:20px;
   }
+  b{
+    margin-left:20px;
+  }
   input{
     border-radius:3px;
     border:1px solid lightgray;
     vertical-align: middle;
     outline: none;
-    width:180px;
-    margin-left:20px;
+    width:160px;
     text-align:center;
     font-size:20px;
     height:30px;

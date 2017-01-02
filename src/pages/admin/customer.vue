@@ -152,6 +152,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .admin-owner {
+  min-width:1000px;
+  width:80%;
   position: absolute;
   margin: 56px 0px;
   left: 172px;

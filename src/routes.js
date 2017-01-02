@@ -6,6 +6,7 @@ Vue.use(VueRouter)
 Vue.use(VueResource)
 
 import Home from './pages/home'
+import Me from './pages/customer/me'
 import Products from './pages/customer/products'
 import Product from './pages/customer/product'
 import Orders from './pages/customer/orders'
@@ -40,6 +41,11 @@ const routes = [{
   path: '/',
   component: Home,
   children: [
+    {
+      name: 'customer-me',
+      path: '/me',
+      component: Me
+    },
     {
       name: 'customer-products',
       path: '/products',
