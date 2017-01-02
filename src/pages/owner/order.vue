@@ -278,7 +278,11 @@
           this.$http.get(`/order/changeProcessStatus?status=3&id=${item.id}&expressId=${expressId}&number=${item.number}`)
           .then(res => res.json())
           .then(json => {
-            item.show = false
+            if (json.status === 1) {
+              item.show = false
+            } else {
+              this.$message(json.message)
+            }
           })
         }
       },

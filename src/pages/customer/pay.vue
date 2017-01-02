@@ -8,25 +8,36 @@
       </div>
 
       <div class="delivery-info">
-        <div class="name">
-          <p>Name</p>
-          <input type="text" name="" value="" placeholder="Enter Name here...">
-        </div>
-        <div class="address">
-          <p>Address</p>
-          <input type="text" name="" value="" placeholder="Enter Address here...">
-        </div>
-        <div class="phone">
-          <p>Phone</p>
-          <input type="text" name="" value="" placeholder="Enter Phone here...">
+        <div v-for="(recipient,index) in recipients" class='recipient-item'>
+          <el-radio class="radio" v-model="whichRecipient" :label="recipient.id">Address{{index+1}}</el-radio>
+          <div class="name">
+            <p>Name</p>
+            <span v-text="recipient.name"></span>
+          </div>
+          <div class="address">
+            <p>Address</p>
+            <span v-text="recipient.address"></span>
+          </div>
+          <div class="phone">
+            <p>Phone</p>
+            <span v-text="recipient.telephone"></span>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="btn-panel">
-      <button class="alipay" type="button" name="button">Pay with Alipay</button>
-      <button class="wechat" type="button" name="button">Pay with Wechat</button>
+      <button class="alipay" type="button" @click="handleConfirmClicked()" name="button">Pay with Alipay</button>
+      <button class="wechat" type="button" @click="handleConfirmClicked()" name="button">Pay with Wechat</button>
     </div>
+
+    <el-dialog title="Pay" v-model="dialogVisible" size="tiny">
+      <img src="./images/qrcode.jpg" class="qrcode"></img>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">Cancle</el-button>
+        <el-button type="primary" @click="handlePayClick()">Confirm</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -34,14 +45,60 @@
 export default {
   name: 'checkout-orders',
   data () {
+    let recipients = []
+    this.$http.get(`/customerAddress/search`)
+    .then(res => res.json())
+    .then(json => {
+      for (let i = 0; i < json.length; i++) {
+        let recipient = {
+          name: json[i].name,
+          address: json[i].address,
+          telephone: json[i].telephone,
+          id: json[i].id
+        }
+        recipients.push(recipient)
+      }
+    })
     return {
+      dialogVisible: false,
+      recipients: recipients,
+      whichRecipient: 0
     }
   },
   methods: {
     handleConfirmClicked () {
+      let orderIds = this.$route.query.orderId
+      for (let i = 0; i < orderIds.length; i++) {
+        let orderId = orderIds[i]
+        this.$http.get(`/order/changeStatus?status=0&addressId=${this.whichRecipient}&id=${orderId}`)
+        .then(res => res.json())
+        .then(json => {
+          if (json.status === 0) {
+            this.$message(json.message)
+            return
+          }
+        })
+      }
+      this.dialogVisible = true
+    },
+    handlePayClick () {
+      let orderIds = this.$route.query.orderId
+      for (let i = 0; i < orderIds.length; i++) {
+        let orderId = orderIds[i]
+        this.$http.get(`/order/changeStatus?status=1&id=${orderId}`)
+        .then(res => res.json())
+        .then(json => {
+          if (json.status === 0) {
+            this.$message(json.message)
+            return
+          }
+        })
+      }
+      this.dialogVisible = false
     }
   },
   created () {
+
   }
 }
 
@@ -49,14 +106,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-
+.qrcode{
+  width:100%;
+}
 .delivery-detail {
   // position: absolute;
-  margin: 100px 0px 28px 0px;
-  margin-left: 172px;
-  margin-right: 172px;
+  margin: 100px auto 28px auto;
   border: 1px solid #E4E4E4;
   position: relative;
+  min-width:1000px;
+  width:80%;
+
 }
 
 .order-header {
@@ -79,18 +139,22 @@ export default {
 }
 
 .delivery-info {
-  div {
-    height: 73px;
-    position: relative;
-  }
-
-  p {
-    display: inline-block;
-    height: 73px;
-    line-height: 73px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-left: 28px;
+  margin-left: 28px;
+  margin-bottom: 20px;
+  .recipient-item{
+    div {
+      position: relative;
+      p {
+        display: inline-block;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-left: 28px;
+        width:200px;
+        color:gray;
+      }
+      span{
+      }
+    }
   }
 
   input {
@@ -100,7 +164,7 @@ export default {
     bottom: 0;
     margin: auto;
     left: 100px;
-    width: 90%;
+    width: 80%;
     border: 1px solid #E4E4E4;
     border-radius: 4px;
     padding-left: 10px;
@@ -120,9 +184,11 @@ export default {
 }
 
 .btn-panel {
-  position: absolute;
   right: 172px;
-
+  min-width:1000px;
+  width: 80%;
+  margin:0 auto;
+  text-align:center;
   button {
     outline: none;
     cursor: pointer;

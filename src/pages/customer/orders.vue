@@ -24,13 +24,7 @@
           </div>
         </div>
 
-        <div class="order-detail-collapse" v-if="order.status < 1">
-          <div class="order-status order-info">
-            <span class="prompt">Status</span>
-            <span class="value">Preparing</span>
-          </div>
-        </div>
-        <div class="order-detail" v-if="order.status >= 1">
+        <div class="order-detail">
           <div class="order-shipment-company order-info">
             <span class="prompt">Shipment Company</span>
             <span class="value">{{ translateExpressCompany(order.shipment.company) }}</span>
@@ -65,33 +59,33 @@ export default {
         case 0:
           return 'Unpaied'
         case 1:
-          return 'Preparing'
+          return 'Processing'
         case 2:
-          return 'Shipping'
+          return 'Prepare for shipping'
         case 3:
-          return 'Received'
+          return 'Shipped'
         case 4:
-          return 'Done'
+          return 'Completed'
         default:
           return 'Waiting for Confirmation'
       }
-    }
-  },
-  translateExpressCompany (id) {
-    switch (id) {
-      case 1:
-        return 'Yunda Express'
-      case 2:
-        return 'Yuantong Express'
-      case 3:
-        return 'SF Express'
-      case 4:
-        return 'EMS'
-      case 5:
-        return 'STO Express'
-      default:
-        console.log(id)
-        return 'Unknown Express Compnay'
+    },
+    translateExpressCompany (id) {
+      switch (id) {
+        case 1:
+          return 'Yunda Express'
+        case 2:
+          return 'Yuantong Express'
+        case 3:
+          return 'SF Express'
+        case 4:
+          return 'EMS'
+        case 5:
+          return 'STO Express'
+        default:
+          console.log(id)
+          return 'Unknown Express Compnay'
+      }
     }
   },
   created () {
@@ -123,7 +117,7 @@ export default {
             status: order.processStatus,
             shipment: {
               company: order.expressId,
-              number: order.expressId
+              number: order.number
             }
           })
           console.log(order.processStatus)

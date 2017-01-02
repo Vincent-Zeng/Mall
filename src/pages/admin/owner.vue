@@ -12,10 +12,10 @@
 
     <div class="owner-list">
       <div class="owner-item" v-for="shop in shops" v-show="!isOwner">
-        <router-link :to="{path:'/admin/navigation/shopdetail'}" >
+        <div>
           <img class="owner-item-avatar" :src="shop.avatar" alt="">
           <span class="owner-item-owner">{{ shop.name }}</span>
-        </router-link>
+        </div>
         <div class="function-button" >
           <div @click="changeStatus(shop, 0, 1)" class="suspend-button">{{shop.status === 0 ? "Suspend" : "nomalize"}}</div>
           <div @click="changeStatus(shop, 1, 1)" class="delete-button">{{shop.status !== 2 ? "Delete" : "resume"}}</div>

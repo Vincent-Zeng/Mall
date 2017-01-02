@@ -19,10 +19,11 @@
                 <span @click="handleTabClick(1)" :class="{'selected-item': now === 1}" id="nav-products"><router-link :to="{path:'/products'}">PRODUCTS</router-link></span>
                 <span @click="handleTabClick(2)" :class="{'selected-item': now === 2}" id="nav-orders"><router-link :to="{path:'/orders'}" v-show="isLogin">ORDERS</router-link></span>
                 <span @click="handleTabClick(3)" :class="{'selected-item': now === 3}" id="nav-favourite"><router-link :to="{path:'/favourite'}" v-show="isLogin">FAVOURITE</router-link></span>
+                <span @click="handleTabClick(4)" :class="{'selected-item': now === 4}" id="nav-favourite"><router-link :to="{path:'/me'}" v-show="isLogin">Me</router-link></span>
               </nav>
           </div>
           <div class="search-box">
-            <router-link :to="{path:'/cart'}"><button>0</button></router-link>
+            <router-link :to="{path:'/cart'}"><button>{{cartAmount}}</button></router-link>
         </div>
       </header>
 
@@ -171,7 +172,8 @@ export default {
       isLogin: false,
       showRegister: false,
       showLogin: false,
-      now: now
+      now: now,
+      cartAmount: 0
     }
   },
   methods: {
@@ -251,6 +253,13 @@ export default {
     if (this.$cookie.get('customerId') !== null) {
       this.isLogin = true
     }
+    this.$http.get(`/cart/searchCart`)
+    .then(res => res.json())
+    .then(json => {
+      if (json[0] !== undefined) {
+        this.cartAmount = json[0].allAmount
+      }
+    })
   }
 }
 </script>
@@ -372,7 +381,7 @@ $color4:#258bde;
 
 .search-box {
   display: inline-block;
-  width: 50%;
+  width: 10%;
   text-align: right;
   position: absolute;
   right: 0px;

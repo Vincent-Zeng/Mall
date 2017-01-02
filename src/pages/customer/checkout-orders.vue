@@ -6,28 +6,30 @@
         <span>Order</span>
       </div>
       <div class="product-list">
-        <div class="product-item">
+        <div class="product-item" v-for="product in products">
           <div class="product-image-wrapper">
             <div class="product-image">
-              <img src="./images/product.png" alt="">
+              <img :src="product.url" alt="">
             </div>
           </div>
           <div class="product-info-wrapper">
             <div class="product-info">
-              <p class="product-item-name">iPhone</p>
-              <p class="product-count">x 1</p>
+              <p class="product-item-name">{{ product.name }}</p>
+              <p class="product-count">x {{product.quantity}}</p>
             </div>
-            <div class="product-price">1.00 HK$</div>
+            <div class="product-price">{{product.price*product.quantity}} HK$</div>
           </div>
         </div>
       </div>
 
       <div class="order-summary">
-        Total <span>1110.00 (Shipment: 10.00) HK $</span>
+        Total <span>{{ this.totalPrice + 10 }}(Shipment: 10.00) HK $</span>
       </div>
     </div>
+    <div class="button-wrap">
+        <button class="confirm-order" type="button" name="button" @click="handleConfirmClicked()">Confirm Order</button>
+    </div>
 
-    <button class="confirm-order" type="button" name="button" @click="handleConfirmClicked()">Confirm Order <span>100 HK$</span></button>
 
   </div>
 </template>
@@ -38,12 +40,47 @@ import router from '../../routes'
 export default {
   name: 'checkout-orders',
   data () {
+    let products = []
+    this.$http.get('/cart/searchCart')
+    .then((res) => res.json())
+    .then((data) => {
+      for (let i = 0; i < data.length; i++) {
+        let json = data[i]
+        products.push({
+          id: json.id,
+          url: json.photoURL,
+          quantity: json.subAmount,
+          name: json.name,
+          price: json.price,
+          left: json.amount
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+    })
     return {
+      products: products
+    }
+  },
+  computed: {
+    totalPrice () {
+      return this.products.reduce((result, item) => {
+        return result + item.price * item.quantity
+      }, 0)
     }
   },
   methods: {
     handleConfirmClicked () {
-      router.push('/pay')
+      this.$http.get(`/order/add`)
+      .then(res => res.json())
+      .then(json => {
+        let orderId = []
+        for (let i = 0; i < json.length; i++) {
+          orderId.push(json[i].id)
+        }
+        router.push({path: '/pay', query: { orderId: orderId }})
+      })
     }
   },
   created () {
@@ -57,11 +94,12 @@ export default {
 
 .order-product-list {
   // position: absolute;
-  margin: 100px 0px 28px 0px;
-  margin-left: 172px;
-  margin-right: 172px;
+  margin: 100px auto 28px auto;
+
   border: 1px solid #E4E4E4;
   position: relative;
+  min-width:800px;
+  width:80%;
 }
 
 .order-header {
@@ -182,22 +220,28 @@ export default {
   }
 }
 
-.confirm-order {
-  position: absolute;
-  right: 182px;
-  width: 444px;
-  height: 58px;
-  border-radius: 29px;
-  background-color: #4A90E2;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  color: white;
-  font-size: 20px;
+.button-wrap{
+  min-width:800px;
+  width:80%;
+  margin:0 auto;
+  text-align: center;
+  .confirm-order {
+    margin:0 auto;
+    width: 444px;
+    height: 58px;
+    border-radius: 29px;
+    background-color: #4A90E2;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 20px;
 
-  span {
+    span {
 
+    }
   }
 }
+
 
 </style>

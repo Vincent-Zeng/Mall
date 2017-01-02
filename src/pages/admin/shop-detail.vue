@@ -68,6 +68,8 @@ export default {
   right: 172px;
   border: 1px solid #E4E4E4;
   height: 260px;
+  min-width:1000px;
+  width:80%;
   box-shadow: 0px 4px 14px rgba(121, 121, 121, 0.1);
 
   .owner-panel-info {
@@ -183,6 +185,8 @@ export default {
   border: 1px solid #E4E4E4;
   height: 1000px;
   box-shadow: 0px 4px 14px rgba(121, 121, 121, 0.1);
+  width:1000px;
+  min-width:80%;
 }
 
 .info-header {
