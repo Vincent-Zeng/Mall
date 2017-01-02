@@ -163,6 +163,12 @@ export default {
       case 'customer-orders':
         now = 2
         break
+      case 'customer-me':
+        now = 4
+        break
+      case 'customer-favourite':
+        now = 3
+        break
       default:
         now = null
         this.$route.path === '/' ? now = 0 : null

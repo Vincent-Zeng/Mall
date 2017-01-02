@@ -10,6 +10,7 @@ import Me from './pages/customer/me'
 import Products from './pages/customer/products'
 import Product from './pages/customer/product'
 import Orders from './pages/customer/orders'
+import Order from './pages/customer/order'
 import Cart from './pages/customer/cart'
 import Pay from './pages/customer/pay'
 import Checkout from './pages/customer/checkout'
@@ -61,6 +62,11 @@ const routes = [{
       component: Orders
     },
     {
+      name: 'customer-order',
+      path: '/order',
+      component: Order
+    },
+    {
       path: '/cart',
       component: Cart
     },
@@ -85,6 +91,7 @@ const routes = [{
       component: Pay
     },
     {
+      name: 'customer-favourite',
       path: '/favourite',
       component: Favourite
     }
