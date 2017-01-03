@@ -719,7 +719,7 @@ $color4:#258bde;
             display:inline-block;
             text-align:center;
             vertical-align: middle;
-            height: 300px;
+            height: 360px;
             img{
               height:140px;
               max-width:80%;

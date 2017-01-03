@@ -831,7 +831,7 @@ $color4:#258bde;
             background:white;
             display:inline-block;
             vertical-align: middle;
-            height: 300px;
+            height: 360px;
             text-align:center;
             img{
               height:140px;
