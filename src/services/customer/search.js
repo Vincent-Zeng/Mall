@@ -11,7 +11,10 @@ export const search = (category, keyword) => {
   }
 
   if (category === 0 && keyword === '') {
-    body = JSON.stringify({})
+    body = JSON.stringify({
+      page: 1,
+      num: 10
+    })
   }
   return Vue.http.post('/product/search', body)
 }
