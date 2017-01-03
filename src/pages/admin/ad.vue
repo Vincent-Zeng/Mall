@@ -43,7 +43,7 @@
             <div class="product-list">
               <div class="product-item" v-for="optionalProduct in optionalProducts" v-show="optionalProduct.show">
                 <span class="product-item-name">{{ optionalProduct.name }}</span>
-                <span class="product-item-price">{{optionalProduct.price}}</span>
+                <span class="product-item-price">{{optionalProduct.rentPrice}}</span>
                 <div class="function-button">
                   <div class="bluebutton" @click=changeAdStatus(0,optionalProduct)>Approve</div>
                   <div class="whitebutton" @click=changeAdStatus(1,optionalProduct)>Reject</div>
@@ -217,7 +217,8 @@ export default {
                 type: 0,
                 id: data.id,
                 name: data.name,
-                price: data.price
+                price: data.price,
+                rentPrice: data.rentPrice
               })
             }
             this.optionalProducts = optionalProducts
@@ -500,7 +501,7 @@ button{
 
     .product-item-price{
       color: red;
-      padding-left:200px;
+      padding-left:100px;
     }
 
     .product-item-price::after{
