@@ -205,7 +205,7 @@ export default {
         this.oldScrollTop = document.body.scrollTop
         document.body.scrollTop = 0
 
-        this.$http.get('/product/searchByOwnForAd?page=1&count=10')
+        this.$http.get('/product/searchByOwnForAd?page=1&count=1000')
         .then(res => res.json())
         .then(data => {
           console.log(data)
