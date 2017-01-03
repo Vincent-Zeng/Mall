@@ -150,6 +150,8 @@ $color4:#258bde;
   margin-bottom: 20px;
   .add-another{
     text-align: right;
+    margin-right:20px;
+    margin-top:10px;
     button{
       padding:10px 30px;
       border-radius:3px;
