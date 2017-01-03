@@ -45,8 +45,8 @@
                 <span class="product-item-name">{{ optionalProduct.name }}</span>
                 <span class="product-item-price">{{optionalProduct.price}}</span>
                 <div class="function-button">
-                  <div class="bluebutton" @click=changeAdStatus(0,optionalProduct)>Approve</div>
-                  <div class="whitebutton" @click=changeAdStatus(1,optionalProduct)>Reject</div>
+                  <div class="bluebutton" @click="changeAdStatus(0,optionalProduct)">Approve</div>
+                  <div class="whitebutton" @click="changeAdStatus(1,optionalProduct)">Reject</div>
                 </div>
               </div>
             </div>
@@ -499,8 +499,10 @@ button{
     }
 
     .product-item-price{
+      position: absolute;
+      left: 270px;
+      line-height: 88px;
       color: red;
-      padding-left:200px;
     }
 
     .product-item-price::after{
