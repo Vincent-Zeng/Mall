@@ -42,7 +42,7 @@
                   <div>
                     <p>{{product.name}}</p>
                     <p>Amount: {{product.amount}}</p>
-                    <p>Total: $ {{product.price}}</p>
+                    <p>Total: HK $ {{product.price}}</p>
                   </div>
                 </div>
               </div>
@@ -57,7 +57,7 @@
                 </p>
                 <p>
                   <span>Total</span>
-                  <span>$ {{order.price}}</span>
+                  <span>HK $ {{order.price}}</span>
                 </p>
                 <p v-show="menuId === 1">
                   <span>Status</span>
@@ -98,7 +98,7 @@
                   </span>
                   <br />
                   <span>
-                    ${{reviewProduct.price}}
+                    HK ${{reviewProduct.price}}
                   </span>
                 </div>
               </div><div class="box-top-right">
@@ -769,9 +769,11 @@ $color4:#258bde;
 
 .owner-order-list {
   position: absolute;
-  margin: 10px 0px 28px 172px;
+  margin: 56px 0px;
+  left: 172px;
+  right: 172px;
   min-width:800px;
-  width:80%;
+  // width:80%;
   border: 1px solid #E4E4E4;
   .owner-header {
     position: relative;

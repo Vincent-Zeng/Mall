@@ -20,10 +20,11 @@
                 <span @click="handleTabClick(2)" :class="{'selected-item': now === 2}" id="nav-orders"><router-link :to="{path:'/order'}" v-show="isLogin">ORDERS</router-link></span>
                 <span @click="handleTabClick(3)" :class="{'selected-item': now === 3}" id="nav-favourite"><router-link :to="{path:'/favourite'}" v-show="isLogin">FAVOURITE</router-link></span>
                 <span @click="handleTabClick(4)" :class="{'selected-item': now === 4}" id="nav-favourite"><router-link :to="{path:'/me'}" v-show="isLogin">ME</router-link></span>
+                <span @click="handleTabClick(5)" :class="{'selected-item': now === 5}" id="nav-cart"><router-link :to="{path:'/cart'}" v-show="isLogin">CART</router-link></span>
               </nav>
           </div>
           <div class="search-box">
-            <router-link :to="{path:'/cart'}"><button>C</button></router-link>
+            <!-- <router-link :to="{path:'/cart'}"><button>C</button></router-link> -->
         </div>
       </header>
 
@@ -226,7 +227,7 @@ export default {
         } else if (data.status === 1) {
           router.push('/products')
           this.$message({
-            message: 'Sign up Successfully,please activate through email.',
+            message: 'Sign up Successfully, please activate through email.',
             type: 'success'
           })
         } else {
