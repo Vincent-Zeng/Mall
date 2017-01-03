@@ -23,6 +23,9 @@
             <span v-text="recipient.telephone"></span>
           </div>
         </div>
+        <div class="add-another">
+          <router-link :to="{path:'/me'}"><button class="bluebutton">Add Another</button></router-link>
+        </div>
       </div>
     </div>
 
@@ -106,6 +109,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+$color1:gray;
+$color2:#f5f5f5;
+$color3:#0077d8;
+$color4:#258bde;
 .qrcode{
   width:100%;
 }
@@ -141,6 +148,19 @@ export default {
 .delivery-info {
   margin-left: 28px;
   margin-bottom: 20px;
+  .add-another{
+    text-align: right;
+    button{
+      padding:10px 30px;
+      border-radius:3px;
+      cursor:pointer;
+    }
+    .bluebutton{
+      background:$color4;
+      border:1px solid $color4;
+      color:white;
+    }
+  }
   .recipient-item{
     div {
       position: relative;
