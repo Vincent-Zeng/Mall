@@ -32,7 +32,7 @@
             <span  class="order-item-name">In Shop {{ order.shopName }} At {{ order.createdAt }}</span>
             <button class="bluebutton" v-show="menuId !== 1 && menuId !== 0" @click="handleReviewBoxClicked($event, order)">Review</button>
             <button class="bluebutton" v-show="menuId === 1 && order.processStatusMes === 'Shipped' " @click="handleCompleteClicked($event,order)">Complete</button>
-            <button class="bluebutton" v-show="menuId === 0"><router-link :to="{path:'/pay?orderId=' + order.id}">Pay</router-link></button>
+            <button class="bluebutton" v-show="menuId === 0"><router-link :to="{path:'/pay', query: { orderId: [order.id] } }">Pay</router-link></button>
           </div>
           <div slot="detail" class="detail">
             <div class="order-item-detail">
