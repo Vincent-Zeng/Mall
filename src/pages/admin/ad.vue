@@ -508,7 +508,7 @@ button{
     }
 
     .product-item-price::before{
-      content: "$ "
+      content: "HK $ "
     }
 
     .function-button {

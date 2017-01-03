@@ -25,11 +25,12 @@
       <div class="owner-shop">
         <!-- <span>Own</span>
         <span>{{ shopName }}</span> -->
-        <div class="create-shop-button"><router-link :to="{path:'/owner/navigation/shop/create'}">Create</router-link></div>
+        <div class="create-shop-button" v-show="shop.id === null"><router-link :to="{path:'/owner/navigation/shop/create'}">Create</router-link></div>
+        <button class="delete-shop-button" v-show="shop.id !== null" @click="handelDeleteShopClicked(shop)">Delete</button>
       </div>
     </div>
 
-    <div class="info-panel" v-show="shop.id !== null">
+    <div class="info-panel" v-show="shop.id !== null && shop.show === true">
       <div class="info-header">
         <img src="./images/products.png" alt="">
         <span>Information</span>
@@ -70,18 +71,21 @@ import Vue from 'vue'
 export default {
   name: 'owner-shop',
   data () {
-    var shop = {}
     this.$http.get(`/shop/searchByOwner?id=${Vue.cookie.get('ownerId')}`)
     .then((res) => res.json())
     .then((json) => {
-      shop.id = json.id
-      shop.email = json.email
-      shop.idPhotoUrl = json.idPhotoUrl
-      shop.name = json.name
-      shop.contact = json.contact
-      shop.telephone = json.telephone
-      console.log(shop)
+      let shop = {
+        id: json.id,
+        email: json.email,
+        idPhotoUrl: json.idPhotoUrl,
+        name: json.name,
+        contact: json.contact,
+        telephone: json.telephone,
+        show: true
+      }
+      this.shop = shop
     })
+
     return {
       disabled: true,
       products: 0,
@@ -89,10 +93,21 @@ export default {
       income: 0,
       ownerName: null,
       shopName: 'Nothing',
-      shop: shop
+      shop: {}
     }
   },
   methods: {
+    handelDeleteShopClicked (item) {
+      this.$http.post(`/shop/delete?id=${item.id}`)
+      .then(res => res.json())
+      .then(json => {
+        if (json.status === 1) {
+          item.show = false
+        } else {
+          this.message(json.message)
+        }
+      })
+    },
     editShop (edit) {
       this.disabled = !edit
     },
@@ -120,7 +135,7 @@ export default {
       this.products = json.message
       console.log(json)
     })
-    this.$http.get(`/order/sumA`)
+    this.$http.get(`/order/sumO`)
     .then(res => res.json())
     .then(json => {
       if (json.status === 1) {
@@ -248,6 +263,23 @@ $color4:#258bde;
       border: 1px solid #0077D8;
       background-color: #0077D8;
       color: white;
+      float: right;
+    }
+
+    .delete-shop-button {
+      width: 114px;
+      height: 42px;
+      display: inline-block;
+      line-height: 42px;
+      text-align: center;
+      border-radius: 4px;
+      box-sizing:border-box;
+      cursor: pointer;
+      margin-top: 20px;
+      margin-right: 28px;
+      border: 1px solid $color4;
+      background-color: white;
+      color: black;
       float: right;
     }
   }

@@ -81,7 +81,7 @@ export default {
           },
           yAxis: {
             axisLabel: {
-              formatter: this.isIncome ? '$ {value}' : '{value}',
+              formatter: this.isIncome ? 'HK $ {value}' : '{value}',
               textStyle: {
                 color: '#5c6076'
               }
@@ -172,7 +172,7 @@ export default {
           },
           yAxis: {
             axisLabel: {
-              formatter: this.isIncome ? '$ {value}' : '{value}',
+              formatter: this.isIncome ? 'HK $ {value}' : '{value}',
               textStyle: {
                 color: '#5c6076'
               }
@@ -247,7 +247,7 @@ export default {
           },
           type: 'value',
           axisLabel: {
-            formatter: '$ {value}',
+            formatter: 'HK $ {value}',
             textStyle: {
               color: '#5c6076'
             }

@@ -10,8 +10,8 @@
       </div>
     </div>
 
-    <div class="owner-list">
-      <div class="owner-item" v-for="shop in shops" v-show="!isOwner">
+    <div class="owner-list" v-show="!isOwner">
+      <div class="owner-item" v-for="shop in shops" v-show="shop.show">
         <div>
           <img class="owner-item-avatar" :src="shop.avatar" alt="">
           <span class="owner-item-owner">{{ shop.name }}</span>
@@ -23,8 +23,8 @@
       </div>
     </div>
 
-    <div class="owner-list">
-      <div class="owner-item" v-for="owner in owners" v-show="isOwner">
+    <div class="owner-list" v-show="isOwner">
+      <div class="owner-item" v-for="owner in owners" v-show="owner.show">
         <span class="owner-item-owner">{{ owner.name }}</span>
 
         <div class="function-button">
@@ -76,7 +76,8 @@ export default {
                 email: owner.email,
                 status: owner.status,
                 password: owner.password,
-                isEmailVerified: owner.is_email_verified
+                isEmailVerified: owner.is_email_verified,
+                show: true
               })
             }
           })
@@ -130,7 +131,11 @@ export default {
         .then((res) => res.json())
         .then((json) => {
           if (json.status === 1) {
-            item.status = newStatus
+            if (whichbutton === 1) {
+              item.show = false
+            } else {
+              item.status = newStatus
+            }
           } else {
             window.alert(item.message)
           }
@@ -145,7 +150,11 @@ export default {
         .then((res) => res.json())
         .then((json) => {
           if (json.status === 1) {
-            item.status = newStatus
+            if (whichbutton === 1) {
+              item.show = false
+            } else {
+              item.status = newStatus
+            }
           } else {
             window.alert(item.message)
           }
@@ -196,7 +205,8 @@ export default {
             email: owner.email,
             status: owner.status,
             password: owner.password,
-            isEmailVerified: owner.isEmailVerified
+            isEmailVerified: owner.isEmailVerified,
+            show: true
           })
         }
       })
