@@ -120,6 +120,24 @@ export default {
       this.products = json.message
       console.log(json)
     })
+    this.$http.get(`/order/sumA`)
+    .then(res => res.json())
+    .then(json => {
+      if (json.status === 1) {
+        this.sales = json.message
+      } else {
+        console.log(json.message)
+      }
+    })
+    this.$http.get(`/owner/allIncome`)
+    .then(res => res.json())
+    .then(json => {
+      if (json.status === 1) {
+        this.income = json.message
+      } else {
+        console.log(json.message)
+      }
+    })
   }
 }
 </script>

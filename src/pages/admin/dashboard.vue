@@ -73,10 +73,13 @@ export default {
       this.isIncome = type === 'income'
       this.dropDownMenu = 'Daily'
       let url = null
+      let yItem = null
       if (type === 'income') {
         url = '/admin/income'
+        yItem = 'income'
       } else {
-        url = '/order/num'
+        url = '/order/numA'
+        yItem = 'num'
       }
       this.$http.get(`${url}?cond=0`)
       .then((res) => res.json())
@@ -86,7 +89,7 @@ export default {
         for (let i = 0; i < json.length; i++) {
           let xItem = json[i].year + '/' + json[i].month + '/' + json[i].day
           xAxis.push(xItem)
-          yAxis.push(json[i].income)
+          yAxis.push(json[i][yItem])
         }
         this.xAxis = xAxis
         this.yAxis = yAxis
@@ -102,8 +105,6 @@ export default {
               animation: false
             },
             formatter: function (params) {
-              console.log('start')
-              console.log(params)
               return params[0].name + '<br />' + params[0].value
             }
           },
@@ -152,7 +153,7 @@ export default {
         url = '/admin/income'
         yItem = 'income'
       } else {
-        url = '/order/num'
+        url = '/order/numA'
         yItem = 'num'
       }
       this.$http.get(`${url}?cond=${cond}`)
@@ -196,8 +197,6 @@ export default {
               animation: false
             },
             formatter: function (params) {
-              console.log('start')
-              console.log(params)
               return params[0].name + '<br />' + params[0].value
             }
           },
@@ -253,8 +252,6 @@ export default {
             animation: false
           },
           formatter: function (params) {
-            console.log('start')
-            console.log(params)
             return params[0].name + '<br />' + params[0].value
           }
         },
