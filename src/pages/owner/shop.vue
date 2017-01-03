@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <div class="info-panel">
+    <div class="info-panel" v-show="shop.id !== null">
       <div class="info-header">
         <img src="./images/products.png" alt="">
         <span>Information</span>

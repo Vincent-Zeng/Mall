@@ -124,7 +124,7 @@
     },
     created () {
       let orders = []
-      this.$http.post(`/order/listByTime?`, {
+      this.$http.post(`/order/listByTimeA?`, {
         id: 0,
         page: 1,
         count: 10
@@ -317,7 +317,7 @@
             console.log(this.menuId)
         }
         let orders = []
-        this.$http.post(`/order/listByTime`, {
+        this.$http.post(`/order/listByTimeA`, {
           id: id,
           page: 1,
           count: 10
@@ -404,7 +404,7 @@
           year = this.time3
         }
         let orders = []
-        this.$http.post(`/order/listByTime`, {
+        this.$http.post(`/order/listByTimeA`, {
           id: id,
           day: day,
           week: week,
