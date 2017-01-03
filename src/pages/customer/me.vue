@@ -309,6 +309,7 @@ $color4:#258bde;
 
 
   .recipient-item{
+    margin-bottom:20px;
     div {
       position: relative;
       .recipient-title {

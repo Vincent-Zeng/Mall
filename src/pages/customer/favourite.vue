@@ -6,24 +6,25 @@
       <span @click="handleSpanClicked('shop')" class="shop-span" v-bind:class="{ 'highlight-span': !isProduct, 'normal-span': isProduct }">Shop</span>
     </div>
 
-    <div class="owner-list">
-      <div class="owner-item" v-for="shop in shops" v-show="!isProduct">
-        <router-link :to="{path:'/admin/navigation/shopdetail'}" >
+    <div class="owner-list" v-show="!isProduct">
+      <div class="owner-item" v-for="shop in shops" v-show="shop.show">
+      <router-link :to="{path:'/shops/' + shop.id}" >
           <img class="owner-item-avatar" :src="shop.avatar" alt="">
           <span class="owner-item-owner">{{ shop.name }}</span>
         </router-link>
         <div class="function-button">
-          <div class="remove-button">{{shop.status === 0 ? "Remove" : "Resume"}}</div>
+          <div class="remove-button" @click="handleRemoveClicked('shop',shop)">Remove</div>
         </div>
       </div>
     </div>
 
-    <div class="owner-list">
-      <div class="owner-item" v-for="owner in owners" v-show="isProduct">
-        <span class="owner-item-owner">{{ owner.name }}</span>
-
+    <div class="owner-list" v-show="isProduct">
+      <div class="owner-item" v-for="product in products" v-show="product.show">
+        <router-link :to="{path:'/products/' + product.id}" >
+          <span class="owner-item-owner">{{ product.name }}</span>
+        </router-link>
         <div class="function-button">
-          <div class="remove-button" >{{owner.status === 0 ? "Remove" : "Resume"}}</div>
+          <div class="remove-button" @click="handleRemoveClicked('product',product)">Remove</div>
         </div>
       </div>
     </div>
@@ -31,77 +32,89 @@
 </template>
 
 <script>
-import Vue from 'vue'
 export default {
   name: 'admin-owner',
   data () {
     let isProduct = true
     return {
       shops: [],
-      owners: [],
+      products: [],
       isProduct: isProduct,
       searchkey: null
     }
   },
   methods: {
+    handleRemoveClicked (whichButton, item) {
+      if (whichButton === 'shop') {
+        this.$http.get(`/Favorite/deleteShop?id=${item.id}`)
+        .then(res => res.json())
+        .then(json => {
+          if (json.status === 1) {
+            item.show = false
+          } else {
+            this.$message(json.message)
+          }
+        })
+      } else {
+        this.$http.get(`/Favorite/deleteProduct?id=${item.id}`)
+        .then(res => res.json())
+        .then(json => {
+          if (json.status === 1) {
+            item.show = false
+          } else {
+            this.$message(json.message)
+          }
+        })
+      }
+    },
     handleSpanClicked (type) {
       this.isProduct = type === 'product'
+      if (this.isProduct === true) {
+        this.$http.get(`/Favorite/searchFavoriteProduct`)
+        .then(res => res.json())
+        .then(json => {
+          let products = []
+          for (let i = 0; i < json.length; i++) {
+            products.push({
+              name: json[i].name,
+              id: json[i].id,
+              show: true
+            })
+          }
+          this.products = products
+        })
+      } else {
+        this.$http.get(`/Favorite/searchFavoriteShop`)
+        .then(res => res.json())
+        .then(json => {
+          let shops = []
+          for (let i = 0; i < json.length; i++) {
+            shops.push({
+              name: json[i].name,
+              id: json[i].id,
+              show: true
+            })
+          }
+          this.shops = shops
+        })
+      }
     }
   },
   created () {
-    Vue.http.get('/shop/searchAll?page=1&count=20').then((response) => {
-      let shops = this.shops
-      response.json().then(function (data) {
-        if (response.status !== 200) {
-          console.log('Looks like there was a problem. Status Code: ' +
-               response.status)
-          return
-        }
-        for (let i = 0; i < data.length; i++) {
-          const shop = data[i]
-          shops.push({
-            id: shop.id,
-            status: shop.status,
-            avatar: shop.idPhotoUrl,
-            owner: shop.contact,
-            name: shop.name,
-            show: true
-          })
-        }
-      })
-      this.shops = shops
-    }, (response) => {
-      console.log('Looks like there was a problem. Status Code: ' +
-           response.status)
-    })
-
-    Vue.http.get('/owner/getAllOwner?page=1&pageNum=20').then((response) => {
-      let owners = this.owners
-      response.json().then(function (data) {
-        if (response.status !== 200) {
-          console.log('Looks like there was a problem. Status Code: ' +
-               response.status)
-          return
-        }
-        for (let i = 0; i < data.length; i++) {
-          const owner = data[i]
-          owners.push({
-            id: owner.id,
-            name: owner.name,
-            email: owner.email,
-            status: owner.status,
-            password: owner.password,
-            isEmailVerified: owner.isEmailVerified
-          })
-        }
-      })
-      this.owners = owners
-    }, (response) => {
-      console.log('Looks like there was a problem. Status Code: ' +
-           response.status)
+    this.$http.get(`/Favorite/searchFavoriteProduct`)
+    .then(res => res.json())
+    .then(json => {
+      let products = []
+      for (let i = 0; i < json.length; i++) {
+        products.push({
+          name: json[i].name,
+          id: json[i].id,
+          show: true
+        })
+      }
+      this.products = products
     })
   }
-
 }
 </script>
 
