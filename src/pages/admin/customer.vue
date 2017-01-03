@@ -10,7 +10,7 @@
     </div>
 
     <div class="owner-list">
-      <div class="owner-item" v-for="customer in customers">
+      <div class="owner-item" v-for="customer in customers" v-show="customer.show">
         <router-link :to="{path:'/admin/navigation/customer_detail'}" >
           <span class="owner-item-owner">{{ customer.name }}</span>
         </router-link>
@@ -58,7 +58,8 @@ export default {
               telephone: customer.telephone,
               name: customer.name,
               password: customer.password,
-              is_email_verified: customer.is_email_verified
+              is_email_verified: customer.is_email_verified,
+              show: true
             })
           }
         })
@@ -103,7 +104,11 @@ export default {
         .then((res) => res.json())
         .then((json) => {
           if (json.status === 1) {
-            item.status = newStatus
+            if (whichbutton === 0) {
+              item.status = newStatus
+            } else {
+              item.show = false
+            }
           } else {
             window.alert(json.message)
           }
@@ -135,7 +140,8 @@ export default {
             telephone: customer.telephone,
             name: customer.name,
             password: customer.password,
-            is_email_verified: customer.is_email_verified
+            is_email_verified: customer.is_email_verified,
+            show: true
           })
         }
       })

@@ -13,7 +13,7 @@
         </div>
         <div class="shop-ad-panel-right">
           <div>
-              <span>$</span>
+              <span>HK $</span>
               <input type="text" placeholder="commission" v-model="shopAdPrice" />
               <span>/day</span>
           </div>
@@ -67,7 +67,7 @@
               <div class="product-item" v-for="optionalProduct in optionalProducts" v-show="optionalProduct.show">
                 <span class="product-item-name">{{ optionalProduct.name }}</span>
                 <div class="product-ad-commission">
-                    <span>$</span>
+                    <span>HK $</span>
                     <input type="text" placeholder="commission" v-model="optionalProduct.price" />
                     <span>/day</span>
                 </div>

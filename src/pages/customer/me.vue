@@ -5,7 +5,7 @@
         <div class="info-left">
            <span>{{userInfo.name}}</span>
         </div><div class="info-right">
-            <span>${{userInfo.balance}}</span>
+            <span>HK ${{userInfo.balance}}</span>
             <span>BALANCE</span>
         </div>
       </div>
@@ -79,7 +79,7 @@
         <input type="password" class="rechargeValue" />
       </p>
       <p>
-        <label>Amount $</label>
+        <label>HK $</label>
         <input v-model="rechargeValue" class="rechargeValue" />
       </p>
       <span slot="footer" class="dialog-footer">

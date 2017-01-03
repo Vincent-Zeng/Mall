@@ -10,6 +10,7 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="Uncompleted">Uncompleted</el-dropdown-item>
+            <el-dropdown-item command="Unpaid">Unpaid</el-dropdown-item>
             <el-dropdown-item command="history" divided disabled>history</el-dropdown-item>
             <el-dropdown-item command="Daily">&nbsp&nbspDaily</el-dropdown-item>
             <el-dropdown-item command="Weekly">&nbsp&nbspWeekly</el-dropdown-item>
@@ -17,7 +18,7 @@
             <el-dropdown-item command="Yearly">&nbsp&nbspYearly</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <div class="date-picker" v-show="menuId !== 1">
+        <div class="date-picker" v-show="menuId !== 1 && menuId !== 0">
           <el-date-picker v-model="timetemp.time0" @change="handleTimeChangeClick0" type="date" v-show="dateType==='date'" placeholder="Select Time"></el-date-picker>
           <el-date-picker v-model="timetemp.time1" @change="handleTimeChangeClick1" type="week" v-show="dateType==='week'" placeholder="Select Time" :picker-options="pickerOptions0"></el-date-picker>
           <el-date-picker v-model="timetemp.time2" @change="handleTimeChangeClick2" type="month" v-show="dateType==='month'" placeholder="Select Time"></el-date-picker>
@@ -29,8 +30,9 @@
         <foldinglist class="order-item" v-show="order.show">
           <div slot="summary">
             <span  class="order-item-name">In Shop {{ order.shopName }} At {{ order.createdAt }}</span>
-            <button class="bluebutton" v-show="menuId !== 1" @click="handleReviewBoxClicked($event, order)">Review</button>
+            <button class="bluebutton" v-show="menuId !== 1 && menuId !== 0" @click="handleReviewBoxClicked($event, order)">Review</button>
             <button class="bluebutton" v-show="menuId === 1 && order.processStatusMes === 'Shipped' " @click="handleCompleteClicked($event,order)">Complete</button>
+            <button class="bluebutton" v-show="menuId === 0"><router-link :to="{path:'/pay?orderId=' + order.id}">Pay</router-link></button>
           </div>
           <div slot="detail" class="detail">
             <div class="order-item-detail">
@@ -152,7 +154,11 @@
     created () {
       let orders = []
       for (let i = 1; i < 4; i++) {
-        this.$http.get(`/order/listByProcessStatus?status=${i}&page=1&count=1000`)
+        this.$http.post(`/order/search`, {
+          processStatus: i,
+          page: 1,
+          count: 10
+        })
         .then((res) => res.json())
         .then((json) => {
           for (let i = 0; i < json.length; i++) {
@@ -359,6 +365,9 @@
           case 'Uncompleted':
             this.menuId = 1
             break
+          case 'Unpaid':
+            this.menuId = 0
+            break
           case 'Daily':
             this.menuId = 2
             this.dateType = 'date'
@@ -406,7 +415,11 @@
         if (this.menuId === 1) {
           let orders = []
           for (let i = 1; i < 4; i++) {
-            this.$http.get(`/order/listByProcessStatus?status=${i}&page=1&count=1000`)
+            this.$http.post(`/order/search`, {
+              processStatus: i,
+              page: 1,
+              count: 10
+            })
             .then((res) => res.json())
             .then((json) => {
               for (let i = 0; i < json.length; i++) {
@@ -476,6 +489,81 @@
             })
             this.orders = orders
           }
+        } else if (this.menuId === 0) {
+          let orders = []
+          this.$http.post(`/order/search`, {
+            processStatus: 0,
+            page: 1,
+            count: 10
+          })
+          .then((res) => res.json())
+          .then((json) => {
+            for (let i = 0; i < json.length; i++) {
+              let expressCompany
+              switch (json[i].expressId) {
+                case 1:
+                  expressCompany = 'Yunda Express'
+                  break
+                case 2:
+                  expressCompany = 'Yuantong Express'
+                  break
+                case 3:
+                  expressCompany = 'SF Express'
+                  break
+                case 4:
+                  expressCompany = 'EMS'
+                  break
+                case 5:
+                  expressCompany = 'STO Express'
+                  break
+                default:
+                  console.log(json[i].expressId)
+              }
+              let processStatusMes
+              switch (json[i].processStatus) {
+                case -1:
+                  processStatusMes = 'Unconfirmed'
+                  break
+                case 0:
+                  processStatusMes = 'Unpaid'
+                  break
+                case 1:
+                  processStatusMes = 'Processing Order'
+                  break
+                case 2:
+                  processStatusMes = 'Preparing for shipment'
+                  break
+                case 3:
+                  processStatusMes = 'Shipped'
+                  break
+                case 4:
+                  processStatusMes = 'Complete'
+                  break
+                default:
+                  console.log('start')
+                  console.log(json.processStatus)
+              }
+              let order = {
+                id: json[i].id,
+                customerName: json[i].customerName === '' ? 'Anonym' : json[i].customerName,
+                customerEmail: json[i].customerEmail,
+                amount: json[i].amount,
+                address: json[i].address,
+                telephone: json[i].telephone,
+                expressId: json[i].expressId,
+                expressCompany: expressCompany,
+                products: json[i].products,
+                number: json[i].number,
+                price: json[i].price,
+                createdAt: json[i].createdAt,
+                status: i,
+                show: true,
+                processStatusMes: processStatusMes
+              }
+              orders.push(order)
+            }
+          })
+          this.orders = orders
         } else {
           let id = 0
           switch (this.menuId) {
