@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import router from '../../routes'
+
 export default {
   name: 'checkout-orders',
   data () {
@@ -91,10 +93,23 @@ export default {
         this.$http.get(`/order/changeStatus?status=1&id=${orderId}`)
         .then(res => res.json())
         .then(json => {
+          console.log(json)
           if (json.status === 0) {
             this.$message(json.message)
             return
+          } else if (json.status === 1) {
+            router.push('/order')
+            this.$message({
+              message: 'Pay Successfully',
+              type: 'success'
+            })
           }
+        }).catch((err) => {
+          console.log(err)
+          this.$message({
+            message: 'Failed to pay',
+            type: 'success'
+          })
         })
       }
       this.dialogVisible = false
