@@ -118,7 +118,6 @@ export default {
         .then((res) => res.json())
         .then(data => {
           reload(this)
-          window.location.reload()
         })
         .catch((err) => {
           console.log(err)

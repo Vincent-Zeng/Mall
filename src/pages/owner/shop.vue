@@ -103,6 +103,7 @@ export default {
       .then(json => {
         if (json.status === 1) {
           item.show = false
+          item.id = null
         } else {
           this.message(json.message)
         }

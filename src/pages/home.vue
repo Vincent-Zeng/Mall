@@ -23,7 +23,7 @@
               </nav>
           </div>
           <div class="search-box">
-            <router-link :to="{path:'/cart'}"><button>{{cartAmount}}</button></router-link>
+            <router-link :to="{path:'/cart'}"><button>C</button></router-link>
         </div>
       </header>
 
@@ -177,8 +177,29 @@ export default {
       isLogin: false,
       showRegister: false,
       showLogin: false,
-      now: now,
-      cartAmount: 0
+      now: now
+    }
+  },
+  mouted () {
+    switch (this.$route.name) {
+      case 'customer-home':
+        this.now = 0
+        break
+      case 'customer-products':
+        this.now = 1
+        break
+      case 'customer-orders':
+        this.now = 2
+        break
+      case 'customer-me':
+        this.now = 4
+        break
+      case 'customer-favourite':
+        this.now = 3
+        break
+      default:
+        this.now = null
+        this.$route.path === '/' ? this.now = 0 : null
     }
   },
   methods: {
@@ -199,15 +220,13 @@ export default {
         console.log(data)
         if (data.status === 0) {
           this.$message({
-            message: 'Success',
-            type: 'success'
+            message: data.message,
+            type: 'warning'
           })
         } else if (data.status === 1) {
-          this.$cookie.set('customerId', data.message)
-          this.isLogin = true
           router.push('/products')
           this.$message({
-            message: 'Sign up Successfully',
+            message: 'Sign up Successfully,please activate through email.',
             type: 'success'
           })
         } else {
@@ -260,13 +279,6 @@ export default {
     if (this.$cookie.get('customerId') !== null) {
       this.isLogin = true
     }
-    this.$http.get(`/cart/searchCart`)
-    .then(res => res.json())
-    .then(json => {
-      if (json[0] !== undefined) {
-        this.cartAmount = json[0].allAmount
-      }
-    })
   }
 }
 </script>
@@ -345,7 +357,7 @@ $color4:#258bde;
   width: 30%;
 
   nav {
-    min-width: 600px;
+    min-width: 800px;
 
     span {
       margin: 0 20px;

@@ -158,7 +158,7 @@
         .then(json => {
           if (json.status === 1) {
             this.dialogVisible = false
-            this.userInfo.balance = Number.parseInt(this.userInfo.balance) + Number.parseInt(this.rechargeValue)
+            this.userInfo.balance = Number.parseFloat(this.userInfo.balance) + Number.parseFloat(this.rechargeValue)
           } else {
             this.$message(json.message)
           }
