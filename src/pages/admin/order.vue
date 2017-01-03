@@ -560,8 +560,8 @@ $color4:#258bde;
             background:white;
             display:inline-block;
             vertical-align: middle;
-            text-align:center;
             height: 300px;
+            text-align:center;
             img{
               height:140px;
               max-width:80%;

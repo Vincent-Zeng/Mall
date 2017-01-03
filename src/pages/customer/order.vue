@@ -29,7 +29,8 @@
         <foldinglist class="order-item" v-show="order.show">
           <div slot="summary">
             <span  class="order-item-name">In Shop {{ order.shopName }} At {{ order.createdAt }}</span>
-            <button class="bluebutton" v-show="menuId !== 1" @click="handleReviewBoxClicked($event)">Review</button>
+            <button class="bluebutton" v-show="menuId !== 1" @click="handleReviewBoxClicked($event, order)">Review</button>
+            <button class="bluebutton" v-show="menuId === 1 && order.processStatusMes === 'Shipped' " @click="handleCompleteClicked($event,order)">Complete</button>
           </div>
           <div slot="detail" class="detail">
             <div class="order-item-detail">
@@ -84,6 +85,32 @@
             </div>
           </div>
         </foldinglist>
+        <el-dialog title="Review" v-model="reviewBoxVisible" size="large" class="review-box">
+          <div v-for="reviewProduct in reviewProducts" class="reviewProduct" v-show="reviewProduct.show">
+            <div class="box-top">
+              <div class="box-top-left">
+                <img :src="reviewProduct.photoURL" />
+                <div class="product-info">
+                  <span>
+                    {{reviewProduct.name}}
+                  </span>
+                  <br />
+                  <span>
+                    ${{reviewProduct.price}}
+                  </span>
+                </div>
+              </div><div class="box-top-right">
+                <el-rate v-model="reviewProduct.rate"></el-rate>
+              </div>
+            </div>
+            <div class="box-bottom">
+              <textarea v-model="reviewProduct.comment"></textarea>
+              <div class="button-wrap">
+                <button class="bluebutton" @click="handleCommentClicked(reviewProduct)">Comment</button>
+              </div>
+            </div>
+          </div>
+        </el-dialog>
       </div>
     </div>
 
@@ -112,69 +139,143 @@
         pickerOptions0: {
           firstDayOfWeek: 1
         },
-        keyword: ''
+        keyword: '',
+        reviewProducts: [],
+        reviewBoxVisible: false,
+        comment: {
+          rate: null
+        }
       }
     },
     mounted () {
     },
     created () {
       let orders = []
-      this.$http.post(`/order/listByTime?`, {
-        id: 0,
-        page: 1,
-        count: 10
-      })
-      .then((res) => res.json())
-      .then((json) => {
-        for (let i = 0; i < json.length; i++) {
-          let expressCompany
-          switch (json[i].expressId) {
-            case 1:
-              expressCompany = 'Yunda Express'
-              break
-            case 2:
-              expressCompany = 'Yuantong Express'
-              break
-            case 3:
-              expressCompany = 'SF Express'
-              break
-            case 4:
-              expressCompany = 'EMS'
-              break
-            case 5:
-              expressCompany = 'STO Express'
-              break
-            default:
-              console.log(json[i].expressId)
+      for (let i = 1; i < 4; i++) {
+        this.$http.get(`/order/listByProcessStatus?status=${i}&page=1&count=10`)
+        .then((res) => res.json())
+        .then((json) => {
+          for (let i = 0; i < json.length; i++) {
+            let expressCompany
+            switch (json[i].expressId) {
+              case 1:
+                expressCompany = 'Yunda Express'
+                break
+              case 2:
+                expressCompany = 'Yuantong Express'
+                break
+              case 3:
+                expressCompany = 'SF Express'
+                break
+              case 4:
+                expressCompany = 'EMS'
+                break
+              case 5:
+                expressCompany = 'STO Express'
+                break
+              default:
+                console.log(json[i].expressId)
+            }
+            let processStatusMes
+            switch (json[i].processStatus) {
+              case -1:
+                processStatusMes = 'Unconfirmed'
+                break
+              case 0:
+                processStatusMes = 'Unpaid'
+                break
+              case 1:
+                processStatusMes = 'Processing Order'
+                break
+              case 2:
+                processStatusMes = 'Preparing for shipment'
+                break
+              case 3:
+                processStatusMes = 'Shipped'
+                break
+              case 4:
+                processStatusMes = 'Complete'
+                break
+              default:
+                console.log('start')
+                console.log(json.processStatus)
+            }
+            let order = {
+              id: json[i].id,
+              customerName: json[i].customerName === '' ? 'Anonym' : json[i].customerName,
+              customerEmail: json[i].customerEmail,
+              amount: json[i].amount,
+              address: json[i].address,
+              telephone: json[i].telephone,
+              expressId: json[i].expressId,
+              expressCompany: expressCompany,
+              products: json[i].products,
+              number: json[i].number,
+              price: json[i].price,
+              createdAt: json[i].createdAt,
+              status: i,
+              show: true,
+              processStatusMes: processStatusMes
+            }
+            orders.push(order)
           }
-          let order = {
-            id: json[i].id,
-            customerName: json[i].customerName === '' ? 'Anonym' : json[i].customerName,
-            customerEmail: json[i].customerEmail,
-            amount: json[i].amount,
-            address: json[i].address,
-            telephone: json[i].telephone,
-            expressId: json[i].expressId,
-            expressCompany: expressCompany,
-            products: json[i].products,
-            number: json[i].number,
-            price: json[i].price,
-            createdAt: json[i].createdAt,
-            status: 1,
-            show: true,
-            shopName: json[i].shopName
-          }
-          orders.push(order)
-        }
-      })
+        })
+      }
       this.orders = orders
     },
     components: {
       foldinglist: foldinglist
     },
     methods: {
-      handleReviewBoxClicked (event) {
+      handleCommentClicked (item) {
+        this.$http.post(`/product/comment`, {
+          productId: item.id,
+          comment: item.comment,
+          rate: item.rate,
+          orderId: item.orderId
+        })
+        .then(res => res.json())
+        .then(json => {
+          if (json.status === 1) {
+            this.$message('success')
+            item.show = false
+          } else {
+            this.$message(json.message)
+          }
+        })
+      },
+      handleCompleteClicked (event, item) {
         event.stopPropagation()
+        this.$http.get(`/order/changeProcessStatus?id=${item.id}&status=4`)
+        .then(res => res.json())
+        .then(json => {
+          if (json.status === 1) {
+            item.show = false
+          } else {
+            this.$message(json.message)
+          }
+        })
+      },
+      handleReviewBoxClicked (event, item) {
+        event.stopPropagation()
+        this.reviewBoxVisible = true
+        let reviewProduct
+        let reviewProducts = []
+        for (let i = 0; i < item.products.length; i++) {
+          let product = item.products[i]
+          reviewProduct = {
+            id: product.productId,
+            name: product.name,
+            photoURL: product.photoURL,
+            price: product.price,
+            rate: null,
+            commentText: null,
+            orderId: item.id,
+            show: true
+          }
+          reviewProducts.push(reviewProduct)
+        }
+        this.reviewProducts = reviewProducts
       },
       searchProducts () {
         this.menuId = -1
@@ -698,7 +799,6 @@ $color4:#258bde;
       border-top: 1px solid #EEEEEE;
       .bluebutton{
         float:right;
-        margin-bottom: 12px;
         margin-left:20px;
         padding:10px 20px;
         border-radius:3px;
@@ -706,7 +806,6 @@ $color4:#258bde;
         background:$color4;
         border:1px solid $color4;
         color:white;
-
       }
       .order-item-name {
         color: #2B2B2B;
@@ -739,6 +838,70 @@ $color4:#258bde;
           text-align: center;
           border-radius: 4px;
           box-sizing: border-box;
+        }
+      }
+    }
+  }
+}
+
+.review-box{
+  .reviewProduct:last-child{
+    border-bottom:none;
+  }
+  .reviewProduct{
+    border-bottom:1px solid #eee;
+    padding-bottom:10px;
+    margin-top:10px;
+    .box-top{
+      .box-top-left{
+        display: inline-block;
+        width: 50%;
+        img{
+          height:100px;
+          vertical-align:middle;
+        }
+        .product-info{
+          margin-left:40px;
+          display: inline-block;
+          vertical-align:middle;
+          span{
+            display:inline-block;
+            width:100%;
+            text-align:center;
+          }
+          span:first-child{
+            color:gray;
+            font-size:16px;
+          }
+          span:last-child{
+            color:red;
+          }
+        }
+      }
+      .box-top-right{
+        display: inline-block;
+        width: 50%;
+        text-align:right;
+      }
+    }
+    .box-bottom{
+      textarea{
+        margin-top:20px;
+        width:100%;
+        height:100px;
+        border-color:#ccc;
+      }
+      .button-wrap{
+        width:100%;
+        text-align:right;
+        .bluebutton{
+          margin-left:20px;
+          padding:10px 20px;
+          border-radius:3px;
+          cursor:pointer;
+          background:$color4;
+          border:1px solid $color4;
+          color:white;
         }
       }
     }

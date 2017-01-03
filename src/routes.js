@@ -9,7 +9,6 @@ import Home from './pages/home'
 import Me from './pages/customer/me'
 import Products from './pages/customer/products'
 import Product from './pages/customer/product'
-import Orders from './pages/customer/orders'
 import Order from './pages/customer/order'
 import Cart from './pages/customer/cart'
 import Pay from './pages/customer/pay'
@@ -55,11 +54,6 @@ const routes = [{
     {
       path: '/products/:id',
       component: Product
-    },
-    {
-      name: 'customer-orders',
-      path: '/orders',
-      component: Orders
     },
     {
       name: 'customer-order',

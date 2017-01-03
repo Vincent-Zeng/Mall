@@ -47,7 +47,7 @@
               {{ comment.content }}
             </div>
             <div class="product-comment-rate">
-              {{ comment.rate }}
+              <el-rate v-model="comment.rate" disabled></el-rate>
             </div>
           </div>
         </div>
@@ -83,20 +83,6 @@ export default {
           }
         })
       })
-    this.$http.get(`/product/getComments?id=${this.$route.params.id}&page=1&count=1000`)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-        let comments = []
-        for (var i = 0; i < data.length; i++) {
-          comments.push({
-            content: data.comment,
-            name: data.customerName,
-            rate: data.rate
-          })
-        }
-        this.comments = comments
-      })
     return {
       product: {
         id: null,
@@ -115,6 +101,22 @@ export default {
         }
       ]
     }
+  },
+  created () {
+    this.$http.get(`/product/getComments?id=${this.$route.params.id}&page=1&count=1000`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        let comments = []
+        for (var i = 0; i < data.length; i++) {
+          comments.push({
+            content: data[i].comment,
+            name: data[i].customerName,
+            rate: data[i].rate
+          })
+        }
+        this.comments = comments
+      })
   },
   methods: {
     handleAddToCartClicked (id) {

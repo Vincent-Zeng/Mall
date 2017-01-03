@@ -112,7 +112,7 @@
       return {
         orders: [],
         dropDownMenu: 'Unshipped',
-        menuId: 1,
+        menuId: 0,
         dateType: 'date',
         time0: '',
         time1: '',
@@ -237,7 +237,6 @@
           orders.push(order)
         }
       })
-      console.log(orders)
       this.orders = orders
     },
     components: {

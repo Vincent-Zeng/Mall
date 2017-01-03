@@ -17,7 +17,7 @@
               <nav>
                 <span @click="handleTabClick(0)" :class="{'selected-item': now === 0}" id="nav-home" ><router-link :to="{path:'/'}">HOME</router-link></span>
                 <span @click="handleTabClick(1)" :class="{'selected-item': now === 1}" id="nav-products"><router-link :to="{path:'/products'}">PRODUCTS</router-link></span>
-                <span @click="handleTabClick(2)" :class="{'selected-item': now === 2}" id="nav-orders"><router-link :to="{path:'/orders'}" v-show="isLogin">ORDERS</router-link></span>
+                <span @click="handleTabClick(2)" :class="{'selected-item': now === 2}" id="nav-orders"><router-link :to="{path:'/order'}" v-show="isLogin">ORDERS</router-link></span>
                 <span @click="handleTabClick(3)" :class="{'selected-item': now === 3}" id="nav-favourite"><router-link :to="{path:'/favourite'}" v-show="isLogin">FAVOURITE</router-link></span>
                 <span @click="handleTabClick(4)" :class="{'selected-item': now === 4}" id="nav-favourite"><router-link :to="{path:'/me'}" v-show="isLogin">Me</router-link></span>
               </nav>
