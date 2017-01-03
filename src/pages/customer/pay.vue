@@ -76,15 +76,23 @@ export default {
       for (let i = 0; i < orderIds.length; i++) {
         let orderId = orderIds[i]
         this.$http.get(`/order/changeStatus?status=0&addressId=${this.whichRecipient}&id=${orderId}`)
-        .then(res => res.json())
-        .then(json => {
-          if (json.status === 0) {
-            this.$message(json.message)
-            return
-          }
-        })
+          .then(res => res.json())
+          .then(json => {
+            console.log(json)
+            if (json.status === 0) {
+              this.$message(json.message)
+              return
+            } else if (json.status === 1) {
+              this.dialogVisible = true
+            }
+          }).catch((err) => {
+            console.log(err)
+            this.$message({
+              message: 'Failed to pay',
+              type: 'warning'
+            })
+          })
       }
-      this.dialogVisible = true
     },
     handlePayClick () {
       let orderIds = this.$route.query.orderId
@@ -108,7 +116,7 @@ export default {
           console.log(err)
           this.$message({
             message: 'Failed to pay',
-            type: 'success'
+            type: 'warning'
           })
         })
       }
