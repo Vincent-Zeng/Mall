@@ -20,6 +20,9 @@
             <div class="product-price">{{ product.price.toFixed(2) }} HK $</div>
           </router-link>
         </div>
+        <div class="paging" v-show="catogoryId === 0">
+          <el-pagination layout="prev, pager, next" :total="total"  @current-change="handlePagingClicked"></el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -56,15 +59,39 @@ export default {
       products: [],
       showDetail: this.$route.params.id !== undefined,
       oldScrollTop: false,
-      catalogs: catalogs
+      catalogs: catalogs,
+      total: 0,
+      catogoryId: 0
     }
   },
   methods: {
+    handlePagingClicked (page) {
+      this.$http.post(`/product/search`, {
+        page: page,
+        num: 10
+      })
+      .then(res => res.json())
+      .then(json => {
+        let products = []
+        for (let i = 0; i < json.length; i++) {
+          products.push({
+            id: json[i].id,
+            name: json[i].name,
+            price: json[i].price,
+            url: json[i].photoURL
+          })
+        }
+        this.products = products
+        console.log('start')
+        console.log(products)
+      })
+    },
     handleDetailClicked (productId) {
       router.push('/products/' + productId)
     },
     searchProducts (id) {
       let keyword = this.keyword
+      this.catogoryId = id
       if (id !== 0) {
         keyword = ''
       }
@@ -88,6 +115,11 @@ export default {
     }
   },
   created () {
+    this.$http.get(`/product/searchProductNum`)
+    .then(res => res.json())
+    .then(json => {
+      this.total = json
+    })
     search(0, '')
       .then(res => res.json())
       .then(data => {
@@ -206,10 +238,14 @@ export default {
   margin:0 auto;
 }
 .product-list{
+  min-height:500px;
   width:72%;
   box-sizing:border-box;
   display:inline-block;
   vertical-align:top;
+  .paging{
+    text-align:center;
+  }
 }
 
 .catalog{
