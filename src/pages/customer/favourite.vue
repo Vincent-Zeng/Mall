@@ -9,7 +9,6 @@
     <div class="owner-list" v-show="!isProduct">
       <div class="owner-item" v-for="shop in shops" v-show="shop.show">
       <router-link :to="{path:'/shops/' + shop.id}" >
-          <img class="owner-item-avatar" :src="shop.avatar" alt="">
           <span class="owner-item-owner">{{ shop.name }}</span>
         </router-link>
         <div class="function-button">
@@ -21,6 +20,7 @@
     <div class="owner-list" v-show="isProduct">
       <div class="owner-item" v-for="product in products" v-show="product.show">
         <router-link :to="{path:'/products/' + product.id}" >
+          <img class="owner-item-avatar" :src="product.avatar" alt="">
           <span class="owner-item-owner">{{ product.name }}</span>
         </router-link>
         <div class="function-button">
@@ -78,6 +78,7 @@ export default {
             products.push({
               name: json[i].name,
               id: json[i].id,
+              avatar: json[i].photoURL,
               show: true
             })
           }
@@ -176,14 +177,13 @@ export default {
     .owner-item-avatar {
       width: 30px;
       height: 30px;
-      border-radius: 15px;
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
     }
 
     .owner-item-owner {
-      color: #0077D8;
+      color: gray;
       margin-left: 50px;
       font-size: 18px;
       font-weight: normal;

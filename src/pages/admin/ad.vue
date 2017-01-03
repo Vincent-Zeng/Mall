@@ -106,7 +106,7 @@ export default {
         })
       }
     })
-    this.$http.get(`/shopAd/verified?page=1&count=20`)
+    this.$http.get(`/shopAd/verified?page=1&count=1000`)
     .then((res) => res.json())
     .then((json) => {
       for (let i = 0; i < json.length; i++) {
@@ -182,7 +182,7 @@ export default {
             window.alert(json.message)
           } else {
             item.show = false
-            this.$http.get(`/shopAd/verified?page=1&count=20`)
+            this.$http.get(`/shopAd/verified?page=1&count=1000`)
             .then((res) => res.json())
             .then((json) => {
               this.shopsPassed = []
@@ -223,7 +223,7 @@ export default {
             this.optionalProducts = optionalProducts
           })
         } else {
-          this.$http.get(`/shopAd/unverified?page=1&count=20`)
+          this.$http.get(`/shopAd/unverified?page=1&count=1000`)
           .then((res) => res.json())
           .then((json) => {
             var optionalProducts = []

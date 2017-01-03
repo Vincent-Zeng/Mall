@@ -68,7 +68,7 @@ export default {
 
   },
   created () {
-    Vue.http.get('/shop/searchByStatus?status=3&page=1&count=10').then((response) => {
+    Vue.http.get('/shop/searchByStatus?status=3&page=1&count=1000').then((response) => {
       let shops = []
       response.json().then(function (data) {
         for (let i = 0; i < data.length; i++) {
