@@ -7,10 +7,6 @@
           <img class="product-image" :src="product.url" alt="">
         </div>
         <div class="product-detail">
-          <div class="product-summary">
-            <img src="./images/rating.png" alt="">
-            <!-- <p>0 reviews</p> -->
-          </div>
 
           <p class="product-name">{{ product.name }}</p>
           <p class="product-price">HK ${{ product.price.toFixed(2) }}</p>
@@ -274,7 +270,7 @@ h1 {
   flex-direction: column;
   align-items: flex-start;
   width: 50%;
-
+  margin-top:40px;
   .product-summary p {
     text-align: left;
     font-size: 14px;
