@@ -43,7 +43,7 @@ export default {
       }
     })
 
-    this.$http.get(`/product/searchByShop?id=${this.$route.params.id}&count=100&page=1`)
+    this.$http.get(`/product/searchByShop?id=${this.$route.params.id}&count=1000&page=1`)
     .then(res => res.json())
     .then(data => {
       let products = []

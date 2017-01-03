@@ -152,7 +152,7 @@
     created () {
       let orders = []
       for (let i = 1; i < 4; i++) {
-        this.$http.get(`/order/listByProcessStatus?status=${i}&page=1&count=10`)
+        this.$http.get(`/order/listByProcessStatus?status=${i}&page=1&count=1000`)
         .then((res) => res.json())
         .then((json) => {
           for (let i = 0; i < json.length; i++) {
@@ -406,7 +406,7 @@
         if (this.menuId === 1) {
           let orders = []
           for (let i = 1; i < 4; i++) {
-            this.$http.get(`/order/listByProcessStatus?status=${i}&page=1&count=10`)
+            this.$http.get(`/order/listByProcessStatus?status=${i}&page=1&count=1000`)
             .then((res) => res.json())
             .then((json) => {
               for (let i = 0; i < json.length; i++) {

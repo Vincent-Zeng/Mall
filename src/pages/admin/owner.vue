@@ -154,7 +154,7 @@ export default {
     }
   },
   created () {
-    Vue.http.get('/shop/searchAll?page=1&count=20').then((response) => {
+    Vue.http.get('/shop/searchAll?page=1&count=1000').then((response) => {
       let shops = this.shops
       response.json().then(function (data) {
         if (response.status !== 200) {

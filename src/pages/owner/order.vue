@@ -150,7 +150,7 @@
     },
     created () {
       let orders = []
-      this.$http.get(`/order/listByProcessStatus?status=1&page=1&count=10`)
+      this.$http.get(`/order/listByProcessStatus?status=1&page=1&count=1000`)
       .then((res) => res.json())
       .then((json) => {
         for (let i = 0; i < json.length; i++) {
@@ -194,7 +194,7 @@
         }
       })
 
-      this.$http.get(`/order/listByProcessStatus?status=2&page=1&count=10`)
+      this.$http.get(`/order/listByProcessStatus?status=2&page=1&count=1000`)
       .then((res) => res.json())
       .then((json) => {
         for (let i = 0; i < json.length; i++) {
@@ -341,7 +341,7 @@
         // 请求不同的下拉菜单项下的数据 start
         if (this.menuId === 0) {
           let orders = []
-          this.$http.get(`/order/listByProcessStatus?status=1&page=1&count=10`)
+          this.$http.get(`/order/listByProcessStatus?status=1&page=1&count=1000`)
           .then((res) => res.json())
           .then((json) => {
             for (let i = 0; i < json.length; i++) {
@@ -385,7 +385,7 @@
             }
           })
 
-          this.$http.get(`/order/listByProcessStatus?status=2&page=1&count=10`)
+          this.$http.get(`/order/listByProcessStatus?status=2&page=1&count=1000`)
           .then((res) => res.json())
           .then((json) => {
             for (let i = 0; i < json.length; i++) {
@@ -431,7 +431,7 @@
           this.orders = orders
         } else if (this.menuId === 1) {
           let orders = []
-          this.$http.get(`/order/listByProcessStatus?status=3&page=1&count=10`)
+          this.$http.get(`/order/listByProcessStatus?status=3&page=1&count=1000`)
           .then((res) => res.json())
           .then((json) => {
             for (let i = 0; i < json.length; i++) {
