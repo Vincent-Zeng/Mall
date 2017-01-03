@@ -7,7 +7,10 @@
           <img class="product-image" :src="product.url" alt="">
         </div>
         <div class="product-detail">
-
+          <div class="peach" @click="handleAddToFavouriteClicked(product.id)">
+            <div>
+            </div>
+          </div>
           <p class="product-name">{{ product.name }}</p>
           <p class="product-price">HK ${{ product.price.toFixed(2) }}</p>
           <p class="product-left-amount">{{ product.amount }} left</p>
@@ -80,6 +83,7 @@ export default {
         })
       })
     return {
+      color: 'blue',
       product: {
         id: null,
         name: null,
@@ -191,6 +195,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+$color5: tomato;
+$color6: #ccc;
 h1 {
   font-weight: normal;
 }
@@ -275,6 +281,47 @@ h1 {
     text-align: left;
     font-size: 14px;
     color: #ACACAC;
+  }
+  .peach{
+    cursor: pointer;
+    height:30px;
+    width:30px;
+    position: absolute;
+    right:0;
+    top:50px;
+    div{
+       background-color:$color5;
+       width:10px;
+       height:10px;
+       position:relative;
+       top:10px;
+       left:50%;
+       transform: rotate(-45deg);
+     }
+
+
+  div:before{
+    content:"";
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background-color:$color5;
+    position:absolute;
+    top:-5px;
+    left:0;
+  }
+
+  div:after{
+    z-index:-1;
+    content:"";
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:$color5;
+    position:absolute;
+    top:0px;
+    left:5px;
+    }
   }
 
   .product-name {
