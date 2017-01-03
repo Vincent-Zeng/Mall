@@ -39,10 +39,13 @@ export default {
       this.isIncome = type === 'income'
       this.dropDownMenu = 'Daily'
       let url = null
+      let yItem = null
       if (type === 'income') {
         url = '/owner/income'
+        yItem = 'income'
       } else {
-        url = '/order/num'
+        url = '/order/numO'
+        yItem = 'num'
       }
       this.$http.get(`${url}?cond=0`)
       .then((res) => res.json())
@@ -52,7 +55,7 @@ export default {
         for (let i = 0; i < json.length; i++) {
           let xItem = json[i].year + '/' + json[i].month + '/' + json[i].day
           xAxis.push(xItem)
-          yAxis.push(json[i].income)
+          yAxis.push(json[i][yItem])
         }
         this.xAxis = xAxis
         this.yAxis = yAxis
@@ -118,7 +121,7 @@ export default {
         url = '/owner/income'
         yItem = 'income'
       } else {
-        url = '/order/num'
+        url = '/order/numO'
         yItem = 'num'
       }
       this.$http.get(`${url}?cond=${cond}`)
