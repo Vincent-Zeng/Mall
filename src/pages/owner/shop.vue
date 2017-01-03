@@ -120,7 +120,7 @@ export default {
       this.products = json.message
       console.log(json)
     })
-    this.$http.get(`/order/sumA`)
+    this.$http.get(`/order/sumO`)
     .then(res => res.json())
     .then(json => {
       if (json.status === 1) {
