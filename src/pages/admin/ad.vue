@@ -237,7 +237,8 @@ export default {
                 shopId: data.shopId,
                 adId: data.id,
                 name: data.name,
-                price: data.price
+                price: data.price,
+                rentPrice: data.price
               })
             }
             this.optionalProducts = optionalProducts

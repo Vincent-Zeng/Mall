@@ -498,7 +498,7 @@ button{
   right: 172px;
   .product-ad-commission{
     display: inline-block;
-    padding-left:280px;
+    padding-left:40px;
     input {
       display: inline-block;
       border: none;
