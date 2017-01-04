@@ -221,7 +221,8 @@
               createdAt: json[i].createdAt,
               status: i,
               show: true,
-              processStatusMes: processStatusMes
+              processStatusMes: processStatusMes,
+              shopName: json[i].shopName
             }
             orders.push(order)
           }
